@@ -2,6 +2,8 @@ import React from "react";
 import { lazy } from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthProvider";
 
 const Navbar = lazy(() => import("./Navbar"));
 
@@ -9,12 +11,19 @@ const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    const { login } = useContext(AuthContext);
+
     const handleEmail = (e) => {
         setEmail(e.target.value);
     };
 
     const handlePassword = (e) => {
         setPassword(e.target.value);
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        login(email, password);
     };
 
     return (
@@ -25,7 +34,7 @@ const Login = () => {
                     <h1 className="text-3xl font-medium">
                         Already have an <span className="text-blue">account?</span>
                     </h1>
-                    <form action="" className="w-full flex flex-col items-center gap-8">
+                    <form onSubmit={handleSubmit} className="w-full flex flex-col items-center gap-8">
                         <div className="flex flex-col gap-8 items-center w-full">
                             <input
                                 type="email"

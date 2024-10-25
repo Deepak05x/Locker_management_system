@@ -1,8 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
-import { useContext } from "react";
-import { AuthContext } from "./context/AuthProvider";
 import AuthProvider from "./context/AuthProvider";
 
 const Login = lazy(() => import("./components/Login"));

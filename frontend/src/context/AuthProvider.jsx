@@ -1,6 +1,5 @@
-import React from "react";
-import { useEffect } from "react";
-import { createContext, useState } from "react";
+import React, { createContext, useState } from "react";
+import axios from "axios";
 
 export const AuthContext = createContext();
 
@@ -10,13 +9,29 @@ const AuthProvider = ({ children }) => {
     const [validateOtp, setValidateOtp] = useState(null);
     const [resetPassword, setResetPassword] = useState(null);
 
-    const login = async () => {
+    const login = async (email, password) => {
         try {
-            const response = await fetch("http://localhost:3000/api/user/login");
-            const data = await response.json();
+            const res = await axios.post(
+                "http://localhost:3000/api/user/login",
+                { email, password },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            // const response = await fetch("http://localhost:3000/api/user/login", {
+            //     method: "POST",
+            //     headers: {
+            //         "Content-Type": "application/json",
+            //     },
+            //     body: JSON.stringify({ email, password }),
+            // });
+            const data = await res.data;
+            console.log(data);
             setLoginDetails(data);
         } catch (error) {
-            console.log("Login Function Failed To Fetch Data");
+            console.log(error);
         }
     };
 
@@ -30,39 +45,27 @@ const AuthProvider = ({ children }) => {
         }
     };
 
-    const checkOtp = async (otpInput) => {
+    const checkOtp = async () => {
         try {
-            const response = await fetch("http://localhost:3000/api/resetPassword/validateOTP", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ otp: otpInput }),
-            });
+            const response = await fetch("http://localhost:3000/api/resetPassword/validateOTP");
             const data = await response.json();
             setValidateOtp(data);
         } catch (error) {
-            console.log("Validate OTP function failed to fetch data");
+            console.log("Validate OTP Function Failed To Fetch Data");
         }
     };
 
-    const resetPass = async (newPassword) => {
+    const resetPass = async () => {
         try {
-            const response = await fetch("http://localhost:3000/api/resetPassword/resetPassword", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ password: newPassword }),
-            });
+            const response = await fetch("http://localhost:3000/api/resetPassword/resetPassword");
             const data = await response.json();
             setResetPassword(data);
         } catch (error) {
-            console.log("Reset Password function failed to fetch data");
+            console.log("Reset Password Function Failed To Fetch Data");
         }
     };
 
-    return <AuthContext.Provider value={{ login, loginDetails, generateOtp, otp, checkOtp, validateOtp, resetPass, resetPassword }}></AuthContext.Provider>;
+    return <AuthContext.Provider value={{ login, loginDetails, generateOtp, otp, checkOtp, validateOtp, resetPass, resetPassword }}>{children}</AuthContext.Provider>;
 };
 
 export default AuthProvider;
