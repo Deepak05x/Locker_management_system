@@ -1,15 +1,23 @@
 import React from "react";
 import { lazy } from "react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../context/AuthProvider";
 
 const Navbar = lazy(() => import("./Navbar"));
 
 const EnterEmail = () => {
     const [resetEmail, setResetEmail] = useState("");
 
+    const { generateOtp } = useContext(AuthContext);
+
     const handleResetEmail = (e) => {
         setResetEmail(e.target.value);
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        generateOtp(resetEmail);
     };
 
     return (
@@ -20,7 +28,7 @@ const EnterEmail = () => {
                     <h1 className="text-3xl font-medium">
                         Enter your registered <span className="text-blue">email</span>
                     </h1>
-                    <form action="" className="w-full flex flex-col items-center gap-8">
+                    <form onSubmit={handleSubmit} className="w-full flex flex-col items-center gap-8">
                         <div className="flex flex-col gap-8 items-center w-full">
                             <input
                                 type="email"

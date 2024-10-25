@@ -2,6 +2,8 @@ import React from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { lazy } from "react";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthProvider";
 
 const Navbar = lazy(() => import("./Navbar"));
 
@@ -9,12 +11,19 @@ const ResetPassword = () => {
     const [resetPassword, setResetPassword] = useState("");
     const [confirmReset, setConfirmReset] = useState("");
 
+    const { resetPass } = useContext(AuthContext);
+
     const handleResetPassword = (e) => {
         setResetPassword(e.target.value);
     };
 
     const handleConfirmPassword = (e) => {
         setConfirmReset(e.target.value);
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        resetPass(resetPassword, confirmReset);
     };
 
     return (
@@ -25,7 +34,7 @@ const ResetPassword = () => {
                     <h1 className="text-3xl font-medium">
                         Enter your new <span className="text-blue">password</span>
                     </h1>
-                    <form action="" className="w-full flex flex-col items-center gap-8">
+                    <form onSubmit={handleSubmit} className="w-full flex flex-col items-center gap-8">
                         <div className="flex flex-col gap-8 items-center w-full">
                             <input
                                 type="password"
