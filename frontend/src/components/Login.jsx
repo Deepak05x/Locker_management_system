@@ -46,11 +46,10 @@ const Login = () => {
                             <button className="bg-blue px-6 py-2 rounded-sm text-white font-medium">Login</button>
                         </div>
                         <div className="flex flex-col items-center gap-8">
-                            <p className="cursor-pointer">Forgot Password</p>
                             <p className="flex flex-row gap-2 items-center">
-                                Don't have an account?
-                                <Link to={"/signup"} className="text-blue cursor-pointer">
-                                    Sign-up
+                                Forgot Password?
+                                <Link to={"/enter"} className="text-blue cursor-pointer hover:underline">
+                                    Reset
                                 </Link>
                             </p>
                         </div>
