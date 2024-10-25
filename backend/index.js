@@ -3,6 +3,8 @@ const cookieParser = require('cookie-parser');
 const dbConnect=require('./utils/databaseConnect.js')
 const cors = require('cors');
 const userroute=require('./routes/authRoutes.js')
+const adminRoute=require('./routes/adminRoutes.js')
+const resetPasswordRoute=require('./routes/resetPasswordRoute.js')
 require('dotenv').config();
 
 dbConnect();
@@ -14,6 +16,8 @@ app.use(cors());
 
 
 app.use('/api/user', userroute);
+app.use('/api/admin', adminRoute);
+app.use('/api/resetPassword', resetPasswordRoute);
 
 app.listen(process.env.PORT, () => {
     console.log(`server is running on port ${process.env.PORT}`);
