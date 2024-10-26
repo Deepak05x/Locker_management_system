@@ -24,7 +24,7 @@ const lockerSchema = new mongoose.Schema(
             required: true,
         },
         LockerPrice3Month: {
-            type: Number, 
+            type: Number,  
             required: true,
         },
         LockerPrice6Month: {

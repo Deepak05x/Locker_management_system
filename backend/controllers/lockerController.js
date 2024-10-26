@@ -7,7 +7,7 @@ exports.getAvailableLocker = async (req, res, next) => {
     try {
         const { lockerType, employeeGender } = req.body;
 
-      
+
         if (!lockerType || !employeeGender) {
             return res.status(400).json({ message: "lockerType and employeeGender are required" });
         }
@@ -18,16 +18,16 @@ exports.getAvailableLocker = async (req, res, next) => {
             availableForGender: employeeGender
         });
 
-         if (!locker) {
+        if (!locker) {
             // console.log("not found")
             return res.status(404).json({ message: "No available locker found matching the criteria." });
         }
 
-       return res.status(200).json({
+        return res.status(200).json({
             message: "Available locker found",
             data: locker
         });
-        
+
     } catch (err) {
         console.log(`Error in getting Available Locker: ${err.message}`);
         next(err);
@@ -38,25 +38,25 @@ exports.getAvailableLocker = async (req, res, next) => {
 
 exports.allocateLocker = async (req, res, next) => {
     try {
-        const { lockerNumber,lockerType, lockerCode, employeeName, employeeId, employeeEmail, employeePhone, employeeGender, costToEmployee, duration, startDate, endDate } = req.body;
+        const { lockerNumber, lockerType, lockerCode, employeeName, employeeId, employeeEmail, employeePhone, employeeGender, costToEmployee, duration, startDate, endDate } = req.body;
         // console.log( lockerNumber,lockerType, lockerCode, employeeName, employeeId, employeeEmail, employeePhone, employeeGender, costToEmployee, duration, startDate, endDate )
-        
+
         if (!lockerNumber) {
 
             return res.status(400).json({ message: "lockerNumber is required" });
         }
 
-        
+
         const locker = await Locker.findOne({
-            LockerNumber:lockerNumber,
+            LockerNumber: lockerNumber,
             LockerStatus: "available"
         });
 
-        
+
         if (!locker) {
             return res.status(404).json({ message: "Locker is not available or does not exist" });
         }
-       
+
 
 
         let expiresOn;
@@ -65,12 +65,12 @@ exports.allocateLocker = async (req, res, next) => {
             const sixMonthsFromNow = new Date();
             sixMonthsFromNow.setMonth(sixMonthsFromNow.getMonth() + 6);
             expiresOn = sixMonthsFromNow;
-        }else if (duration === "12") {
+        } else if (duration === "12") {
             // Set expiresOn to 12 months from the current date
             const twelveMonthsFromNow = new Date();
             twelveMonthsFromNow.setMonth(twelveMonthsFromNow.getMonth() + 12);
             expiresOn = twelveMonthsFromNow;
-        }  else if (endDate) {
+        } else if (endDate) {
             // Set expiresOn to provided endDate
             expiresOn = new Date(endDate);
         }
@@ -90,10 +90,10 @@ exports.allocateLocker = async (req, res, next) => {
         locker.LockerStatus = "occupied";
 
         locker.expiresOn = expiresOn;
-//         // employeeName,employeeId,employeeEmail,employeePhone,employeeGender,CostToEmployee,Duration,StartDate,EndDate
-     
+        //         // employeeName,employeeId,employeeEmail,employeePhone,employeeGender,CostToEmployee,Duration,StartDate,EndDate
+
         await locker.save();
-        const email=employeeEmail;
+        const email = employeeEmail;
         await mailSender(
             email,
             "Locker Assignment",
@@ -104,7 +104,7 @@ exports.allocateLocker = async (req, res, next) => {
             message: "Locker allocated successfully",
             data: locker
         });
-        
+
     } catch (err) {
         console.log(`Error in allocating locker: ${err.message}`);
         next(err);
@@ -115,17 +115,17 @@ exports.allocateLocker = async (req, res, next) => {
 
 exports.renewLocker = async (req, res, next) => {
     try {
-        const { lockerNumber,  costToEmployee, duration, startDate, endDate,EmployeeEmail } = req.body;
+        const { lockerNumber, costToEmployee, duration, startDate, endDate, EmployeeEmail } = req.body;
         // console.log( lockerNumber,lockerType, lockerCode, employeeName, employeeId, employeeEmail, employeePhone, employeeGender, costToEmployee, duration, startDate, endDate )
-        
+
         if (!lockerNumber || !EmployeeEmail) {
 
             return res.status(400).json({ message: "lockerNumber is required" });
         }
 
-        const email=EmployeeEmail;
+        const email = EmployeeEmail;
         const locker = await Locker.findOne({
-            LockerNumber:lockerNumber
+            LockerNumber: lockerNumber
         });
 
         if (!locker) {
@@ -138,12 +138,12 @@ exports.renewLocker = async (req, res, next) => {
             const sixMonthsFromNow = new Date();
             sixMonthsFromNow.setMonth(sixMonthsFromNow.getMonth() + 6);
             expiresOn = sixMonthsFromNow;
-        }else if (duration === "12") {
+        } else if (duration === "12") {
             // Set expiresOn to 12 months from the current date
             const twelveMonthsFromNow = new Date();
             twelveMonthsFromNow.setMonth(twelveMonthsFromNow.getMonth() + 12);
             expiresOn = twelveMonthsFromNow;
-        }  else if (endDate) {
+        } else if (endDate) {
             // Set expiresOn to provided endDate
             expiresOn = new Date(endDate);
         }
@@ -156,7 +156,7 @@ exports.renewLocker = async (req, res, next) => {
 
         locker.expiresOn = expiresOn;
         //         // employeeName,employeeId,employeeEmail,employeePhone,employeeGender,CostToEmployee,Duration,StartDate,EndDate
-     
+
         await locker.save();
 
         await mailSender(
@@ -168,7 +168,7 @@ exports.renewLocker = async (req, res, next) => {
             message: "Locker Renewed successfully",
             data: locker
         });
-        
+
     } catch (err) {
         console.log(`Error in allocating locker: ${err.message}`);
         next(err);
@@ -178,26 +178,26 @@ exports.renewLocker = async (req, res, next) => {
 
 exports.cancelLockerAllocation = async (req, res, next) => {
     try {
-        const { lockerNumber,EmployeeEmail} = req.body;
+        const { lockerNumber, EmployeeEmail } = req.body;
         // console.log( lockerNumber,lockerType, lockerCode, employeeName, employeeId, employeeEmail, employeePhone, employeeGender, costToEmployee, duration, startDate, endDate )
-        console.log(lockerNumber,EmployeeEmail)
+        console.log(lockerNumber, EmployeeEmail)
         if (!lockerNumber || !EmployeeEmail) {
             return res.status(400).json({ message: "lockerNumber is required" });
         }
 
-        const email= EmployeeEmail;
+        const email = EmployeeEmail;
         const locker = await Locker.findOne({
-            LockerNumber:lockerNumber,
+            LockerNumber: lockerNumber,
         });
 
-        
+
         if (!locker) {
             return res.status(404).json({ message: "Locker is not available or does not exist" });
         }
-       
 
 
-       
+
+
         // LockerType,LockerStatus,LockerNumber,LockerCode,
         locker.employeeName = "";
         locker.employeeId = "";
@@ -224,9 +224,106 @@ exports.cancelLockerAllocation = async (req, res, next) => {
             message: "Locker taken back successfully",
             data: locker
         });
-        
+
     } catch (err) {
         console.log(`Error in allocating locker: ${err.message}`);
         next(err);
+    }
+};
+
+
+
+exports.getAllLockers = async (req, res, next) => {
+    try {
+
+        const data = await Locker.find();
+        return res.status(200).json({
+            message: "All Lockers",
+            data
+        });
+    } catch (err) {
+        console.log(`Error in allocating locker: ${err.message}`);
+        next(err);
+    }
+}
+exports.getAllocatedLockers = async (req, res, next) => {
+    try {
+
+        const data = await Locker.find({ LockerStatus: 'occupied' });
+        return res.status(200).json({
+            message: "All allocated Lockers",
+            data
+        });
+    } catch (err) {
+        console.log(`Error in allocating locker: ${err.message}`);
+        next(err);
+    }
+}
+exports.getAvailableLockers = async (req, res, next) => {
+    try {
+        const data = await Locker.find({ LockerStatus: 'available' });
+        return res.status(200).json({
+            message: "All available Lockers",
+            data
+        });
+    } catch (err) {
+        console.log(`Error in allocating locker: ${err.message}`);
+        next(err);
+    }
+}
+
+exports.getExpiredLockers = async (req, res, next) => {
+    try {
+
+        const data = await Locker.find({ LockerStatus: 'expired' });
+        return res.status(200).json({
+            message: "All expired Lockers",
+            data
+        });
+    } catch (err) {
+        console.log(`Error in allocating locker: ${err.message}`);
+        next(err);
+    }
+}
+
+exports.getExpiringIn7daysLockers = async (req, res, next) => {
+    try {
+        const today = new Date();
+        const sevenDaysFromNow = new Date(today);
+        sevenDaysFromNow.setDate(today.getDate() + 7);
+
+        const data = await Locker.find({
+            expiresOn: { $lte: sevenDaysFromNow },
+        });
+        return res.status(200).json({
+            message: "All expired Lockers",
+            data
+        });
+    } catch (err) {
+        console.log(`Error in allocating locker: ${err.message}`);
+        next(err);
+    }
+}
+
+exports.changeLockerPricing = async (req, res, next) => {
+    try {
+        const { id, LockerPrice3Month, LockerPrice6Month, LockerPrice12Month } = req.body;
+
+        const locker = await Locker.findById(id);
+        if (!locker) {
+            return res.status(404).json({ message: "Locker not found" });
+        }
+
+        locker.LockerPrice3Month = LockerPrice3Month;
+        locker.LockerPrice6Month = LockerPrice6Month;
+        locker.LockerPrice12Month = LockerPrice12Month;
+
+        await locker.save();
+
+        return res.status(200).json({ message: "Locker pricing updated successfully", locker });
+        
+    } catch (err) {
+        console.log(`Error in allocating locker: ${err.message}`);
+        return next(err); // It's a good practice to return next(err) in the catch block
     }
 };
