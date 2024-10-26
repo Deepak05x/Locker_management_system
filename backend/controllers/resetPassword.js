@@ -1,5 +1,7 @@
 const mailSender = require('../utils/mailSender.js')
 const OTP=require('../models/OTP.js')
+
+const bcrypt = require('bcrypt');
 const User=require("../models/userModel.js")
 function generateOTP() {
     // Generate a random 6-digit number
