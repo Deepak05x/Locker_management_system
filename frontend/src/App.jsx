@@ -13,6 +13,8 @@ const Dashboard = lazy(() => import("./components/Dashboard"));
 const Testing = lazy(() => import("./components/Testing"));
 const LockerManagement = lazy(() => import("./components/LockerManagement"));
 const AddSingleLocker = lazy(() => import("./components/AddSingleLocker"));
+const AvailableLockers = lazy(() => import("./components/AvailableLockers"));
+const AssignLocker = lazy(() => import("./components/AssignLocker"));
 
 const App = () => {
     return (
@@ -29,6 +31,8 @@ const App = () => {
                         <Route path="/testing" element={<Testing />} />
                         <Route path="/locker_management" element={<LockerManagement />} />
                         <Route path="/add_single_locker" element={<AddSingleLocker />} />
+                        <Route path="/available_lockers" element={<AvailableLockers />} />
+                        <Route path="/assign_locker" element={<AssignLocker />} />
                     </Routes>
                 </Suspense>
             </AuthProvider>

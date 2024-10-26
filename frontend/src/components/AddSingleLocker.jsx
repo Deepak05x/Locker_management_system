@@ -62,13 +62,14 @@ const AddSingleLocker = () => {
                     </h1>
                     <form onSubmit={handleSubmit} className="w-full flex flex-col items-center gap-8">
                         <div className="flex flex-col gap-8 items-center w-full">
-                            <select id="email" value={lockerType} onChange={handleLockerType} className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none">
-                                <option value="" disabled>
+                            <select id="lockerType" value={lockerType} onChange={handleLockerType} className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none">
+                                <option value="" disabled selected hidden>
                                     Type of the locker
                                 </option>
                                 <option value="half">Half</option>
                                 <option value="full">Full</option>
                             </select>
+
                             <input
                                 type="number"
                                 id="number"
@@ -110,13 +111,15 @@ const AddSingleLocker = () => {
                                 onChange={handleLockerPriceYear}
                             />
                             <select id="gender" value={gender} onChange={handleGender} className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none">
-                                <option value="" disabled>
-                                    Type of the assignee
+                                <option value="" disabled selected hidden>
+                                    Type of the gender
                                 </option>
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
                             </select>
-                            <button className="bg-blue px-6 py-2 rounded-sm text-white font-medium">Add Locker</button>
+                            <button type="submit" className="bg-blue px-6 py-2 rounded-sm text-white font-medium">
+                                Add Locker
+                            </button>
                         </div>
                     </form>
                 </div>
