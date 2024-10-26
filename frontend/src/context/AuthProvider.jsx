@@ -1,11 +1,14 @@
 import React, { createContext, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
+    const navigate = useNavigate();
+
     const [loginDetails, setLoginDetails] = useState(null);
-    const [otp, setOtp] = useState(null);
+    const [getOtp, setGetOtp] = useState(null);
     const [validateOtp, setValidateOtp] = useState(null);
     const [resetPassword, setResetPassword] = useState(null);
 
@@ -20,52 +23,77 @@ const AuthProvider = ({ children }) => {
                     },
                 }
             );
-            // const response = await fetch("http://localhost:3000/api/user/login", {
-            //     method: "POST",
-            //     headers: {
-            //         "Content-Type": "application/json",
-            //     },
-            //     body: JSON.stringify({ email, password }),
-            // });
-            const data = await res.data;
-            console.log(data);
-            setLoginDetails(data);
+            if (res.status === 200) {
+                const data = res.data;
+                setLoginDetails(data);
+                navigate("/");
+            }
         } catch (error) {
             console.log(error);
         }
     };
 
-    const generateOtp = async () => {
+    const generateOtp = async (email) => {
         try {
-            const response = await fetch("http://localhost:3000/api/resetPassword/getOtp");
-            const data = await response.json();
-            setOtp(data);
+            const res = await axios.post(
+                "http://localhost:3000/api/resetPassword/getOtp",
+                { email },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+
+            if (res.status === 200) {
+                const data = res.data;
+                setGetOtp(data);
+            }
         } catch (error) {
-            console.log("Generate Otp Function Failed To Fetch Data");
+            console.log(error);
         }
     };
 
-    const checkOtp = async () => {
+    const checkOtp = async (otp) => {
         try {
-            const response = await fetch("http://localhost:3000/api/resetPassword/validateOTP");
-            const data = await response.json();
+            const res = await axios.post(
+                "http://localhost:3000/api/resetPassword/validateOTP",
+                { otp },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            const data = res.data;
             setValidateOtp(data);
+            if (validateOtp === otp) {
+                navigate("/reset");
+            }
         } catch (error) {
-            console.log("Validate OTP Function Failed To Fetch Data");
+            console.log(error);
         }
     };
 
-    const resetPass = async () => {
+    const resetPass = async (email, confirmEmail) => {
         try {
-            const response = await fetch("http://localhost:3000/api/resetPassword/resetPassword");
-            const data = await response.json();
+            const res = await axios.post(
+                "http://localhost:3000/api/resetPassword/resetPassword",
+                { email, confirmEmail },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            const data = res.data;
             setResetPassword(data);
         } catch (error) {
-            console.log("Reset Password Function Failed To Fetch Data");
+            console.log(error);
         }
     };
 
-    return <AuthContext.Provider value={{ login, loginDetails, generateOtp, otp, checkOtp, validateOtp, resetPass, resetPassword }}>{children}</AuthContext.Provider>;
+    return <AuthContext.Provider value={{ login, loginDetails, generateOtp, getOtp, checkOtp, validateOtp, resetPass, resetPassword }}>{children}</AuthContext.Provider>;
 };
 
 export default AuthProvider;
