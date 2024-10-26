@@ -9,7 +9,7 @@ const Navbar = lazy(() => import("./Navbar"));
 const EnterOtp = () => {
     const [otp, setOtp] = useState("");
 
-    const { checkOtp } = useContext(AuthContext);
+    const { checkOtp, checkEmail } = useContext(AuthContext);
 
     const handleOtp = (e) => {
         setOtp(e.target.value);
@@ -17,7 +17,7 @@ const EnterOtp = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        checkOtp(otp);
+        checkOtp(otp, checkEmail);
     };
 
     return (

@@ -8,6 +8,7 @@ const Home = lazy(() => import("./components/Home"));
 const EnterEmail = lazy(() => import("./components/EnterEmail"));
 const EnterOtp = lazy(() => import("./components/EnterOtp"));
 const ResetPassword = lazy(() => import("./components/ResetPassword"));
+const Dashboard = lazy(() => import("./components/Dashboard"));
 
 const App = () => {
     return (
@@ -19,6 +20,7 @@ const App = () => {
                     <Route path="/enter" element={<EnterEmail />} />
                     <Route path="/otp" element={<EnterOtp />} />
                     <Route path="/reset" element={<ResetPassword />} />
+                    <Route path="/dashboard" element={<Dashboard />} />
                 </Routes>
             </Suspense>
         </AuthProvider>
