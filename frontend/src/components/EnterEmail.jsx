@@ -1,12 +1,13 @@
 import React from "react";
 import { lazy } from "react";
 import { useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
 
 const Navbar = lazy(() => import("./Navbar"));
 
 const EnterEmail = () => {
+    const navigate = useNavigate();
     const [resetEmail, setResetEmail] = useState("");
 
     const { generateOtp, setCheckEmail } = useContext(AuthContext);
@@ -15,13 +16,17 @@ const EnterEmail = () => {
         setResetEmail(e.target.value);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        generateOtp(resetEmail);
-        setCheckEmail(resetEmail);
+        try {
+            await generateOtp(resetEmail);
+            setCheckEmail(resetEmail);
+            navigate("/otp");
+            console.log("Success");
+        } catch (error) {
+            console.log(error);
+        }
     };
-
-    console.log(resetEmail);
 
     return (
         <>
@@ -42,7 +47,7 @@ const EnterEmail = () => {
                                 onChange={handleResetEmail}
                             />
 
-                            <button to={"/otp"} className="bg-blue px-6 py-2 rounded-sm text-white font-medium">
+                            <button type="submit" className="bg-blue px-6 py-2 rounded-sm text-white font-medium">
                                 Send OTP
                             </button>
                         </div>

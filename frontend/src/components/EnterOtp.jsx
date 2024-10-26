@@ -1,7 +1,6 @@
 import React from "react";
 import { lazy } from "react";
 import { useState, useContext } from "react";
-import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
 
 const Navbar = lazy(() => import("./Navbar"));
@@ -9,15 +8,19 @@ const Navbar = lazy(() => import("./Navbar"));
 const EnterOtp = () => {
     const [otp, setOtp] = useState("");
 
-    const { checkOtp, checkEmail } = useContext(AuthContext);
+    const { validateOtp, checkEmail } = useContext(AuthContext);
 
     const handleOtp = (e) => {
         setOtp(e.target.value);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        checkOtp(otp, checkEmail);
+        try {
+            await validateOtp(checkEmail, otp);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -31,7 +34,7 @@ const EnterOtp = () => {
                     <form onSubmit={handleSubmit} className="w-full flex flex-col items-center gap-8">
                         <div className="flex flex-col gap-8 items-center w-full">
                             <input
-                                type="email"
+                                type="text"
                                 id="email"
                                 value={otp}
                                 placeholder="Enter your code"
@@ -39,9 +42,9 @@ const EnterOtp = () => {
                                 onChange={handleOtp}
                             />
 
-                            <Link to={"/reset"} className="bg-blue px-6 py-2 rounded-sm text-white font-medium">
+                            <button type="submit" className="bg-blue px-6 py-2 rounded-sm text-white font-medium">
                                 Submit OTP
-                            </Link>
+                            </button>
                         </div>
                     </form>
                 </div>
