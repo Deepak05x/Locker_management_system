@@ -9,8 +9,11 @@ const Navbar = () => {
                 <PiLockersFill className="text-blue text-[2.5rem]" />
             </Link>
             <div className="flex flex-row items-center gap-8">
-                <img src={"/user-1.png"} alt="" width={40} height={40} className="rounded-full " />
+                <Link to={"/dashboard"} className="font-bold text-lg">
+                    Dashboard
+                </Link>
                 <button className="bg-blue px-4 py-2 text-white font-medium rounded-sm">Logout</button>
+                <img src={"/user-1.png"} alt="" width={40} height={40} className="rounded-full " />
             </div>
         </section>
     );
