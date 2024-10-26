@@ -44,8 +44,8 @@ exports.addStaff = async (req, res, next) => {
 
 exports.addLocker= async (req, res, next) => {
 try{
-const {LockerType,LockerNumber,LockerCode,LockerPrice}=req.body;
-const locker = await Locker.create({ LockerType,LockerNumber,LockerCode,LockerPrice});
+const {LockerType,LockerNumber,LockerCode,LockerPrice3Month,LockerPrice6Month,LockerPrice12Month,availableForGender}=req.body;
+const locker = await Locker.create({ LockerType,LockerNumber,LockerCode,LockerPrice3Month,LockerPrice6Month,LockerPrice12Month,availableForGender});
 return res.status(200).json({
     message:"Locker Created Successfully",
     data:locker

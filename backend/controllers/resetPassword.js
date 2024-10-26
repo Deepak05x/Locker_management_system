@@ -28,7 +28,7 @@ try{
     await mailSender(
         email,
         "Password Reset",
-        `${otp}.`
+        `your otp from Devforge Software solutions for resetting password is ${otp}.`
     );
 
     return res.status(200).json(
@@ -69,7 +69,7 @@ exports.validateOTP = async (req, res, next) => {
         return res.status(200).json({
             message: "OTP successfully verified",
         });
-        
+
     } catch (err) {
         console.error(`Error in resetPassword: ${err.message}`);
         next(err);
@@ -88,8 +88,9 @@ exports.resetPassword = async (req, res, next) => {
         if (!user) {
             return res.status(404).json({ message: "User with this email does not exist" });
         }
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-        user.password = newPassword;  
+        user.password = hashedPassword;  
         await user.save();
 
         await OTP.deleteOne({ email });

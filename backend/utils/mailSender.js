@@ -17,7 +17,7 @@ const mailSender = async (email, title, body) => {
             from: '7400563257gourav@gmail.com',
             to: email,
             subject: title, 
-            html: `Your OTP (valid for 5 minutes) from DevForge Software Solution for password Reset is ${body}`, 
+            html: `${body}`, 
         });
 
         console.log("Message sent: %s", info.messageId);
