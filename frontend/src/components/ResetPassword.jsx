@@ -11,7 +11,7 @@ const ResetPassword = () => {
     const [resetPassword, setResetPassword] = useState("");
     const [confirmReset, setConfirmReset] = useState("");
 
-    const { resetPass } = useContext(AuthContext);
+    const { resetPass, checkEmail } = useContext(AuthContext);
 
     const handleResetPassword = (e) => {
         setResetPassword(e.target.value);
@@ -23,7 +23,7 @@ const ResetPassword = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        resetPass(resetPassword, confirmReset);
+        resetPass(checkEmail, confirmReset);
     };
 
     return (

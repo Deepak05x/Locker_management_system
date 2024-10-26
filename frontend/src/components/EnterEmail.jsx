@@ -9,7 +9,7 @@ const Navbar = lazy(() => import("./Navbar"));
 const EnterEmail = () => {
     const [resetEmail, setResetEmail] = useState("");
 
-    const { generateOtp } = useContext(AuthContext);
+    const { generateOtp, setCheckEmail } = useContext(AuthContext);
 
     const handleResetEmail = (e) => {
         setResetEmail(e.target.value);
@@ -18,7 +18,10 @@ const EnterEmail = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         generateOtp(resetEmail);
+        setCheckEmail(resetEmail);
     };
+
+    console.log(resetEmail);
 
     return (
         <>
@@ -39,9 +42,9 @@ const EnterEmail = () => {
                                 onChange={handleResetEmail}
                             />
 
-                            <Link to={"/otp"} className="bg-blue px-6 py-2 rounded-sm text-white font-medium">
+                            <button to={"/otp"} className="bg-blue px-6 py-2 rounded-sm text-white font-medium">
                                 Send OTP
-                            </Link>
+                            </button>
                         </div>
                     </form>
                 </div>

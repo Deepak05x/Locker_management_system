@@ -13,7 +13,10 @@ const Home = () => {
                 </div>
 
                 {/* Login Button */}
-                <Link className="group inline-flex items-center justify-center px-8 py-4 text-xl font-semibold text-black bg-blue-600 rounded-lg transform transition-all duration-200 hover:bg-blue-700 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 shadow-lg">
+                <Link
+                    to={"/login"}
+                    className="group inline-flex items-center justify-center px-8 py-4 text-xl font-semibold text-black bg-blue-600 rounded-lg transform transition-all duration-200 hover:bg-blue-700 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 shadow-lg"
+                >
                     <button onClick={() => console.log("Login clicked")}>Login</button>
                 </Link>
 

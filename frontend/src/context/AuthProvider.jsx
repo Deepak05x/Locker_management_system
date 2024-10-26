@@ -11,6 +11,7 @@ const AuthProvider = ({ children }) => {
     const [getOtp, setGetOtp] = useState(null);
     const [validateOtp, setValidateOtp] = useState(null);
     const [resetPassword, setResetPassword] = useState(null);
+    const [checkEmail, setCheckEmail] = useState(null);
 
     const login = async (email, password) => {
         try {
@@ -26,12 +27,14 @@ const AuthProvider = ({ children }) => {
             if (res.status === 200) {
                 const data = res.data;
                 setLoginDetails(data);
-                navigate("/");
+                navigate("/dashboard");
             }
         } catch (error) {
             console.log(error);
         }
     };
+
+    console.log(loginDetails);
 
     const generateOtp = async (email) => {
         try {
@@ -54,11 +57,11 @@ const AuthProvider = ({ children }) => {
         }
     };
 
-    const checkOtp = async (otp) => {
+    const checkOtp = async (email, otp) => {
         try {
             const res = await axios.post(
                 "http://localhost:3000/api/resetPassword/validateOTP",
-                { otp },
+                { email, otp },
                 {
                     headers: {
                         "Content-Type": "application/json",
@@ -75,11 +78,11 @@ const AuthProvider = ({ children }) => {
         }
     };
 
-    const resetPass = async (email, confirmEmail) => {
+    const resetPass = async (email, newPassword) => {
         try {
             const res = await axios.post(
                 "http://localhost:3000/api/resetPassword/resetPassword",
-                { email, confirmEmail },
+                { email, newPassword },
                 {
                     headers: {
                         "Content-Type": "application/json",
@@ -93,7 +96,7 @@ const AuthProvider = ({ children }) => {
         }
     };
 
-    return <AuthContext.Provider value={{ login, loginDetails, generateOtp, getOtp, checkOtp, validateOtp, resetPass, resetPassword }}>{children}</AuthContext.Provider>;
+    return <AuthContext.Provider value={{ login, setCheckEmail, loginDetails, generateOtp, getOtp, checkOtp, validateOtp, resetPass, resetPassword }}>{children}</AuthContext.Provider>;
 };
 
 export default AuthProvider;

@@ -6,7 +6,7 @@ const Navbar = () => {
     return (
         <section className="w-full bg-white drop-shadow-xl text-black px-12 py-6">
             <Link to="/">
-                <PiLockersFill className="text-blue text-[3rem]" />
+                <PiLockersFill className="text-blue text-[2.5rem]" />
             </Link>
         </section>
     );
