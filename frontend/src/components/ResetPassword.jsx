@@ -1,6 +1,5 @@
 import React from "react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { lazy } from "react";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthProvider";
@@ -8,13 +7,13 @@ import { AuthContext } from "../context/AuthProvider";
 const Navbar = lazy(() => import("./Navbar"));
 
 const ResetPassword = () => {
-    const [resetPassword, setResetPassword] = useState("");
+    const [resetPass, setResetPass] = useState("");
     const [confirmReset, setConfirmReset] = useState("");
 
-    const { resetPass, checkEmail } = useContext(AuthContext);
+    const { resetPassword, checkEmail } = useContext(AuthContext);
 
     const handleResetPassword = (e) => {
-        setResetPassword(e.target.value);
+        setResetPass(e.target.value);
     };
 
     const handleConfirmPassword = (e) => {
@@ -23,7 +22,11 @@ const ResetPassword = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        resetPass(checkEmail, confirmReset);
+        try {
+            resetPassword(checkEmail, confirmReset);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -39,7 +42,8 @@ const ResetPassword = () => {
                             <input
                                 type="password"
                                 id="password"
-                                value={resetPassword}
+                                value={resetPass}
+                                required
                                 placeholder="Enter your password"
                                 className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none"
                                 onChange={handleResetPassword}
@@ -48,11 +52,14 @@ const ResetPassword = () => {
                                 type="password"
                                 id="password"
                                 value={confirmReset}
+                                required
                                 placeholder="Confirm your password"
                                 className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none"
                                 onChange={handleConfirmPassword}
                             />
-                            <button className="bg-blue px-6 py-2 rounded-sm text-white font-medium">Reset</button>
+                            <button type="submit" className="bg-blue px-6 py-2 rounded-sm text-white font-medium">
+                                Reset
+                            </button>
                         </div>
                     </form>
                 </div>

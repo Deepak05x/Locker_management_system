@@ -9,8 +9,8 @@ const AuthProvider = ({ children }) => {
 
     const [loginDetails, setLoginDetails] = useState(null);
     const [getOtp, setGetOtp] = useState(null);
-    const [validateOtp, setValidateOtp] = useState(null);
-    const [resetPassword, setResetPassword] = useState(null);
+    const [validatedOtp, setValidatedOtp] = useState(null);
+    const [resetedPassword, setResetedPassword] = useState(null);
     const [checkEmail, setCheckEmail] = useState(null);
 
     const login = async (email, password) => {
@@ -57,8 +57,9 @@ const AuthProvider = ({ children }) => {
         }
     };
 
-    const checkOtp = async (email, otp) => {
+    const validateOtp = async (email, otp) => {
         try {
+            console.log(email, otp);
             const res = await axios.post(
                 "http://localhost:3000/api/resetPassword/validateOTP",
                 { email, otp },
@@ -68,17 +69,17 @@ const AuthProvider = ({ children }) => {
                     },
                 }
             );
-            const data = res.data;
-            setValidateOtp(data);
-            if (validateOtp === otp) {
+            if (res.status === 200) {
+                const data = res.data;
+                setValidatedOtp(data);
                 navigate("/reset");
             }
         } catch (error) {
-            console.log(error);
+            console.log(error.message);
         }
     };
 
-    const resetPass = async (email, newPassword) => {
+    const resetPassword = async (email, newPassword) => {
         try {
             const res = await axios.post(
                 "http://localhost:3000/api/resetPassword/resetPassword",
@@ -89,14 +90,17 @@ const AuthProvider = ({ children }) => {
                     },
                 }
             );
-            const data = res.data;
-            setResetPassword(data);
+            if (res.status === 200) {
+                const data = res.data;
+                setResetedPassword(data);
+                navigate("/login");
+            }
         } catch (error) {
             console.log(error);
         }
     };
 
-    return <AuthContext.Provider value={{ login, setCheckEmail, loginDetails, generateOtp, getOtp, checkOtp, validateOtp, resetPass, resetPassword }}>{children}</AuthContext.Provider>;
+    return <AuthContext.Provider value={{ login, checkEmail, setCheckEmail, loginDetails, generateOtp, getOtp, validateOtp, resetPassword }}>{children}</AuthContext.Provider>;
 };
 
 export default AuthProvider;
