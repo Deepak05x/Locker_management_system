@@ -49,9 +49,6 @@ const AddSingleLocker = () => {
         addLocker(lockerType, lockerNumber, lockerCode, lockerPriceThree, lockerPriceSix, lockerPriceYear, gender);
     };
 
-    console.log(gender);
-    console.log(lockerType);
-
     return (
         <>
             <DashNav />
@@ -69,7 +66,6 @@ const AddSingleLocker = () => {
                                 <option value="half">Half</option>
                                 <option value="full">Full</option>
                             </select>
-
                             <input
                                 type="number"
                                 id="number"
