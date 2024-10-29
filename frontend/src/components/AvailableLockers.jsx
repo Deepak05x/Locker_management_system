@@ -55,7 +55,7 @@ const AvailableLockers = () => {
                                 <option value="Female">Female</option>
                             </select>
                             <button type="submit" className="bg-blue px-6 py-2 rounded-sm text-white font-medium">
-                                Add Locker
+                                Check Availability
                             </button>
                         </div>
                     </form>

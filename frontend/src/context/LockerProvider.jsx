@@ -10,6 +10,7 @@ const LockerProvider = ({ children }) => {
 
     const [addedLocker, setAddedLocker] = useState(null);
     const [availableLockers, setAvailableLockers] = useState(null);
+    const [assignedLockers, setAssignedLockers] = useState(null);
 
     const addLocker = async (LockerType, LockerNumber, LockerCode, LockerPrice3Month, LockerPrice6Month, LockerPrice12Month, availableForGender) => {
         try {
@@ -53,7 +54,47 @@ const LockerProvider = ({ children }) => {
         }
     };
 
-    return <LockerContext.Provider value={{ addLocker, availableLocker }}>{children}</LockerContext.Provider>;
+    const allocateLocker = async (lockerNumber, lockerType, lockerCode, employeeName, employeeId, employeeEmail, employeePhone, employeeGender, costToEmployee, duration, startDate, endDate) => {
+        try {
+            const res = await axios.post(
+                "http://localhost:3000/api/locker/allocateLocker",
+                {
+                    lockerNumber,
+                    lockerType,
+                    lockerCode,
+                    employeeName,
+                    employeeId,
+                    employeeEmail,
+                    employeePhone,
+                    employeeGender,
+                    costToEmployee,
+                    duration,
+                    startDate,
+                    endDate,
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            if (endDate) {
+                console.log("This is the End Date");
+                console.log(endDate);
+            }
+            if (res.status === 200) {
+                const data = res.data;
+                setAssignedLockers(data);
+                navigate("/dashboard");
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    console.log(availableLockers);
+
+    return <LockerContext.Provider value={{ addLocker, availableLocker, availableLockers, allocateLocker }}>{children}</LockerContext.Provider>;
 };
 
 export default LockerProvider;

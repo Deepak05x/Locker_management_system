@@ -34,8 +34,6 @@ const AuthProvider = ({ children }) => {
         }
     };
 
-    console.log(loginDetails);
-
     const generateOtp = async (email) => {
         try {
             const res = await axios.post(
