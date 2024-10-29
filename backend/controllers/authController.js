@@ -76,7 +76,17 @@ exports.login = async (req, res, next) => {
         res.cookie("token", token, options).status(200).json(rest);
 
     } catch (err) {
-        console.error(`Error in signin: ${err.message}`);
+        console.error(`Error in sign in: ${err.message}`);
         next(err);
     }
 };
+
+exports.LogOut = async (req, res, next) => {
+    try {
+        res.clearCookie('token');
+        res.status(200).json('user has been logged out !');
+    }
+    catch (err) {
+        next(err);
+    }
+}
