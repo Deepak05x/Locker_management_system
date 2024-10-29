@@ -138,7 +138,13 @@ exports.renewLocker = async (req, res, next) => {
         }
 
         let expiresOn;
-        if (duration === "6") {
+        if (duration === "3") {
+            // Set expiresOn to 3 months from the current date
+            const threeMonthsFromNow = new Date();
+            threeMonthsFromNow.setMonth(threeMonthsFromNow.getMonth() + 3);
+            expiresOn = threeMonthsFromNow;
+        } 
+        else  if (duration === "6") {
             // Set expiresOn to 6 months from the current date
             const sixMonthsFromNow = new Date();
             sixMonthsFromNow.setMonth(sixMonthsFromNow.getMonth() + 6);
