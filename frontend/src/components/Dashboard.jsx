@@ -1,8 +1,71 @@
 import React from "react";
 import { lazy, useContext } from "react";
+import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
 
 const DashNav = lazy(() => import("../components/DashNav"));
+
+const adminDashboard = [
+    {
+        name: "Locker Management",
+        link: "/locker_management",
+    },
+    {
+        name: "Staff Management",
+        link: "/locker_management",
+    },
+    {
+        name: "Locker Analysis",
+        link: "/locker_management",
+    },
+    {
+        name: "Transaction History",
+        link: "/locker_management",
+    },
+    {
+        name: "Add Locker",
+        link: "/add_single_locker",
+    },
+    {
+        name: "Delete Locker",
+        link: "/locker_management",
+    },
+    {
+        name: "Customize Locker Price",
+        link: "/locker_management",
+    },
+    {
+        name: "Expired Locker",
+        link: "/locker_management",
+    },
+];
+
+const staffDashboard = [
+    {
+        name: "Locker Management",
+        link: "/locker_management",
+    },
+    {
+        name: "Assign Locker",
+        link: "/available_lockers",
+    },
+    {
+        name: "Renew Locker",
+        link: "/locker_management",
+    },
+    {
+        name: "Cancel Locker Assignment",
+        link: "/locker_management",
+    },
+    {
+        name: "Update Locker",
+        link: "/locker_management",
+    },
+    {
+        name: "Issue Reporting",
+        link: "/locker_management",
+    },
+];
 
 const Dashboard = () => {
     const { loginDetails } = useContext(AuthContext);
@@ -17,18 +80,20 @@ const Dashboard = () => {
                 <div className="flex py-24">
                     {loginDetails.role === "Admin" ? (
                         <section className="grid grid-cols-3 items-center justify-between gap-16 text-lg">
-                            <button className="bg-blue text-white font-medium px-6 py-2 rounded-sm">Locker Management</button>
-                            <button className="bg-blue text-white font-medium px-6 py-2 rounded-sm">User Management</button>
-                            <button className="bg-blue text-white font-medium px-6 py-2 rounded-sm">Locker Analysis</button>
-                            <button className="bg-blue text-white font-medium px-6 py-2 rounded-sm">Staff Management</button>
-                            <button className="bg-blue text-white font-medium px-6 py-2 rounded-sm">Transaction History</button>
-                            <button className="bg-blue text-white font-medium px-6 py-2 rounded-sm">Add Locker</button>
-                            <button className="bg-blue text-white font-medium px-6 py-2 rounded-sm">Delete Locker</button>
-                            <button className="bg-blue text-white font-medium px-6 py-2 rounded-sm">Customize Locker Price</button>
-                            <button className="bg-blue text-white font-medium px-6 py-2 rounded-sm">Expired Locker</button>
+                            {adminDashboard.map((item, index) => (
+                                <Link key={index} to={item.link} className="bg-blue text-center text-white font-medium px-6 py-2 rounded-sm">
+                                    {item.name}
+                                </Link>
+                            ))}
                         </section>
                     ) : (
-                        <p>Staffff</p>
+                        <section className="grid grid-cols-3 items-center justify-between gap-16 text-lg">
+                            {staffDashboard.map((item, index) => (
+                                <Link key={index} to={item.link} className="bg-blue text-center text-white font-medium px-6 py-2 rounded-sm">
+                                    {item.name}
+                                </Link>
+                            ))}
+                        </section>
                     )}
                 </div>
             </section>
