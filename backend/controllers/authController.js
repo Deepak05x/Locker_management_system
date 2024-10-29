@@ -4,15 +4,14 @@ require('dotenv').config();
 const { errorHandler } = require('../utils/error.js');
 const jwt = require('jsonwebtoken');
 
-
 exports.signup = async (req, res, next) => {
     console.log("in");
     try {
-        const { name,role, email, password,phoneNumber,gender } = req.body;
+        const { name, role, email, password, phoneNumber, gender } = req.body;
 
         const hashedPassword = await bcrypt.hash(password, 10);
-
-        const user = await User.create({ name,role, email,phoneNumber ,password: hashedPassword ,gender});
+  
+        const user = await User.create({ name, role, email, phoneNumber, password: hashedPassword, gender });
 
         const payload = {
             email: email,
@@ -75,7 +74,7 @@ exports.login = async (req, res, next) => {
         };
 
         res.cookie("token", token, options).status(200).json(rest);
-        
+
     } catch (err) {
         console.error(`Error in signin: ${err.message}`);
         next(err);

@@ -1,7 +1,7 @@
 // authRoute.js
 const express = require('express');
 const router = express.Router();
-const {login,signup} = require('../controllers/profileController.js');
+const { login, signup } = require('../controllers/profileController.js');
 
 
 router.post('/login', login);

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {addStaff,addLocker,addMultipleLocker} = require('../controllers/adminControllers.js');
+const { addStaff, addLocker, addMultipleLocker } = require('../controllers/adminControllers.js');
 
 
 

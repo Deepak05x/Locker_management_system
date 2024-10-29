@@ -42,7 +42,6 @@ exports.allocateLocker = async (req, res, next) => {
         // console.log( lockerNumber,lockerType, lockerCode, employeeName, employeeId, employeeEmail, employeePhone, employeeGender, costToEmployee, duration, startDate, endDate )
 
         if (!lockerNumber) {
-
             return res.status(400).json({ message: "lockerNumber is required" });
         }
 
@@ -60,7 +59,13 @@ exports.allocateLocker = async (req, res, next) => {
 
 
         let expiresOn;
-        if (duration === "6") {
+        if (duration === "3") {
+            // Set expiresOn to 3 months from the current date
+            const threeMonthsFromNow = new Date();
+            threeMonthsFromNow.setMonth(threeMonthsFromNow.getMonth() + 3);
+            expiresOn = threeMonthsFromNow;
+        } 
+        else if (duration === "6") {
             // Set expiresOn to 6 months from the current date
             const sixMonthsFromNow = new Date();
             sixMonthsFromNow.setMonth(sixMonthsFromNow.getMonth() + 6);
@@ -313,17 +318,59 @@ exports.changeLockerPricing = async (req, res, next) => {
         if (!locker) {
             return res.status(404).json({ message: "Locker not found" });
         }
-
         locker.LockerPrice3Month = LockerPrice3Month;
         locker.LockerPrice6Month = LockerPrice6Month;
         locker.LockerPrice12Month = LockerPrice12Month;
-
         await locker.save();
-
         return res.status(200).json({ message: "Locker pricing updated successfully", locker });
-        
     } catch (err) {
         console.log(`Error in allocating locker: ${err.message}`);
-        return next(err); // It's a good practice to return next(err) in the catch block
+        return next(err);
+    }
+};
+
+
+exports.findLockerByUserEmail = async (req, res, next) => {
+    try {
+        const { employeeEmail } = req.body;
+
+        // Find all lockers associated with the given employee email
+        const lockers = await Locker.find({ employeeEmail: employeeEmail });
+
+        // Check if lockers were found
+        if (lockers.length === 0) {
+            return res.status(404).json({ message: "No lockers found for this email" });
+        }
+
+        // Respond with the list of lockers
+        return res.status(200).json({ message: "Lockers found successfully", lockers });
+
+    } catch (err) {
+        console.log(`Error in finding lockers: ${err.message}`);
+        return next(err);
+    }
+};
+
+
+exports.updateLockerCode = async (req, res, next) => {
+    try {
+        const { id, newCode } = req.body;
+        console.log(id);
+        const locker = await Locker.findById(id);
+        if (!locker) {
+            return res.status(404).json({ message: "Locker not found" });
+        }
+        let oldCode = locker.LockerCode;
+        oldCode = oldCode.substring(1) + oldCode[0]
+
+        locker.LockerCode = oldCode;
+        // locker.LockerCode=newCode;
+
+        await locker.save();
+        return res.status(200).json({ message: "Locker pricing updated successfully", locker });
+
+    } catch (err) {
+        console.log(`Error in finding lockers: ${err.message}`);
+        return next(err);
     }
 };

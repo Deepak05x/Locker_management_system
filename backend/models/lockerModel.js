@@ -11,12 +11,12 @@ const lockerSchema = new mongoose.Schema(
         },
         LockerStatus: {
             type: String,
-            enum: ['occupied', 'available','expired'],
+            enum: ['occupied', 'available', 'expired'],
             default: 'available',
         },
         LockerNumber: {
-            type: Number,  
-            required: true, 
+            type: Number,
+            required: true,
             unique: true,
         },
         LockerCode: {
@@ -24,19 +24,19 @@ const lockerSchema = new mongoose.Schema(
             required: true,
         },
         LockerPrice3Month: {
-            type: Number,  
+            type: Number,
             required: true,
         },
         LockerPrice6Month: {
-            type: Number,  
+            type: Number,
             required: true,
         },
         LockerPrice12Month: {
-            type: Number,  
+            type: Number,
             required: true,
         },
         availableForGender: {
-            type: String,  
+            type: String,
             required: true,
             enum: ['Male', 'Female'],
         },
@@ -49,16 +49,17 @@ const lockerSchema = new mongoose.Schema(
         },
         employeeEmail: {
             type: String,
+
         },
         employeePhone: {
             type: String,
         },
         employeeGender: {
             type: String,
-            enum: ['Male', 'Female','None'],
+            enum: ['Male', 'Female', 'None'],
         },
         CostToEmployee: {
-            type: Number,  
+            type: Number,
         },
         Duration: {
             type: String,
@@ -69,8 +70,8 @@ const lockerSchema = new mongoose.Schema(
         EndDate: {
             type: Date,
         },
-        expiresOn:{
-            type:Date
+        expiresOn: {
+            type: Date
         }
     },
     { timestamps: true }

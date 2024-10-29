@@ -10,12 +10,12 @@ const userSchema = new mongoose.Schema(
         role: {
             type: String,
             required: true,
-            enum: ['Admin', 'Staff'],  
+            enum: ['Admin', 'Staff'],
         },
         gender: {
             type: String,
             required: true,
-            enum: ['Male', 'Female'],  
+            enum: ['Male', 'Female'],
         },
         email: {
             type: String,

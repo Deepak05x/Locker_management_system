@@ -1,17 +1,19 @@
 // authRoute.js
 const express = require('express');
 const router = express.Router();
-const {getAvailableLocker,
+const { getAvailableLocker,
     allocateLocker,
     renewLocker,
     cancelLockerAllocation,
     getAllLockers,
-getExpiredLockers,
-getAllocatedLockers,
-getAvailableLockers,
-getExpiringIn7daysLockers,
-changeLockerPricing} 
-= require('../controllers/lockerController.js');
+    getExpiredLockers,
+    getAllocatedLockers,
+    getAvailableLockers,
+    getExpiringIn7daysLockers,
+    changeLockerPricing,
+    findLockerByUserEmail,
+    updateLockerCode }
+    = require('../controllers/lockerController.js');
 
 router.post('/getAvailableLocker', getAvailableLocker);
 router.post('/allocateLocker', allocateLocker);
@@ -22,7 +24,9 @@ router.get('/getExpiredLockers', getExpiredLockers);
 router.get('/getAllocatedLockers', getAllocatedLockers);
 router.get('/getAvailableLockers', getAvailableLockers);
 router.get('/getExpiringIn7daysLockers', getExpiringIn7daysLockers);
-router.get('/changeLockerPricing', changeLockerPricing);
+router.post('/changeLockerPricing', changeLockerPricing);
+router.post('/findLockerByUserEmail', findLockerByUserEmail);
+router.post('/updateLockerCode', updateLockerCode);
 
 module.exports = router;
 

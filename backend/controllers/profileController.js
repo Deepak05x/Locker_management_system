@@ -1,4 +1,4 @@
-const User=require('../models/userModel.js')
+const User = require('../models/userModel.js')
 const bcrypt = require('bcrypt');
 
 
@@ -10,8 +10,8 @@ exports.viewProfile = async (req, res, next) => {
             return res.status(400).json({ message: "User ID is required" });
         }
 
-        const user = await User.findById(userId, 'name email password phone'); 
-        
+        const user = await User.findById(userId, 'name email password phone');
+
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
@@ -38,13 +38,13 @@ exports.updateProfile = async (req, res, next) => {
             return res.status(400).json({ message: "User ID is required" });
         }
 
-       
+
         const updateData = {};
         if (name) updateData.name = name;
         if (email) updateData.email = email;
         if (phone) updateData.phone = phone;
 
-       
+
         if (password) {
             const hashedPassword = await bcrypt.hash(password, 10);
             updateData.password = hashedPassword;
