@@ -7,6 +7,7 @@ const adminRoute = require('./routes/adminRoutes.js')
 const resetPasswordRoute = require('./routes/resetPasswordRoute.js')
 const lockerRoute = require('./routes/lockerRoutes.js')
 const issueRoute = require('./routes/issueRoute.js')
+const profileRoute = require('./routes/profileRoutes.js')
 require('dotenv').config();
 
 dbConnect();
@@ -24,6 +25,7 @@ app.use('/api/admin', adminRoute);
 app.use('/api/resetPassword', resetPasswordRoute);
 app.use('/api/locker', lockerRoute);
 app.use('/api/issue', issueRoute);
+app.use('/api/profile', profileRoute);
 
 app.listen(process.env.PORT, () => {
   console.log(`server is running on port ${process.env.PORT}`);

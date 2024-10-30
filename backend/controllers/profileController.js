@@ -10,7 +10,7 @@ exports.viewProfile = async (req, res, next) => {
             return res.status(400).json({ message: "User ID is required" });
         }
 
-        const user = await User.findById(userId, 'name email password phone');
+        const user = await User.findById(userId, 'name email password phoneNumber');
 
         if (!user) {
             return res.status(404).json({ message: "User not found" });
@@ -21,7 +21,7 @@ exports.viewProfile = async (req, res, next) => {
             data: {
                 name: user.name,
                 email: user.email,
-                phone: user.phone
+                phoneNumber: user.phoneNumber
             }
         });
     } catch (err) {
