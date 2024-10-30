@@ -51,7 +51,7 @@ const staffDashboard = [
     },
     {
         name: "Renew Locker",
-        link: "/locker_management",
+        link: "/renew_locker",
     },
     {
         name: "Cancel Locker Assignment",
@@ -78,7 +78,7 @@ const Dashboard = () => {
                     Welcome <span className="text-blue">{loginDetails.role}</span>
                 </h1>
                 <div className="flex py-24">
-                    {loginDetails.role === "Admin" ? (
+                    {loginDetails.role === "Admin" && (
                         <section className="grid grid-cols-3 items-center justify-between gap-16 text-lg">
                             {adminDashboard.map((item, index) => (
                                 <Link key={index} to={item.link} className="bg-blue text-center text-white font-medium px-6 py-2 rounded-sm">
@@ -86,7 +86,8 @@ const Dashboard = () => {
                                 </Link>
                             ))}
                         </section>
-                    ) : (
+                    )}
+                    {loginDetails.role === "Staff" && (
                         <section className="grid grid-cols-3 items-center justify-between gap-16 text-lg">
                             {staffDashboard.map((item, index) => (
                                 <Link key={index} to={item.link} className="bg-blue text-center text-white font-medium px-6 py-2 rounded-sm">

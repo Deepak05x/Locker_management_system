@@ -2,6 +2,7 @@ import React from "react";
 import { createContext, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 export const LockerContext = createContext();
 
@@ -11,6 +12,10 @@ const LockerProvider = ({ children }) => {
     const [addedLocker, setAddedLocker] = useState(null);
     const [availableLockers, setAvailableLockers] = useState(null);
     const [assignedLockers, setAssignedLockers] = useState(null);
+    const [allLockerDetails, setAllLockerDetails] = useState([]);
+    const [expiredLockerDetails, setExpiredLockerDetails] = useState([]);
+    const [availableLockerDetails, setAvailableLockerDetails] = useState([]);
+    const [allocatedLockerDetails, setAllocatedLockerDetails] = useState([]);
 
     const addLocker = async (LockerType, LockerNumber, LockerCode, LockerPrice3Month, LockerPrice6Month, LockerPrice12Month, availableForGender) => {
         try {
@@ -92,9 +97,66 @@ const LockerProvider = ({ children }) => {
         }
     };
 
-    console.log(availableLockers);
+    const fetchAllLockers = async () => {
+        try {
+            const res = await axios.get("http://localhost:3000/api/locker/getAllLockers");
+            const data = res.data;
+            if (res.status === 200) {
+                setAllLockerDetails(data.data);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
-    return <LockerContext.Provider value={{ addLocker, availableLocker, availableLockers, allocateLocker }}>{children}</LockerContext.Provider>;
+    const fetchExpiredLockers = async () => {
+        try {
+            const res = await axios.get("http://localhost:3000/api/locker/getExpiredLockers");
+            const data = res.data;
+            if (res.status === 200) {
+                setExpiredLockerDetails(data.data);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const fetchAvailableLockers = async () => {
+        try {
+            const res = await axios.get("http://localhost:3000/api/locker/getAvailableLockers");
+            const data = res.data;
+            if (res.status === 200) {
+                setAvailableLockerDetails(data.data);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const fetchAllocatedLockers = async () => {
+        try {
+            const res = await axios.get("http://localhost:3000/api/locker/getAllocatedLockers");
+            const data = res.data;
+            if (res.status === 200) {
+                setAllocatedLockerDetails(data.data);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        fetchAllLockers();
+        fetchExpiredLockers();
+        fetchAllocatedLockers();
+        fetchAvailableLockers();
+    }, []);
+
+    return (
+        <LockerContext.Provider value={{ allocatedLockerDetails, availableLockerDetails, expiredLockerDetails, allLockerDetails, addLocker, availableLocker, availableLockers, allocateLocker }}>
+            {children}
+        </LockerContext.Provider>
+    );
 };
 
 export default LockerProvider;

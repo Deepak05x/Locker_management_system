@@ -98,7 +98,18 @@ const AuthProvider = ({ children }) => {
         }
     };
 
-    return <AuthContext.Provider value={{ login, checkEmail, setCheckEmail, loginDetails, generateOtp, getOtp, validateOtp, resetPassword }}>{children}</AuthContext.Provider>;
+    const logout = async () => {
+        try {
+            const res = await axios.get("http://localhost:3000/api/user/LogOut");
+            if (res.status === 200) {
+                navigate("/login");
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    return <AuthContext.Provider value={{ login, checkEmail, setCheckEmail, loginDetails, generateOtp, getOtp, validateOtp, resetPassword, logout }}>{children}</AuthContext.Provider>;
 };
 
 export default AuthProvider;
