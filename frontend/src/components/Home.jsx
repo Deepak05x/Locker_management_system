@@ -4,10 +4,10 @@ import { Link } from "react-router-dom";
 
 const Home = () => {
     return (
-        <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex flex-col items-center justify-center p-6">
+        <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex flex-col items-center justify-center p-6 ">
             <main className="max-w-4xl w-full text-center space-y-16">
                 {/* Hero Section */}
-                <div className="space-y-6">
+                <div className="space-y-6 ">
                     <h1 className="text-4xl md:text-6xl font-bold text-blue-900">Locker Management System</h1>
                     <p className="text-xl text-blue-600">Secure, Smart, Simple</p>
                 </div>
@@ -17,7 +17,9 @@ const Home = () => {
                     to={"/login"}
                     className="group inline-flex items-center justify-center px-8 py-4 text-xl font-semibold text-black bg-blue-600 rounded-lg transform transition-all duration-200 hover:bg-blue-700 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 shadow-lg"
                 >
-                    <button onClick={() => console.log("Login clicked")}>Login</button>
+                    <button className="text-white" onClick={() => console.log("Login clicked")}>
+                        Login
+                    </button>
                 </Link>
 
                 {/* Features Grid */}

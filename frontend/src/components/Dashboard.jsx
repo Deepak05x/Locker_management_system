@@ -49,17 +49,14 @@ const staffDashboard = [
         name: "Assign Locker",
         link: "/available_lockers",
     },
-    {
-        name: "Renew Locker",
-        link: "/renew_locker",
-    },
+
     {
         name: "Cancel Locker Assignment",
-        link: "/locker_management",
+        link: "/cancel_locker",
     },
     {
         name: "Update Locker",
-        link: "/locker_management",
+        link: "/update_locker",
     },
     {
         name: "Issue Reporting",

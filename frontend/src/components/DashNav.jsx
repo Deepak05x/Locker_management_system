@@ -9,9 +9,9 @@ const Navbar = () => {
 
     return (
         <section className="w-full bg-white drop-shadow-xl text-black px-12 py-6 flex flex-row justify-between">
-            <Link to="/">
+            <div>
                 <PiLockersFill className="text-blue text-[2.5rem]" />
-            </Link>
+            </div>
             <div className="flex flex-row items-center gap-8">
                 <Link to={"/dashboard"} className="font-medium outline-blue outline rounded-full px-6 py-1 text-lg">
                     Dashboard

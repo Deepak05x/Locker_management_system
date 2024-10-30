@@ -10,10 +10,8 @@ const LockerManagement = () => {
 
     const [locker, setLocker] = useState(null);
 
-    let filteredLockers;
-    if (locker === "all") {
-        filteredLockers = allLockerDetails;
-    } else if (locker === "expired") {
+    let filteredLockers = allLockerDetails;
+    if (locker === "expired") {
         filteredLockers = expiredLockerDetails;
     } else if (locker === "allocated") {
         filteredLockers = allocatedLockerDetails;
@@ -21,7 +19,7 @@ const LockerManagement = () => {
         filteredLockers = availableLockerDetails;
     }
 
-    console.log(availableLockerDetails);
+    console.log(filteredLockers);
 
     return (
         <>
@@ -52,6 +50,9 @@ const LockerManagement = () => {
                             </p>
                             <p className="flex gap-4">
                                 <span className="text-blue">Gender :</span> {item.availableForGender}
+                            </p>
+                            <p className="flex gap-4">
+                                <span className="text-blue">Type :</span> {item.LockerType}
                             </p>
                             <p className="flex gap-4">
                                 <span className="text-blue">Duration :</span> {item.Duration}
