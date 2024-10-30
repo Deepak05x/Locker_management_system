@@ -16,6 +16,7 @@ const LockerProvider = ({ children }) => {
     const [expiredLockerDetails, setExpiredLockerDetails] = useState([]);
     const [availableLockerDetails, setAvailableLockerDetails] = useState([]);
     const [allocatedLockerDetails, setAllocatedLockerDetails] = useState([]);
+    const [cancelLockers, setCancelLockers] = useState(null);
 
     const addLocker = async (LockerType, LockerNumber, LockerCode, LockerPrice3Month, LockerPrice6Month, LockerPrice12Month, availableForGender) => {
         try {
@@ -83,10 +84,7 @@ const LockerProvider = ({ children }) => {
                     },
                 }
             );
-            if (endDate) {
-                console.log("This is the End Date");
-                console.log(endDate);
-            }
+
             if (res.status === 200) {
                 const data = res.data;
                 setAssignedLockers(data);
@@ -145,6 +143,30 @@ const LockerProvider = ({ children }) => {
         }
     };
 
+    const cancelLocker = async (lockerNumber, EmployeeEmail) => {
+        try {
+            const res = await axios.post(
+                "http://localhost:3000/api/locker/cancelLockerAllocation",
+                { lockerNumber, EmployeeEmail },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+
+            if (res.status === 200) {
+                const data = res.data;
+                setCancelLockers(data);
+                navigate("/dashboard");
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    console.log(cancelLockers);
+
     useEffect(() => {
         fetchAllLockers();
         fetchExpiredLockers();
@@ -153,7 +175,9 @@ const LockerProvider = ({ children }) => {
     }, []);
 
     return (
-        <LockerContext.Provider value={{ allocatedLockerDetails, availableLockerDetails, expiredLockerDetails, allLockerDetails, addLocker, availableLocker, availableLockers, allocateLocker }}>
+        <LockerContext.Provider
+            value={{ allocatedLockerDetails, availableLockerDetails, expiredLockerDetails, allLockerDetails, cancelLocker, addLocker, availableLocker, availableLockers, allocateLocker }}
+        >
             {children}
         </LockerContext.Provider>
     );
