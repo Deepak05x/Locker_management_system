@@ -1,12 +1,11 @@
 const mailSender = require('../utils/mailSender.js')
 const OTP = require('../models/OTP.js')
-
 const bcrypt = require('bcrypt');
 const User = require("../models/userModel.js")
 function generateOTP() {
-    // Generate a random 6-digit number
+   
     const otp = Math.floor(100000 + Math.random() * 900000);
-    return otp.toString();  // Return as a string to ensure it's 6 digits
+    return otp.toString();  
 }
 
 console.log(generateOTP());
@@ -26,22 +25,21 @@ exports.getOtp = async (req, res, next) => {
         const otp = generateOTP();
 
         const newOTP = await OTP.create({ email, otp });
-
         await mailSender(
             email,
             "Password Reset",
-            `your otp from Devforge Software solutions for resetting password is ${otp}.`
+            `your otp from Dev-forge Software solutions for resetting password is ${otp}.`
         );
 
         return res.status(200).json(
             {
                 message: "OTP sent successfully",
-                data: otp
+                // data: otp
             }
         )
 
     } catch (err) {
-        console.error(`Error in signin: ${err.message}`);
+        console.error(`Error in Sending OTP: ${err.message}`);
         next(err);
     }
 }

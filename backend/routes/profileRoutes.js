@@ -7,4 +7,4 @@ const { login, signup } = require('../controllers/profileController.js');
 router.post('/login', login);
 router.post('/signup', signup);
 
-module.exports = router;
+module.exports = router;       

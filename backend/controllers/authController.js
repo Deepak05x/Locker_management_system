@@ -87,6 +87,7 @@ exports.LogOut = async (req, res, next) => {
         res.status(200).json('user has been logged out !');
     }
     catch (err) {
+        console.log("error in logout")
         next(err);
     }
 }

@@ -367,8 +367,8 @@ exports.updateLockerCode = async (req, res, next) => {
             return res.status(404).json({ message: "Locker not found" });
         }
         let oldCode = locker.LockerCode;
-        oldCode = oldCode.substring(1) + oldCode[0]
-
+        oldCode = oldCode.substring(1) + oldCode[0];
+        locker.LockerStatus='available';
         locker.LockerCode = oldCode;
         // locker.LockerCode=newCode;
 

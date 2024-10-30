@@ -61,7 +61,7 @@ exports.updateProfile = async (req, res, next) => {
             data: updatedUser
         });
     } catch (err) {
-        console.error(`Error in updateProfile: ${err.message}`);
+        console.error(`Error in updating Profile: ${err.message}`);
         next(err);
     }
 };

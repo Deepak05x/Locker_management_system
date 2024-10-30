@@ -35,7 +35,7 @@ exports.addStaff = async (req, res, next) => {
 
         res.cookie("token", token, options).status(200).json(rest);
     } catch (err) {
-        console.log(`error in signup ${err.message}`);
+        console.log(`error in adding staff ${err.message}`);
         next(err);
     }
 };
@@ -65,7 +65,7 @@ exports.addMultipleLocker = async (req, res, next) => {
             data: newLockers
         });
     } catch (err) {
-        console.log(`Error in adding lockers: ${err.message}`);
+        console.log(`Error in creating lockers: ${err.message}`);
         next(err);
     }
 };

@@ -1,4 +1,5 @@
 const Issue = require('../models/Issue.js')
+const mailSender = require('../utils/mailSender.js')
 
 exports.raiseTechnicalIssue = async (req, res, next) => {
     try {
@@ -28,6 +29,7 @@ exports.raiseLockerIssue = async (req, res, next) => {
         return next(err);
     }
 };
+
 exports.updateIssueStatus = async (req, res, next) => {
     try {
         const { id, status } = req.body;
