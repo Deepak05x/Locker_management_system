@@ -6,22 +6,41 @@ import { LockerContext } from "../context/LockerProvider";
 const DashNav = lazy(() => import("./DashNav"));
 
 const LockerManagement = () => {
-    const { allLockerDetails } = useContext(LockerContext);
+    const { allLockerDetails, allocatedLockerDetails, availableLockerDetails, expiredLockerDetails } = useContext(LockerContext);
 
-    console.log(allLockerDetails);
+    const [locker, setLocker] = useState(null);
+
+    let filteredLockers;
+    if (locker === "all") {
+        filteredLockers = allLockerDetails;
+    } else if (locker === "expired") {
+        filteredLockers = expiredLockerDetails;
+    } else if (locker === "allocated") {
+        filteredLockers = allocatedLockerDetails;
+    } else if (locker === "available") {
+        filteredLockers = availableLockerDetails;
+    }
+
+    console.log(availableLockerDetails);
 
     return (
         <>
             <DashNav />
             <section className="flex flex-col items-center  w-full px-24 py-24 gap-12">
-                <section className="flex flex-col items-center justify-between w-full  font-medium">
+                <section className="flex flex-col gap-4 items-center justify-between w-full  font-medium">
                     <h1 className="text-3xl font-medium">
                         View all <span className="text-blue">lockers</span>
                     </h1>
+                    <select name="" id="" value={locker} onChange={(e) => setLocker(e.target.value)} className="border-2 border-black px-2 py-1">
+                        <option value="all">All Lockers</option>
+                        <option value="expired"> Expired</option>
+                        <option value="available">Available</option>
+                        <option value="allocated">Allocated</option>
+                    </select>
                 </section>
                 <section className="grid grid-cols-3 items-center justify-between gap-16">
-                    {allLockerDetails.map((item, index) => (
-                        <div key={index} className="flex flex-col items-start bg-white drop-shadow-xl text-lg px-12 py-8 gap-2">
+                    {filteredLockers.map((item, index) => (
+                        <div key={index} className="flex flex-col items-start bg-white drop-shadow-xl text-[1rem] px-12 py-8 gap-2">
                             <p className="flex gap-4">
                                 <span className="text-blue">Status :</span> {item.LockerStatus}
                             </p>
