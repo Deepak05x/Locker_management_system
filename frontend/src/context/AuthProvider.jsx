@@ -7,11 +7,19 @@ export const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
 
-    const [loginDetails, setLoginDetails] = useState(null);
+    const [loginDetails, setLoginDetails] = useState(JSON.parse(localStorage.getItem("loginDetails")) || null);
     const [getOtp, setGetOtp] = useState(null);
     const [validatedOtp, setValidatedOtp] = useState(null);
     const [resetedPassword, setResetedPassword] = useState(null);
     const [checkEmail, setCheckEmail] = useState(null);
+
+    useEffect(() => {
+        if (loginDetails) {
+            localStorage.setItem("loginDetails", JSON.stringify(loginDetails));
+        } else {
+            localStorage.removeItem("loginDetails");
+        }
+    }, [loginDetails]);
 
     const login = async (email, password) => {
         try {
@@ -102,6 +110,8 @@ const AuthProvider = ({ children }) => {
         try {
             const res = await axios.get("http://localhost:3000/api/user/LogOut");
             if (res.status === 200) {
+                setLoginDetails(null);
+                localStorage.removeItem("loginDetails");
                 navigate("/login");
             }
         } catch (error) {
