@@ -31,10 +31,10 @@ const COLUMN_MAPPING = {
  
 app.post('/upload-excel', upload.single('file'), (req, res) => {
   try {
-      // Access the uploaded file as a buffer
-      const buffer = req.file.buffer;
+    
+     const buffer = req.file.buffer;
 
-      // Read the workbook from the buffer directly
+    
       const workbook = XLSX.read(buffer, { type: 'buffer' });
       const sheetName = workbook.SheetNames[0];
       const rows = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1 });
@@ -57,60 +57,6 @@ app.post('/upload-excel', upload.single('file'), (req, res) => {
       res.status(500).json({ message: `Error processing file: ${err.message}` });
   }
 });
-// app.post('/upload-excel', upload.single('file'), (req, res) => {
-//   try {
-//       const filePath = req.file.path;
-//       const workbook = XLSX.readFile(filePath);
-//       const sheetName = workbook.SheetNames[0];
-
-//       // Read the sheet as a 2D array, where each row is an array of cells
-//       const rows = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1 });
-
-//       // Skip the first row
-//       const data = rows.slice(1).map((row) => {
-//           let mappedRow = {};
-
-//           // Map each cell in the row to the corresponding column name
-//           row.forEach((cell, index) => {
-//               if (COLUMN_MAPPING[index]) {
-//                   mappedRow[COLUMN_MAPPING[index]] = cell;
-//               }
-//           });
-//           console.log(mappedRow);
-//           return mappedRow;
-//       });
-
-//       // Send the processed data as a response
-//       res.status(200).json({ message: "File processed successfully", data });
-//   } catch (err) {
-//       res.status(500).json({ message: `Error processing file: ${err.message}` });
-//   }
-// });
-
-// app.post('/upload-excel', upload.single('file'), (req, res) => {
-//     try {
-//         const filePath = req.file.path;
-//         const workbook = XLSX.readFile(filePath);
-//         const sheetName = workbook.SheetNames[0];
-//         const rows = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1 });
- 
-//        const data = rows.slice(1).map((row) => {
-//             let mappedRow = {};
-//             row.forEach((cell, index) => {
-//                 if (COLUMN_MAPPING[index]) {
-//                     mappedRow[COLUMN_MAPPING[index]] = cell;
-//                 }
-//             });
-//             console.log(mappedRow);
-//             return mappedRow;
-//         });
- 
-        
-//         res.status(200).json({ message: "File processed successfully", data });
-//     } catch (err) {
-//         res.status(500).json({ message: `Error processing file: ${err.message}` });
-//     }
-// });
 
 dbConnect();
 
