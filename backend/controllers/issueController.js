@@ -49,7 +49,7 @@ exports.getAllIssue = async (req, res, next) => {
 
         const data = await Issue.find();
         return res.status(200).json({ message: " issues fetched successfully", data });
-    } catch (err) {
+    } catch (err) { 
         console.log(`Error in finding lockers: ${err.message}`);
         return next(err);
     }

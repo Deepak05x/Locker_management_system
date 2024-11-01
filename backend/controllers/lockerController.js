@@ -205,11 +205,13 @@ exports.cancelLockerAllocation = async (req, res, next) => {
         if (!locker) {
             return res.status(404).json({ message: "Locker is not available or does not exist" });
         }
-
-
-
-
+        let oldCode = locker.LockerCode;
+        oldCode = oldCode.substring(1) + oldCode[0];
+        locker.LockerStatus='available';
+        locker.LockerCode = oldCode;
+      
         // LockerType,LockerStatus,LockerNumber,LockerCode,
+       
         locker.employeeName = "";
         locker.employeeId = "";
         locker.employeeEmail = "";
@@ -230,12 +232,11 @@ exports.cancelLockerAllocation = async (req, res, next) => {
             "Locker Taken Back",
             `Alert your locker with locker number  ${lockerNumber} is taken back `
         );
-
+          
         return res.status(200).json({
             message: "Locker taken back successfully",
             data: locker
         });
-
     } catch (err) {
         console.log(`Error in allocating locker: ${err.message}`);
         next(err);
@@ -243,10 +244,8 @@ exports.cancelLockerAllocation = async (req, res, next) => {
 };
 
 
-
 exports.getAllLockers = async (req, res, next) => {
     try {
-
         const data = await Locker.find();
         return res.status(200).json({
             message: "All Lockers",
@@ -259,7 +258,6 @@ exports.getAllLockers = async (req, res, next) => {
 }
 exports.getAllocatedLockers = async (req, res, next) => {
     try {
-
         const data = await Locker.find({ LockerStatus: 'occupied' });
         return res.status(200).json({
             message: "All allocated Lockers",
@@ -285,7 +283,6 @@ exports.getAvailableLockers = async (req, res, next) => {
 
 exports.getExpiredLockers = async (req, res, next) => {
     try {
-
         const data = await Locker.find({ LockerStatus: 'expired' });
         return res.status(200).json({
             message: "All expired Lockers",
@@ -366,10 +363,8 @@ exports.updateLockerCode = async (req, res, next) => {
         if (!locker) {
             return res.status(404).json({ message: "Locker not found" });
         }
-        let oldCode = locker.LockerCode;
-        oldCode = oldCode.substring(1) + oldCode[0];
-        locker.LockerStatus='available';
-        locker.LockerCode = oldCode;
+     
+        
         // locker.LockerCode=newCode;
 
         await locker.save();
@@ -378,5 +373,35 @@ exports.updateLockerCode = async (req, res, next) => {
     } catch (err) {
         console.log(`Error in finding lockers: ${err.message}`);
         return next(err);
+    }
+};
+
+
+exports.chageLockerStatusToExpired = async (req, res, next) => {
+    try {
+        const { id } = req.body;
+        
+        if (!id) {
+            return res.status(400).json({ message: "Locker ID is required" });
+        }
+        
+        const updatedLocker = await Locker.findByIdAndUpdate(
+            id,
+            { LockerStatus: "expired" },
+            { new: true }
+        );
+        
+       if (!updatedLocker) {
+            return res.status(404).json({ message: "Locker not found" });
+        }
+        
+       res.status(200).json({
+            message: "Locker status updated to expired",
+            data: updatedLocker
+        });
+    } catch (err) {
+        console.log(`Error in expiring locker: ${err.message}`);
+        res.status(500).json({ message: `Error expiring locker: ${err.message}` });
+        next(err);
     }
 };

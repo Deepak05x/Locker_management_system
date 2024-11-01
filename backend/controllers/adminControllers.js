@@ -1,6 +1,6 @@
 const Locker = require('../models/lockerModel.js')
 const User = require('../models/userModel.js')
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt'); 
 require('dotenv').config();
 const { errorHandler } = require('../utils/error.js');
 const jwt = require('jsonwebtoken');
@@ -39,6 +39,27 @@ exports.addStaff = async (req, res, next) => {
         next(err);
     }
 };
+exports.removeStaff = async (req, res, next) => {
+    console.log("in");
+    try {
+        const { id } = req.body;
+        if (!id) {
+            return res.status(400).json({ message: "Staff ID is required" });
+        }
+
+        const deletedStaff = await User.findByIdAndDelete(id);
+        if (!deletedStaff) {
+            return res.status(404).json({ message: "Staff not found" });
+        }
+
+        res.status(200).json({ message: "Staff member removed successfully" });
+    } catch (err) {
+        console.log(`error in removing staff: ${err.message}`);
+        res.status(500).json({ message: `Error removing staff: ${err.message}` });
+        next(err);
+    }
+};
+
 
 exports.addLocker = async (req, res, next) => {
     try {

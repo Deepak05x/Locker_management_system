@@ -12,7 +12,8 @@ const { getAvailableLocker,
     getExpiringIn7daysLockers,
     changeLockerPricing,
     findLockerByUserEmail,
-    updateLockerCode }
+    updateLockerCode,
+    chageLockerStatusToExpired }
     = require('../controllers/lockerController.js');
 
 router.post('/getAvailableLocker', getAvailableLocker);
@@ -27,6 +28,7 @@ router.get('/getExpiringIn7daysLockers', getExpiringIn7daysLockers);
 router.post('/changeLockerPricing', changeLockerPricing);
 router.post('/findLockerByUserEmail', findLockerByUserEmail);
 router.post('/updateLockerCode', updateLockerCode);
+router.post('/chageLockerStatusToExpired', chageLockerStatusToExpired);
 
 module.exports = router;
 
