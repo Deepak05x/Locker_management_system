@@ -74,7 +74,7 @@ exports.addLocker = async (req, res, next) => {
         console.log(`error in adding ${err.message}`);
         next(err);
     }
-
+// LockerType, LockerNumber, LockerCode, LockerPrice3Month, LockerPrice6Month, LockerPrice12Month, availableForGender 
 }
 exports.addMultipleLocker = async (req, res, next) => {
     try {

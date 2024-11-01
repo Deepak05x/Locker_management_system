@@ -3,7 +3,6 @@ const OTP = require('../models/OTP.js')
 const bcrypt = require('bcrypt');
 const User = require("../models/userModel.js")
 function generateOTP() {
-   
     const otp = Math.floor(100000 + Math.random() * 900000);
     return otp.toString();  
 }
@@ -23,7 +22,7 @@ exports.getOtp = async (req, res, next) => {
         }
 
         const otp = generateOTP();
-
+        console.log(otp);
         const newOTP = await OTP.create({ email, otp });
         await mailSender(
             email,
