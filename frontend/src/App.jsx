@@ -18,6 +18,7 @@ const AssignLocker = lazy(() => import("./components/AssignLocker"));
 const RenewLocker = lazy(() => import("./components/RenewLocker"));
 const CancelLocker = lazy(() => import("./components/CancelLocker"));
 const UpdateLocker = lazy(() => import("./components/UpdateLocker"));
+const LockerIssue = lazy(() => import("./components/LockerIssue"));
 
 const App = () => {
     return (
@@ -39,6 +40,7 @@ const App = () => {
                         <Route path="/renew_locker" element={<RenewLocker />} />
                         <Route path="/cancel_locker" element={<CancelLocker />} />
                         <Route path="/update_locker" element={<UpdateLocker />} />
+                        <Route path="/issue_reporting" element={<LockerIssue />} />
                     </Routes>
                 </Suspense>
             </AuthProvider>

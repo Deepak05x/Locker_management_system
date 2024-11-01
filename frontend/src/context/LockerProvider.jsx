@@ -17,6 +17,7 @@ const LockerProvider = ({ children }) => {
     const [availableLockerDetails, setAvailableLockerDetails] = useState([]);
     const [allocatedLockerDetails, setAllocatedLockerDetails] = useState([]);
     const [cancelLockers, setCancelLockers] = useState(null);
+    const [lockerIssue, setLockerIssue] = useState(null);
 
     const addLocker = async (LockerType, LockerNumber, LockerCode, LockerPrice3Month, LockerPrice6Month, LockerPrice12Month, availableForGender) => {
         try {
@@ -165,6 +166,29 @@ const LockerProvider = ({ children }) => {
         }
     };
 
+    const handleLockerIssue = async (subject, description, LockerNumber) => {
+        try {
+            const res = await axios.post(
+                "http://localhost:3000/api/issue/raiseLockerIssue",
+                {
+                    subject,
+                    description,
+                    LockerNumber,
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            if (res.status === 200) {
+                const data = res.data;
+                setLockerIssue(data);
+                navigate("/dashboard");
+            }
+        } catch (error) {}
+    };
+
     console.log(cancelLockers);
 
     useEffect(() => {
@@ -176,7 +200,18 @@ const LockerProvider = ({ children }) => {
 
     return (
         <LockerContext.Provider
-            value={{ allocatedLockerDetails, availableLockerDetails, expiredLockerDetails, allLockerDetails, cancelLocker, addLocker, availableLocker, availableLockers, allocateLocker }}
+            value={{
+                handleLockerIssue,
+                allocatedLockerDetails,
+                availableLockerDetails,
+                expiredLockerDetails,
+                allLockerDetails,
+                cancelLocker,
+                addLocker,
+                availableLocker,
+                availableLockers,
+                allocateLocker,
+            }}
         >
             {children}
         </LockerContext.Provider>
