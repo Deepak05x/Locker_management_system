@@ -46,6 +46,7 @@ cron.schedule('0 * * * *', async () => {    // will run every hour
           { expiresOn: { $lte: new Date() }, LockerStatus: { $ne: "expired" } },
           { LockerStatus: "expired" }
       );
+      
       console.log(result);
       console.log(`Expired lockers updated: ${result.nModified}`);
   } catch (err) {
