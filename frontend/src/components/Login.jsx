@@ -24,7 +24,7 @@ const Testing = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-blue-100 to-white flex flex-col items-center justify-center p-4">
+        <div className="min-h-screen bg-gradient-to-b from-blue-100  to-blue-50 flex flex-col items-center justify-center p-4">
             <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-xl">
                 {/* Header */}
                 <div className="text-center space-y-2 flex flex-col items-center gap-4">
