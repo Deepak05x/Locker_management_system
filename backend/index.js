@@ -29,37 +29,9 @@ const COLUMN_MAPPING = {
   6:   "availableForGender"
 };
  
-app.post('/upload-excel', upload.single('file'), (req, res) => {
-  try {
-    
-     const buffer = req.file.buffer;
 
-    
-      const workbook = XLSX.read(buffer, { type: 'buffer' });
-      const sheetName = workbook.SheetNames[0];
-      const rows = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1 });
-
-      // Skip the first row
-      const data = rows.slice(1).map((row) => {
-          let mappedRow = {};
-          row.forEach((cell, index) => {
-              if (COLUMN_MAPPING[index]) {
-                  mappedRow[COLUMN_MAPPING[index]] = cell;
-              }
-          });
-          console.log(mappedRow);
-          return mappedRow;
-      });
-
-      // Send the processed data as a response
-      res.status(200).json({ message: "File processed successfully", data });
-  } catch (err) {
-      res.status(500).json({ message: `Error processing file: ${err.message}` });
-  }
-});
 
 dbConnect();
-
 
 app.use(express.json());
 app.use(cookieParser());
@@ -97,5 +69,34 @@ cron.schedule('* * * * *', async () => {    // will run every hour
       // console.log(`Expired lockers updated: ${result.nModified}`);
   } catch (err) {
       console.error(`Error updating expired lockers: ${err.message}`);
+  }
+});
+
+app.post('/upload-excel', upload.single('file'), (req, res) => {
+  try {
+    
+     const buffer = req.file.buffer;
+
+    
+      const workbook = XLSX.read(buffer, { type: 'buffer' });
+      const sheetName = workbook.SheetNames[0];
+      const rows = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1 });
+
+      // Skip the first row
+      const data = rows.slice(1).map((row) => {
+          let mappedRow = {};
+          row.forEach((cell, index) => {
+              if (COLUMN_MAPPING[index]) {
+                  mappedRow[COLUMN_MAPPING[index]] = cell;
+              }
+          });
+          console.log(mappedRow);
+          return mappedRow;
+      });
+
+      // Send the processed data as a response
+      res.status(200).json({ message: "File processed successfully", data });
+  } catch (err) {
+      res.status(500).json({ message: `Error processing file: ${err.message}` });
   }
 });
