@@ -13,23 +13,8 @@ const cron = require('node-cron');
 const Locker = require('./models/lockerModel.js')
 const multer = require('multer');
 const XLSX = require('xlsx');
- 
 const app = express();
-// const upload = multer({ dest: 'uploads/' });
 const upload = multer({ storage: multer.memoryStorage() });
-
- 
-const COLUMN_MAPPING = {
-  0:  "LockerType",
-  1: "LockerNumber",
-  2:  "LockerCode", 
-  3: "LockerPrice3Month",
-  4: "LockerPrice6Month",
-  5:  "LockerPrice12Month",
-  6:   "availableForGender"
-};
- 
-
 
 dbConnect();
 
@@ -72,11 +57,20 @@ cron.schedule('* * * * *', async () => {    // will run every hour
   }
 });
 
+
+const COLUMN_MAPPING = {
+  0:  "LockerType",
+  1: "LockerNumber",
+  2:  "LockerCode", 
+  3: "LockerPrice3Month",
+  4: "LockerPrice6Month",
+  5:  "LockerPrice12Month",
+  6:   "availableForGender"
+};
+ 
 app.post('/upload-excel', upload.single('file'), (req, res) => {
   try {
-    
      const buffer = req.file.buffer;
-
     
       const workbook = XLSX.read(buffer, { type: 'buffer' });
       const sheetName = workbook.SheetNames[0];
