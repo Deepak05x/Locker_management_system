@@ -60,7 +60,7 @@ const staffDashboard = [
     },
     {
         name: "Issue Reporting",
-        link: "/locker_management",
+        link: "/issue_reporting",
     },
 ];
 
