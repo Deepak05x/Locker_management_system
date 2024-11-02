@@ -18,6 +18,8 @@ const LockerProvider = ({ children }) => {
     const [allocatedLockerDetails, setAllocatedLockerDetails] = useState([]);
     const [cancelLockers, setCancelLockers] = useState(null);
     const [lockerIssue, setLockerIssue] = useState(null);
+    const [technicalIssue, setTechnicalIssue] = useState(null);
+    const [renewLocker, setRenewLocker] = useState(null);
 
     const addLocker = async (LockerType, LockerNumber, LockerCode, LockerPrice3Month, LockerPrice6Month, LockerPrice12Month, availableForGender) => {
         try {
@@ -186,10 +188,62 @@ const LockerProvider = ({ children }) => {
                 setLockerIssue(data);
                 navigate("/dashboard");
             }
-        } catch (error) {}
+        } catch (error) {
+            console.log(error);
+        }
     };
 
-    console.log(cancelLockers);
+    const handleTechnicalIssue = async (subject, description) => {
+        try {
+            const res = await axios.post(
+                "http://localhost:3000/api/issue/raiseTechnicalIssue",
+                {
+                    subject,
+                    description,
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            if (res.status === 200) {
+                const data = res.data;
+                setTechnicalIssue(data);
+                navigate("/dashboard");
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleRenewLocker = async (lockerNumber, costToEmployee, duration, startDate, endDate, EmployeeEmail) => {
+        try {
+            const res = await axios.post(
+                "http://localhost:3000/api/locker/renewLocker",
+                {
+                    lockerNumber,
+                    costToEmployee,
+                    duration,
+                    startDate,
+                    endDate,
+                    EmployeeEmail,
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            if (res.status === 200) {
+                const data = res.data;
+                setRenewLocker(data);
+                navigate("/update_locker");
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     useEffect(() => {
         fetchAllLockers();
@@ -201,6 +255,7 @@ const LockerProvider = ({ children }) => {
     return (
         <LockerContext.Provider
             value={{
+                handleTechnicalIssue,
                 handleLockerIssue,
                 allocatedLockerDetails,
                 availableLockerDetails,
@@ -211,6 +266,7 @@ const LockerProvider = ({ children }) => {
                 availableLocker,
                 availableLockers,
                 allocateLocker,
+                handleRenewLocker,
             }}
         >
             {children}

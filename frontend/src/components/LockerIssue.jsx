@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useContext } from "react";
 import { LockerContext } from "../context/LockerProvider";
 import { MoveRight, Lock, BadgeAlert, BookOpen } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const TechnicalIssue = () => {
     const [lockerNumber, setLockerNumber] = useState("");
@@ -115,7 +116,10 @@ const TechnicalIssue = () => {
                 <div className="mt-6 text-center">
                     <div className="space-y-2">
                         <p className="text-sm text-gray-600">
-                            Need to Raise Technical Issue? <span className="text-blue hover:underline cursor-pointer">Technical Issue</span>
+                            Need to Raise Technical Issue?{" "}
+                            <Link to={"/technical_issue"} className="text-blue hover:underline cursor-pointer">
+                                Technical Issue
+                            </Link>
                         </p>
                     </div>
                 </div>
