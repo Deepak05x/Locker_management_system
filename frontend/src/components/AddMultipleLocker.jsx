@@ -44,9 +44,11 @@ const AddMultipleLocker = () => {
                 <a href="/addMultipleLockers.xlsx" download="Lockers.xlsx">
                     <p className="bg-blue px-6 py-2 rounded-sm text-white font-medium">Download Template</p>
                 </a>
-                <div className="bg-blue px-6 py-2 rounded-sm text-white font-medium">
-                    <input type="file" onChange={handleFileChange} accept=".xlsx, .xls" className="mb-4" />
-                    <button onClick={handleFileUpload}>Upload the file</button>
+                <div className="flex flex-col gap-12 items-center">
+                    <input type="file" onChange={handleFileChange} accept=".xlsx, .xls" className=" border border-black" />
+                    <button className="bg-blue px-6 py-2 rounded-sm text-white font-medium" onClick={handleFileUpload}>
+                        Upload the file
+                    </button>
                 </div>
                 {uploadStatus && <p>{uploadStatus}</p>}
             </section>
