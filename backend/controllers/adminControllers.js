@@ -39,6 +39,103 @@ exports.addStaff = async (req, res, next) => {
         next(err);
     }
 };
+
+exports.editStaff = async (req, res, next) => {
+    try {
+        // Get the staff ID from request parameters
+        const { id } = req.body;
+        console.log(id)
+        // Find the user by ID
+        let user = await User.findById(id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Extract fields from the request body
+        const { name, role, email, password, phoneNumber, gender } = req.body;
+
+        // Update only the fields that are provided
+        if (name) user.name = name;
+        if (role) user.role = role;
+        if (email) user.email = email;
+        if (phoneNumber) user.phoneNumber = phoneNumber;
+        if (gender) user.gender = gender;
+
+        // Hash the password if provided
+        if (password) {
+            user.password = await bcrypt.hash(password, 10);
+        }
+
+        // Save the updated user details
+        await user.save();
+
+        // Create a new token with updated information
+        const payload = { email: user.email, id: user._id };
+        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "2d" });
+
+        const options = {
+            expires: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
+            httpOnly: true,
+        };
+
+        res.cookie("token", token, options).status(200).json({
+            message: 'User updated successfully',
+            user: { ...user.toObject(), token },
+        });
+    } catch (err) {
+        console.log(`Error in updating staff: ${err.message}`);
+        next(err);
+    }
+};
+
+exports.viewStaffDetails = async (req, res, next) => {
+    try {
+      
+        const { id } = req.body;
+       
+        let user = await User.findById(id);
+       
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+       
+
+         // Create a new token with updated information
+      
+
+        res.status(200).json({
+            message: 'User Details fetched successfully',
+            user: user
+        });
+    } catch (err) {
+        console.log(`Error in updating staff: ${err.message}`);
+        next(err);
+    }
+};
+
+
+exports.viewAllStaff = async (req, res, next) => {
+    try {
+             
+        let users = await User.find();
+       
+        if (!users) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json({
+            message: 'Users  fetched successfully',
+            users: users
+        });
+    } catch (err) {
+        console.log(`Error in updating staff: ${err.message}`);
+        next(err);
+    }
+};
+
+
+
 exports.removeStaff = async (req, res, next) => {
     console.log("in");
     try {
@@ -78,7 +175,9 @@ exports.addLocker = async (req, res, next) => {
 }
 exports.addMultipleLocker = async (req, res, next) => {
     try {
-        const lockers = req.body;
+        const lockers = req.body.data;
+        console.log("adding multiple lockers")
+        console.log(lockers);
         const newLockers = await Locker.insertMany(lockers);
 
         return res.status(200).json({

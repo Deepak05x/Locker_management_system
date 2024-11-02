@@ -68,7 +68,7 @@ exports.validateOTP = async (req, res, next) => {
         return res.status(200).json({
             message: "OTP successfully verified",
         });
-
+ 
     } catch (err) {
         console.error(`Error in resetPassword: ${err.message}`);
         next(err);

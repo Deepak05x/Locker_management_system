@@ -15,6 +15,7 @@ const multer = require('multer');
 const XLSX = require('xlsx');
 const app = express();
 const upload = multer({ storage: multer.memoryStorage() });
+const axios = require('axios'); // Import axios
 
 dbConnect();
 
@@ -31,6 +32,7 @@ app.use('/api/resetPassword', resetPasswordRoute);
 app.use('/api/locker', lockerRoute);
 app.use('/api/issue', issueRoute);
 app.use('/api/profile', profileRoute);
+
 
 app.listen(process.env.PORT, () => {
   console.log(`server is running on port ${process.env.PORT}`);
@@ -68,7 +70,7 @@ const COLUMN_MAPPING = {
   6:   "availableForGender"
 };
  
-app.post('/upload-excel', upload.single('file'), (req, res) => {
+app.post('/upload-excel', upload.single('file'),async (req, res) => {
   try {
      const buffer = req.file.buffer;
     
@@ -84,12 +86,21 @@ app.post('/upload-excel', upload.single('file'), (req, res) => {
                   mappedRow[COLUMN_MAPPING[index]] = cell;
               }
           });
-          console.log(mappedRow);
+          // console.log(mappedRow);
           return mappedRow;
       });
 
+      const response = await axios.post('http://localhost:3000/api/admin/addMultipleLocker', { data });
+
+      // Check response status and return it
+      if (response.status === 200) {
+        res.status(200).json({ message: "File processed and lockers added successfully", data });
+      } else {
+        res.status(response.status).json({ message: "Failed to add lockers", details: response.data });
+      }
+     
       // Send the processed data as a response
-      res.status(200).json({ message: "File processed successfully", data });
+      // res.status(200).json({ message: "File processed successfully", data });
   } catch (err) {
       res.status(500).json({ message: `Error processing file: ${err.message}` });
   }

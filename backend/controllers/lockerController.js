@@ -64,7 +64,7 @@ exports.allocateLocker = async (req, res, next) => {
             const threeMonthsFromNow = new Date();
             threeMonthsFromNow.setMonth(threeMonthsFromNow.getMonth() + 3);
             expiresOn = threeMonthsFromNow;
-        } 
+        }
         else if (duration === "6") {
             // Set expiresOn to 6 months from the current date
             const sixMonthsFromNow = new Date();
@@ -143,8 +143,8 @@ exports.renewLocker = async (req, res, next) => {
             const threeMonthsFromNow = new Date();
             threeMonthsFromNow.setMonth(threeMonthsFromNow.getMonth() + 3);
             expiresOn = threeMonthsFromNow;
-        } 
-        else  if (duration === "6") {
+        }
+        else if (duration === "6") {
             // Set expiresOn to 6 months from the current date
             const sixMonthsFromNow = new Date();
             sixMonthsFromNow.setMonth(sixMonthsFromNow.getMonth() + 6);
@@ -207,11 +207,11 @@ exports.cancelLockerAllocation = async (req, res, next) => {
         }
         let oldCode = locker.LockerCode;
         oldCode = oldCode.substring(1) + oldCode[0];
-        locker.LockerStatus='available';
+        locker.LockerStatus = 'available';
         locker.LockerCode = oldCode;
-      
+
         // LockerType,LockerStatus,LockerNumber,LockerCode,
-       
+
         locker.employeeName = "";
         locker.employeeId = "";
         locker.employeeEmail = "";
@@ -232,7 +232,7 @@ exports.cancelLockerAllocation = async (req, res, next) => {
             "Locker Taken Back",
             `Alert your locker with locker number  ${lockerNumber} is taken back `
         );
-          
+
         return res.status(200).json({
             message: "Locker taken back successfully",
             data: locker
@@ -363,8 +363,8 @@ exports.updateLockerCode = async (req, res, next) => {
         if (!locker) {
             return res.status(404).json({ message: "Locker not found" });
         }
-     
-        
+
+
         // locker.LockerCode=newCode;
 
         await locker.save();
@@ -380,22 +380,22 @@ exports.updateLockerCode = async (req, res, next) => {
 exports.chageLockerStatusToExpired = async (req, res, next) => {
     try {
         const { id } = req.body;
-        
+
         if (!id) {
             return res.status(400).json({ message: "Locker ID is required" });
         }
-        
+
         const updatedLocker = await Locker.findByIdAndUpdate(
             id,
             { LockerStatus: "expired" },
             { new: true }
         );
-        
-       if (!updatedLocker) {
+
+        if (!updatedLocker) {
             return res.status(404).json({ message: "Locker not found" });
         }
-        
-       res.status(200).json({
+
+        res.status(200).json({
             message: "Locker status updated to expired",
             data: updatedLocker
         });
