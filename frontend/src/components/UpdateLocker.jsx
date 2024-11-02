@@ -1,8 +1,8 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+
 import { lazy, useContext } from "react";
-
 import { LockerContext } from "../context/LockerProvider";
-
 const DashNav = lazy(() => import("./DashNav"));
 
 const UpdateLocker = () => {
@@ -21,24 +21,39 @@ const UpdateLocker = () => {
                     {expiredLockerDetails.map((item, index) => (
                         <div key={index} className="flex flex-col items-start bg-white drop-shadow-xl text-[1rem] px-12 py-8 gap-2">
                             <p className="flex gap-4">
-                                <span className="text-blue">Number :</span>
+                                <span className="text-blue">Number :</span> {item.LockerNumber}
                             </p>
                             <p className="flex gap-4">
-                                <span className="text-blue">Email :</span>
+                                <span className="text-blue">Email :</span> {item.employeeEmail}
                             </p>
                             <p className="flex gap-4">
-                                <span className="text-blue">Gender :</span>
+                                <span className="text-blue">Gender :</span> {item.availableForGender}
                             </p>
 
                             <p className="flex gap-4">
-                                <span className="text-blue">Name :</span>
+                                <span className="text-blue">Name :</span> {item.employeeName}
                             </p>
                             <p className="flex gap-4">
-                                <span className="text-blue">Phone :</span>
+                                <span className="text-blue">Phone :</span> {item.employeePhone}
                             </p>
                             <div className="flex flex-row gap-4 mt-4">
-                                <button className="bg-blue px-4 py-2 text-white">Update</button>
-                                <button className="bg-blue px-4 py-2 text-white">Renew</button>
+                                <Link to={"/update_locker_feature"} state={{ LockerNumber: item.LockerNumber, employeeEmail: item.employeeEmail }} className="bg-blue px-4 py-2 text-white">
+                                    Update
+                                </Link>
+                                <Link
+                                    to={"/renew_locker"}
+                                    state={{
+                                        LockerNumber: item.LockerNumber,
+                                        LockerPrice3Month: item.LockerPrice3Month,
+                                        LockerPrice6Month: item.LockerPrice6Month,
+                                        LockerPrice12Month: item.LockerPrice12Month,
+                                        employeeEmail: item.employeeEmail,
+                                        employeeName: item.employeeName,
+                                    }}
+                                    className="bg-blue px-4 py-2 text-white"
+                                >
+                                    Renew
+                                </Link>
                             </div>
                         </div>
                     ))}

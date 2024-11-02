@@ -19,6 +19,7 @@ const LockerProvider = ({ children }) => {
     const [cancelLockers, setCancelLockers] = useState(null);
     const [lockerIssue, setLockerIssue] = useState(null);
     const [technicalIssue, setTechnicalIssue] = useState(null);
+    const [renewLocker, setRenewLocker] = useState(null);
 
     const addLocker = async (LockerType, LockerNumber, LockerCode, LockerPrice3Month, LockerPrice6Month, LockerPrice12Month, availableForGender) => {
         try {
@@ -216,6 +217,34 @@ const LockerProvider = ({ children }) => {
         }
     };
 
+    const handleRenewLocker = async (lockerNumber, costToEmployee, duration, startDate, endDate, EmployeeEmail) => {
+        try {
+            const res = await axios.post(
+                "http://localhost:3000/api/locker/renewLocker",
+                {
+                    lockerNumber,
+                    costToEmployee,
+                    duration,
+                    startDate,
+                    endDate,
+                    EmployeeEmail,
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            if (res.status === 200) {
+                const data = res.data;
+                setRenewLocker(data);
+                navigate("/update_locker");
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     useEffect(() => {
         fetchAllLockers();
         fetchExpiredLockers();
@@ -237,6 +266,7 @@ const LockerProvider = ({ children }) => {
                 availableLocker,
                 availableLockers,
                 allocateLocker,
+                handleRenewLocker,
             }}
         >
             {children}
