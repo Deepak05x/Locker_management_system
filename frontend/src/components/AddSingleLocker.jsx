@@ -117,6 +117,9 @@ const AddSingleLocker = () => {
                                 Add Locker
                             </button>
                         </div>
+                        <Link className="bg-blue px-6 py-2 rounded-sm text-white font-medium" to={"/add_multiple_locker"}>
+                            Add Multiple Locker
+                        </Link>
                     </form>
                 </div>
             </section>

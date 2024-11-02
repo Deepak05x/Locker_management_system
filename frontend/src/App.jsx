@@ -21,6 +21,7 @@ const UpdateLocker = lazy(() => import("./components/UpdateLocker"));
 const LockerIssue = lazy(() => import("./components/LockerIssue"));
 const TechnicalIssue = lazy(() => import("./components/TechnicalIssue"));
 const UpdateLockerFeature = lazy(() => import("./components/UpdateLockerFeature"));
+const AddMultipleLocker = lazy(() => import("./components/AddMultipleLocker"));
 
 const App = () => {
     return (
@@ -45,6 +46,7 @@ const App = () => {
                         <Route path="/issue_reporting" element={<LockerIssue />} />
                         <Route path="/technical_issue" element={<TechnicalIssue />} />
                         <Route path="/update_locker_feature" element={<UpdateLockerFeature />} />
+                        <Route path="/add_multiple_locker" element={<AddMultipleLocker />} />
                     </Routes>
                 </Suspense>
             </AuthProvider>
