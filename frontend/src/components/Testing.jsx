@@ -1,68 +1,89 @@
-import React from "react";
-import { LogIn, Shield, Key, Settings } from "lucide-react";
+import React, { useState, useContext } from "react";
+import { User, Box, RefreshCw, X, Plus, AlertTriangle, Settings, KeyRound } from "lucide-react";
+import { Card, CardContent } from "./ui/card";
+import { Badge } from "./ui/Badge";
+import Layout from "./Layout";
+import { Link } from "react-router-dom";
+import { AuthContext } from "../context/AuthProvider";
 
-const Testing = () => {
+const Dashboard = () => {
+    const { loginDetails } = useContext(AuthContext);
+
+    const staff = [
+        { title: "Assign Locker", icon: User, path: "/available_lockers", description: "Manage user accounts and permissions", stats: "2.4k Users" },
+        { title: "Cancel Locker Assignment", icon: Box, path: "/cancel_locker", description: "Oversee staff and their roles", stats: "156 Staff" },
+        { title: "Locker Management", icon: KeyRound, path: "/locker_management", description: "View and manage all lockers", stats: "450 Lockers" },
+        { title: "Update Locker", icon: RefreshCw, path: "/update_locker", description: "Review all transactions", stats: "1.2k/month" },
+        { title: "Issue Reporting", icon: AlertTriangle, path: "/issue_reporting", description: "Report issues with lockers or staff", stats: "5 Active" },
+    ];
+
+    const admin = [
+        { title: "User Management", icon: User, path: "/user-management", description: "Manage user accounts and permissions", stats: "2.4k Users" },
+        { title: "Staff Management", icon: Box, path: "/staff-management", description: "Oversee staff and their roles", stats: "156 Staff" },
+        { title: "Locker Management", icon: KeyRound, path: "/locker-management", description: "View and manage all lockers", stats: "450 Lockers" },
+        { title: "Transaction History", icon: RefreshCw, path: "/transaction-history", description: "Review all transactions", stats: "1.2k/month" },
+        { title: "Add Locker", icon: Plus, path: "/add-locker", description: "Add a new locker to the system", stats: "Quick Add" },
+        { title: "Delete Locker", icon: X, path: "/delete-locker", description: "Remove lockers from the system", stats: "Manage" },
+        { title: "Update Locker", icon: Settings, path: "/update-locker", description: "Update existing locker details", stats: "Configure" },
+        { title: "Issue Reporting", icon: AlertTriangle, path: "/report", description: "Report issues with lockers or staff", stats: "5 Active" },
+    ];
+
     return (
-        <div className="min-h-screen flex font-sans">
-            {/* Left Panel with Logo Background and Overlay */}
-            <div className="flex-1 flex flex-col gap-8 items-center justify-center p-10 text-white relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-800 to-blue-600 opacity-90 "></div> {/* Slightly lighter overlay */}
-                <div className="relative flex flex-col gap-4 z-10 text-center px-6">
-                    <h1 className="text-5xl flex flex-col font-bold leading-tight tracking-tight mb-4 text-shadow">
-                        Discover a New Era of Security with <br />
-                        <span className="text-yellow-400">Locker Management System</span>
-                        <span>by DraconX</span>
-                    </h1>
-                    <p className="text-ll md:text-xl  mt-4 tracking-wide">Experience smart, secure, and seamlessly integrated locker management designed for modern workspaces.</p>
+        <Layout>
+            <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    {loginDetails.role === "Staff" ? (
+                        <>
+                            {staff.map((feature) => (
+                                <Link to={feature.path}>
+                                    <Card
+                                        key={feature.path}
+                                        className="hover:shadow-lg transition-transform duration-300 cursor-pointer bg-white border border-gray-200 transform hover:-translate-y-1"
+                                    >
+                                        <CardContent className="p-4 md:p-6">
+                                            <div className="space-y-4">
+                                                <div className="flex items-center justify-between">
+                                                    <div className="bg-blue-50 p-2 md:p-3 rounded-lg">
+                                                        <feature.icon className="h-6 w-6 text-blue-600" />
+                                                    </div>
+                                                    <Badge className="bg-gray-100 text-gray-600">{feature.stats}</Badge>
+                                                </div>
+                                                <div>
+                                                    <h2 className="text-md md:text-lg font-semibold text-gray-800">{feature.title}</h2>
+                                                    <p className="text-sm md:text-base text-gray-600 mt-1">{feature.description}</p>
+                                                </div>
+                                            </div>
+                                        </CardContent>
+                                    </Card>
+                                </Link>
+                            ))}
+                        </>
+                    ) : (
+                        <>
+                            {admin.map((feature) => (
+                                <Card key={feature.path} className="hover:shadow-lg transition-transform duration-300 cursor-pointer bg-white border border-gray-200 transform hover:-translate-y-1">
+                                    <CardContent className="p-4 md:p-6">
+                                        <div className="space-y-4">
+                                            <div className="flex items-center justify-between">
+                                                <div className="bg-blue-50 p-2 md:p-3 rounded-lg">
+                                                    <feature.icon className="h-6 w-6 text-blue-600" />
+                                                </div>
+                                                <Badge className="bg-gray-100 text-gray-600">{feature.stats}</Badge>
+                                            </div>
+                                            <div>
+                                                <h2 className="text-md md:text-lg font-semibold text-gray-800">{feature.title}</h2>
+                                                <p className="text-sm md:text-base text-gray-600 mt-1">{feature.description}</p>
+                                            </div>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            ))}
+                        </>
+                    )}
                 </div>
-                {/* Call-to-Action Button */}
-                <button
-                    className="relative z-10 flex items-center px-8 py-4 mt-6 text-xl font-medium bg-white text-blue rounded-lg shadow-lg  transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                    onClick={() => console.log("Access System")}
-                >
-                    <LogIn className="mr-2 h-6 w-6" />
-                    Access System
-                </button>
-            </div>
-
-            {/* Right Panel with Features Section */}
-            <div className="flex-1 flex flex-col items-center justify-center bg-white text-blue-800 p-12 space-y-10">
-                <h2 className="text-3xl font-bold text-blue-900 mb-6 text-center tracking-tight">Key Features</h2>
-
-                {/* Carousel of Features */}
-                <div className="grid grid-cols-1 gap-4 w-full max-w-lg">
-                    {" "}
-                    {/* Reduced gap between cards */}
-                    <FeatureCard
-                        icon={<Shield className="h-12 w-12 text-blue-700 mb-2 animate-bounce" />} // Smaller icon
-                        title="Advanced Security"
-                        description="State-of-the-art encryption and access control at your fingertips."
-                    />
-                    <FeatureCard
-                        icon={<Key className="h-12 w-12 text-blue-700 mb-2 animate-pulse" />} // Smaller icon
-                        title="Smart Access"
-                        description="Real-time digital key management with enhanced accessibility."
-                    />
-                    <FeatureCard
-                        icon={<Settings className="h-12 w-12 text-blue-700 mb-2 animate-spin-slow" />} // Smaller icon
-                        title="Easy Management"
-                        description="Intuitive dashboard for effortless facility administration."
-                    />
-                </div>
-            </div>
-        </div>
+            </main>
+        </Layout>
     );
 };
 
-// Feature Card Component for Reusability
-const FeatureCard = ({ icon, title, description }) => (
-    <div className="flex flex-col items-center p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg shadow-md transition-transform duration-300 transform hover:scale-105">
-        {" "}
-        {/* Reduced padding */}
-        {icon}
-        <h3 className="text-lg font-semibold mb-1 text-blue-900">{title}</h3> {/* Smaller title font */}
-        <p className="text-blue-600 text-center max-w-xs">{description}</p>
-    </div>
-);
-
-export default Testing;
+export default Dashboard;

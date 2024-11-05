@@ -11,6 +11,9 @@ export default {
                     DEFAULT: "#ffffff",
                 },
             },
+            screens: {
+                ssm: "320px",
+            },
         },
     },
     plugins: [],
