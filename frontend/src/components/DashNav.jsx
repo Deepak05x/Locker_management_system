@@ -19,7 +19,7 @@ const DashNav = () => {
                     {/* Logo Section */}
                     <div className="flex items-center space-x-3">
                         <img src="/DraconX.png" alt="SafeLocker Logo" className="h-10 sm:h-12 transition-transform duration-300 cursor-pointer hover:scale-105" />
-                        <span className="text-xl sm:text-2xl ssm:hidden font-bold">DraconX</span>
+                        <span className="text-xl sm:text-2xl xs:hidden font-bold">DraconX</span>
                     </div>
 
                     {/* Navigation Links and User Profile Section */}

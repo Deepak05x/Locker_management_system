@@ -20,6 +20,7 @@ const LockerProvider = ({ children }) => {
     const [lockerIssue, setLockerIssue] = useState(null);
     const [technicalIssue, setTechnicalIssue] = useState(null);
     const [renewLocker, setRenewLocker] = useState(null);
+    const [expireIn7Days, setExpireIn7Days] = useState(null);
 
     const addLocker = async (LockerType, LockerNumber, LockerCode, LockerPrice3Month, LockerPrice6Month, LockerPrice12Month, availableForGender) => {
         try {
@@ -245,16 +246,30 @@ const LockerProvider = ({ children }) => {
         }
     };
 
+    const getExpiredLockers7Days = async () => {
+        try {
+            const res = await axios.get("http://localhost:3000/api/locker/getExpiringIn7daysLockers");
+            if (res.status === 200) {
+                const data = res.data;
+                setExpireIn7Days(data);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     useEffect(() => {
         fetchAllLockers();
         fetchExpiredLockers();
         fetchAllocatedLockers();
         fetchAvailableLockers();
+        getExpiredLockers7Days();
     }, []);
 
     return (
         <LockerContext.Provider
             value={{
+                expireIn7Days,
                 handleTechnicalIssue,
                 handleLockerIssue,
                 allocatedLockerDetails,

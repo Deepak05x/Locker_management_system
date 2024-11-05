@@ -18,9 +18,9 @@ const Dashboard = () => {
     ];
 
     const admin = [
-        { title: "User Management", icon: User, path: "/user-management", description: "Manage user accounts and permissions", stats: "2.4k Users" },
+        { title: "Locker Analysis", icon: User, path: "/locker_analysis", description: "Analysing the lockers", stats: "2.4k Users" },
         { title: "Staff Management", icon: Box, path: "/staff-management", description: "Oversee staff and their roles", stats: "156 Staff" },
-        { title: "Locker Management", icon: KeyRound, path: "/locker-management", description: "View and manage all lockers", stats: "450 Lockers" },
+        { title: "Locker Management", icon: KeyRound, path: "/locker_management", description: "View and manage all lockers", stats: "450 Lockers" },
         { title: "Transaction History", icon: RefreshCw, path: "/transaction-history", description: "Review all transactions", stats: "1.2k/month" },
         { title: "Add Locker", icon: Plus, path: "/add-locker", description: "Add a new locker to the system", stats: "Quick Add" },
         { title: "Delete Locker", icon: X, path: "/delete-locker", description: "Remove lockers from the system", stats: "Manage" },
@@ -30,23 +30,17 @@ const Dashboard = () => {
 
     return (
         <Layout>
-            <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <main className=" px-4 ssm:px-2 sm:px-4 md:px-6 lg:px-8 xxl:px-10 py-24">
+                <div className="grid  ssm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xxl:grid-cols-4  px-12 gap-12">
                     {loginDetails.role === "Staff" ? (
                         <>
                             {staff.map((feature) => (
-                                <Link to={feature.path}>
-                                    <Card
-                                        key={feature.path}
-                                        className="hover:shadow-lg transition-transform duration-300 cursor-pointer bg-white border border-gray-200 transform hover:-translate-y-1"
-                                    >
-                                        <CardContent className="p-4 md:p-6">
+                                <Link to={feature.path} key={feature.path}>
+                                    <Card className="hover:shadow-lg transition-transform duration-300 cursor-pointer bg-white border border-gray-200 transform hover:-translate-y-1">
+                                        <CardContent className="">
                                             <div className="space-y-4">
                                                 <div className="flex items-center justify-between">
-                                                    <div className="bg-blue-50 p-2 md:p-3 rounded-lg">
-                                                        <feature.icon className="h-6 w-6 text-blue-600" />
-                                                    </div>
-                                                    <Badge className="bg-gray-100 text-gray-600">{feature.stats}</Badge>
+                                                    <div className="bg-blue/10 p-2 md:p-3 rounded-lg">{React.createElement(feature.icon, { className: "h-6 w-6 text-blue" })}</div>
                                                 </div>
                                                 <div>
                                                     <h2 className="text-md md:text-lg font-semibold text-gray-800">{feature.title}</h2>
@@ -62,13 +56,10 @@ const Dashboard = () => {
                         <>
                             {admin.map((feature) => (
                                 <Card key={feature.path} className="hover:shadow-lg transition-transform duration-300 cursor-pointer bg-white border border-gray-200 transform hover:-translate-y-1">
-                                    <CardContent className="p-4 md:p-6">
-                                        <div className="space-y-4">
+                                    <CardContent className="px-6 py-8">
+                                        <div className="space-y-4 flex flex-col items-center justify-center text-center">
                                             <div className="flex items-center justify-between">
-                                                <div className="bg-blue-50 p-2 md:p-3 rounded-lg">
-                                                    <feature.icon className="h-6 w-6 text-blue-600" />
-                                                </div>
-                                                <Badge className="bg-gray-100 text-gray-600">{feature.stats}</Badge>
+                                                <div className="bg-blue/10 p-2 md:p-3 rounded-lg">{React.createElement(feature.icon, { className: "h-6 w-6 text-blue" })}</div>
                                             </div>
                                             <div>
                                                 <h2 className="text-md md:text-lg font-semibold text-gray-800">{feature.title}</h2>
