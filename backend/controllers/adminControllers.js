@@ -128,8 +128,6 @@ exports.viewAllStaff = async (req, res, next) => {
     }
 };
 
-
-
 exports.removeStaff = async (req, res, next) => {
     console.log("in");
     try {
