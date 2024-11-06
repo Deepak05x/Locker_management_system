@@ -3,10 +3,23 @@ import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AdminContext } from "../context/AdminProvider";
 import Layout from "./Layout";
+import { useNavigate } from "react-router-dom";
 
 const StaffManagement = () => {
-    const { staffs } = useContext(AdminContext);
+    const { staffs, handleStaffDetails } = useContext(AdminContext);
     console.log(staffs);
+
+    const navigate = useNavigate();
+
+    const handleSubmit = async (id) => {
+        try {
+            await handleStaffDetails(id);
+            console.log("SUBMIT WORKED");
+            navigate("/view_staff_details");
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <Layout>
@@ -29,9 +42,14 @@ const StaffManagement = () => {
                             <p className="flex gap-4">
                                 <span className="text-blue">Phone Number :</span> {item.phoneNumber}
                             </p>
-                            <Link to={"/view_staff_details"} className="bg-blue text-white px-4 py-2">
-                                View Details
-                            </Link>
+                            <div className="flex flex-row items-center gap-12 mt-10">
+                                <button type="submit" onClick={() => handleSubmit(item._id)} className="bg-blue text-white px-4 py-2">
+                                    View Details
+                                </button>
+                                <button type="submit" onClick={() => handleSubmit(item._id)} className="bg-blue text-white px-4 py-2">
+                                    Edit Details
+                                </button>
+                            </div>
                         </div>
                     ))}
                 </section>

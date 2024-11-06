@@ -131,7 +131,7 @@ const AddSingleStaff = () => {
                                     value={gender}
                                     onChange={(e) => setGender(e.target.value)}
                                 >
-                                    <option value="" disabled hidden>
+                                    <option value="" disabled selected hidden>
                                         Gender
                                     </option>
                                     <option value="Male">Male</option>

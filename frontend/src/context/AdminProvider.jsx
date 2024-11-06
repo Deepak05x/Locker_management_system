@@ -9,7 +9,7 @@ export const AdminContext = createContext();
 const AdminProvider = ({ children }) => {
     const [staffs, setStaffs] = useState([]);
     const [addedStaffs, setAddedStaffs] = useState([]);
-    const [staffDetails, setStaffDetails] = useState(null);
+    const [staffDetails, setStaffDetails] = useState([]);
 
     const navigate = useNavigate();
 
@@ -47,13 +47,14 @@ const AdminProvider = ({ children }) => {
                 const data = res.data;
                 setAddedStaffs(data);
                 navigate("/staff_management");
+                window.location.reload();
             }
         } catch (error) {
             console.log(error);
         }
     };
 
-    const handleStaffDetails = async () => {
+    const handleStaffDetails = async (id) => {
         try {
             const res = await axios.post(
                 "http://localhost:3000/api/admin/viewStaffDetails",
@@ -68,7 +69,31 @@ const AdminProvider = ({ children }) => {
             );
             if (res.status === 200) {
                 const data = res.data;
+                console.log("STAFF DETAILS WORKED");
                 setStaffDetails(data);
+                navigate("/staff_management");
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const deleteStaff = async (id) => {
+        try {
+            const res = await axios.post(
+                "http://localhost:3000/api/admin/removeStaff",
+                {
+                    id,
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            if (res.status === 200) {
+                navigate("/staff_management");
+                window.location.reload();
             }
         } catch (error) {
             console.log(error);
@@ -77,11 +102,9 @@ const AdminProvider = ({ children }) => {
 
     useEffect(() => {
         getStaffs();
-        handleStaffDetails();
-        console.log(staffs);
     }, []);
 
-    return <AdminContext.Provider value={{ staffs, addSingleStaff }}>{children}</AdminContext.Provider>;
+    return <AdminContext.Provider value={{ staffs, addSingleStaff, handleStaffDetails, staffDetails, deleteStaff }}>{children}</AdminContext.Provider>;
 };
 
 export default AdminProvider;
