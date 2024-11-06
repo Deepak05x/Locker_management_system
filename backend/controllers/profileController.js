@@ -38,7 +38,6 @@ exports.updateProfile = async (req, res, next) => {
             return res.status(400).json({ message: "User ID is required" });
         }
 
-
         const updateData = {};
         if (name) updateData.name = name;
         if (email) updateData.email = email;

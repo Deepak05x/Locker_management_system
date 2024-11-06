@@ -7,7 +7,6 @@ exports.getAvailableLocker = async (req, res, next) => {
     try {
         const { lockerType, employeeGender } = req.body;
 
-
         if (!lockerType || !employeeGender) {
             return res.status(400).json({ message: "lockerType and employeeGender are required" });
         }
@@ -45,18 +44,14 @@ exports.allocateLocker = async (req, res, next) => {
             return res.status(400).json({ message: "lockerNumber is required" });
         }
 
-
         const locker = await Locker.findOne({
             LockerNumber: lockerNumber,
             LockerStatus: "available"
         });
 
-
         if (!locker) {
             return res.status(404).json({ message: "Locker is not available or does not exist" });
         }
-
-
 
         let expiresOn;
         if (duration === "3") {
@@ -95,7 +90,7 @@ exports.allocateLocker = async (req, res, next) => {
         locker.LockerStatus = "occupied";
 
         locker.expiresOn = expiresOn;
-        //         // employeeName,employeeId,employeeEmail,employeePhone,employeeGender,CostToEmployee,Duration,StartDate,EndDate
+        // employeeName,employeeId,employeeEmail,employeePhone,employeeGender,CostToEmployee,Duration,StartDate,EndDate
 
         await locker.save();
         const email = employeeEmail;
@@ -115,7 +110,6 @@ exports.allocateLocker = async (req, res, next) => {
         next(err);
     }
 };
-
 
 
 exports.renewLocker = async (req, res, next) => {
@@ -166,7 +160,7 @@ exports.renewLocker = async (req, res, next) => {
         locker.LockerStatus = "occupied";
 
         locker.expiresOn = expiresOn;
-        //         // employeeName,employeeId,employeeEmail,employeePhone,employeeGender,CostToEmployee,Duration,StartDate,EndDate
+        // employeeName,employeeId,employeeEmail,employeePhone,employeeGender,CostToEmployee,Duration,StartDate,EndDate
 
         await locker.save();
 
@@ -201,7 +195,6 @@ exports.cancelLockerAllocation = async (req, res, next) => {
             LockerNumber: lockerNumber,
         });
 
-
         if (!locker) {
             return res.status(404).json({ message: "Locker is not available or does not exist" });
         }
@@ -209,8 +202,6 @@ exports.cancelLockerAllocation = async (req, res, next) => {
         oldCode = oldCode.substring(1) + oldCode[0];
         locker.LockerStatus = 'available';
         locker.LockerCode = oldCode;
-
-        // LockerType,LockerStatus,LockerNumber,LockerCode,
 
         locker.employeeName = "";
         locker.employeeId = "";
@@ -222,11 +213,9 @@ exports.cancelLockerAllocation = async (req, res, next) => {
         locker.StartDate = "";
         locker.EndDate = "";
         locker.LockerStatus = "available";
-
         locker.expiresOn = "";
 
         await locker.save();
-
         await mailSender(
             email,
             "Locker Taken Back",
@@ -316,7 +305,6 @@ exports.getExpiringIn7daysLockers = async (req, res, next) => {
 exports.changeLockerPricing = async (req, res, next) => {
     try {
         const { id, LockerPrice3Month, LockerPrice6Month, LockerPrice12Month } = req.body;
-
         const locker = await Locker.findById(id);
         if (!locker) {
             return res.status(404).json({ message: "Locker not found" });
@@ -364,7 +352,6 @@ exports.updateLockerCode = async (req, res, next) => {
             return res.status(404).json({ message: "Locker not found" });
         }
 
-
         // locker.LockerCode=newCode;
 
         await locker.save();
@@ -380,7 +367,6 @@ exports.updateLockerCode = async (req, res, next) => {
 exports.chageLockerStatusToExpired = async (req, res, next) => {
     try {
         const { id } = req.body;
-
         if (!id) {
             return res.status(400).json({ message: "Locker ID is required" });
         }

@@ -46,12 +46,10 @@ exports.validateOTP = async (req, res, next) => {
     try {
         const { email, otp } = req.body;
 
-
         if (!email || !otp) {
             return res.status(400).json({ message: "Email, OTP, and new password are required" });
         }
         const otpRecord = await OTP.findOne({ email });
-
 
         if (!otpRecord) {
             return res.status(404).json({ message: "OTP not found. Please request a new OTP." });
@@ -60,8 +58,6 @@ exports.validateOTP = async (req, res, next) => {
         if (otpRecord.otp !== otp) {
             return res.status(400).json({ message: "Invalid OTP. Please check and try again." });
         }
-
-
 
         await OTP.deleteOne({ email });
 
@@ -77,7 +73,6 @@ exports.validateOTP = async (req, res, next) => {
 exports.resetPassword = async (req, res, next) => {
     try {
         const { email, newPassword } = req.body;
-
 
         if (!email || !newPassword) {
             return res.status(400).json({ message: "Email, and new password are required" });

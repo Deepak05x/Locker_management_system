@@ -1,12 +1,12 @@
 const Locker = require('../models/lockerModel.js')
 const User = require('../models/userModel.js')
-const bcrypt = require('bcrypt'); 
+const bcrypt = require('bcrypt');
 require('dotenv').config();
 const { errorHandler } = require('../utils/error.js');
 const jwt = require('jsonwebtoken');
 
 exports.addStaff = async (req, res, next) => {
-    console.log("in");
+  
     try {
         const { name, role, email, password, phoneNumber, gender } = req.body;
 
@@ -23,7 +23,7 @@ exports.addStaff = async (req, res, next) => {
             expiresIn: "2d",
         });
 
-        console.log(token);
+        // console.log(token);
         const userWithToken = { ...user.toObject(), token };
 
         const { password: pass, ...rest } = userWithToken;
@@ -61,15 +61,15 @@ exports.editStaff = async (req, res, next) => {
         if (phoneNumber) user.phoneNumber = phoneNumber;
         if (gender) user.gender = gender;
 
-        // Hash the password if provided
+        // Hash the password if provided                       
         if (password) {
             user.password = await bcrypt.hash(password, 10);
         }
 
-        // Save the updated user details
+        // Save the updated user details                          
         await user.save();
 
-        // Create a new token with updated information
+        // Create a new token with updated information          
         const payload = { email: user.email, id: user._id };
         const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "2d" });
 
@@ -90,19 +90,14 @@ exports.editStaff = async (req, res, next) => {
 
 exports.viewStaffDetails = async (req, res, next) => {
     try {
-      
+
         const { id } = req.body;
-       
+
         let user = await User.findById(id);
-       
+
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-
-       
-
-         // Create a new token with updated information
-      
 
         res.status(200).json({
             message: 'User Details fetched successfully',
@@ -117,9 +112,8 @@ exports.viewStaffDetails = async (req, res, next) => {
 
 exports.viewAllStaff = async (req, res, next) => {
     try {
-             
-        let users = await User.find();
-       
+
+        let users = await User.find({ role: "Staff" });
         if (!users) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -148,7 +142,6 @@ exports.removeStaff = async (req, res, next) => {
         if (!deletedStaff) {
             return res.status(404).json({ message: "Staff not found" });
         }
-
         res.status(200).json({ message: "Staff member removed successfully" });
     } catch (err) {
         console.log(`error in removing staff: ${err.message}`);
@@ -171,7 +164,7 @@ exports.addLocker = async (req, res, next) => {
         console.log(`error in adding ${err.message}`);
         next(err);
     }
-// LockerType, LockerNumber, LockerCode, LockerPrice3Month, LockerPrice6Month, LockerPrice12Month, availableForGender 
+    // LockerType, LockerNumber, LockerCode, LockerPrice3Month, LockerPrice6Month, LockerPrice12Month, availableForGender 
 }
 exports.addMultipleLocker = async (req, res, next) => {
     try {

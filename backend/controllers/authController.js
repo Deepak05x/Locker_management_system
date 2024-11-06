@@ -63,7 +63,7 @@ exports.login = async (req, res, next) => {
         const token = jwt.sign(payload, process.env.JWT_SECRET, {
             expiresIn: "2d",
         });
-        console.log(token);
+        // console.log(token);
         const userWithToken = { ...validUser.toObject(), token };
 
         const { password: pass, ...rest } = userWithToken;

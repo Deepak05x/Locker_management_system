@@ -21,7 +21,6 @@ exports.raiseLockerIssue = async (req, res, next) => {
 
         const issue = await Issue.create({ subject, description, LockerNumber, priority, type: 'locker' });
 
-
         await issue.save();
         return res.status(200).json({ message: "Locker issue raised  successfully", issue });
     } catch (err) {
@@ -46,7 +45,6 @@ exports.updateIssueStatus = async (req, res, next) => {
 };
 exports.getAllIssue = async (req, res, next) => {
     try {
-
         const data = await Issue.find();
         return res.status(200).json({ message: " issues fetched successfully", data });
     } catch (err) { 
