@@ -19,13 +19,13 @@ const Dashboard = () => {
 
     const admin = [
         { title: "Locker Analysis", icon: User, path: "/locker_analysis", description: "Analysing the lockers", stats: "2.4k Users" },
-        { title: "Staff Management", icon: Box, path: "/staff-management", description: "Oversee staff and their roles", stats: "156 Staff" },
+        { title: "Staff Management", icon: Box, path: "/staff_management", description: "Oversee staff and their roles", stats: "156 Staff" },
         { title: "Locker Management", icon: KeyRound, path: "/locker_management", description: "View and manage all lockers", stats: "450 Lockers" },
         { title: "Transaction History", icon: RefreshCw, path: "/transaction-history", description: "Review all transactions", stats: "1.2k/month" },
-        { title: "Add Locker", icon: Plus, path: "/add-locker", description: "Add a new locker to the system", stats: "Quick Add" },
-        { title: "Delete Locker", icon: X, path: "/delete-locker", description: "Remove lockers from the system", stats: "Manage" },
+        { title: "Add Locker", icon: Plus, path: "/add_single_locker", description: "Add a new locker to the system", stats: "Quick Add" },
+        { title: "Delete Locker", icon: X, path: "/delete_locker", description: "Remove lockers from the system", stats: "Manage" },
         { title: "Update Locker", icon: Settings, path: "/update-locker", description: "Update existing locker details", stats: "Configure" },
-        { title: "Issue Reporting", icon: AlertTriangle, path: "/report", description: "Report issues with lockers or staff", stats: "5 Active" },
+        { title: "Issue Reporting", icon: AlertTriangle, path: "/issue_reporting", description: "Report issues with lockers or staff", stats: "5 Active" },
     ];
 
     return (
@@ -37,7 +37,7 @@ const Dashboard = () => {
                             {staff.map((feature) => (
                                 <Link to={feature.path} key={feature.path}>
                                     <Card className="hover:shadow-lg transition-transform duration-300 cursor-pointer bg-white border border-gray-200 transform hover:-translate-y-1">
-                                        <CardContent className="">
+                                        <CardContent className="px-6 py-8">
                                             <div className="space-y-4">
                                                 <div className="flex items-center justify-between">
                                                     <div className="bg-blue/10 p-2 md:p-3 rounded-lg">{React.createElement(feature.icon, { className: "h-6 w-6 text-blue" })}</div>
@@ -55,19 +55,24 @@ const Dashboard = () => {
                     ) : (
                         <>
                             {admin.map((feature) => (
-                                <Card key={feature.path} className="hover:shadow-lg transition-transform duration-300 cursor-pointer bg-white border border-gray-200 transform hover:-translate-y-1">
-                                    <CardContent className="px-6 py-8">
-                                        <div className="space-y-4 flex flex-col items-center justify-center text-center">
-                                            <div className="flex items-center justify-between">
-                                                <div className="bg-blue/10 p-2 md:p-3 rounded-lg">{React.createElement(feature.icon, { className: "h-6 w-6 text-blue" })}</div>
+                                <Link to={feature.path} key={feature.path}>
+                                    <Card
+                                        key={feature.path}
+                                        className="hover:shadow-lg transition-transform duration-300 cursor-pointer bg-white border border-gray-200 transform hover:-translate-y-1"
+                                    >
+                                        <CardContent className="px-6 py-8">
+                                            <div className="space-y-4 flex flex-col items-center justify-center text-center">
+                                                <div className="flex items-center justify-between">
+                                                    <div className="bg-blue/10 p-2 md:p-3 rounded-lg">{React.createElement(feature.icon, { className: "h-6 w-6 text-blue" })}</div>
+                                                </div>
+                                                <div>
+                                                    <h2 className="text-md md:text-lg font-semibold text-gray-800">{feature.title}</h2>
+                                                    <p className="text-sm md:text-base text-gray-600 mt-1">{feature.description}</p>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <h2 className="text-md md:text-lg font-semibold text-gray-800">{feature.title}</h2>
-                                                <p className="text-sm md:text-base text-gray-600 mt-1">{feature.description}</p>
-                                            </div>
-                                        </div>
-                                    </CardContent>
-                                </Card>
+                                        </CardContent>
+                                    </Card>
+                                </Link>
                             ))}
                         </>
                     )}
