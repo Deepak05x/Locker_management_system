@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthProvider";
 import { Lock, User, Key, Building } from "lucide-react";
 
-const Testing = () => {
+const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -108,4 +108,4 @@ const Testing = () => {
     );
 };
 
-export default Testing;
+export default Login;
