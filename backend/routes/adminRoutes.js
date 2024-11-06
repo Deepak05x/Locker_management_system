@@ -6,7 +6,7 @@ router.post('/addStaff', addStaff);
 router.post('/removeStaff', removeStaff);
 router.put('/editStaff', editStaff);
 router.get('/viewAllStaff', viewAllStaff);
-router.get('/viewStaffDetails', viewStaffDetails);
+router.post('/viewStaffDetails', viewStaffDetails);
 router.post('/addSingleLocker', addLocker);
 router.post('/addMultipleLocker', addMultipleLocker);
 

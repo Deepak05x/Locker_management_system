@@ -44,7 +44,7 @@ exports.editStaff = async (req, res, next) => {
     try {
         // Get the staff ID from request parameters
         const { id } = req.body;
-        console.log(id)
+        // console.log(id)
         // Find the user by ID
         let user = await User.findById(id);
         if (!user) {
@@ -102,7 +102,7 @@ exports.viewStaffDetails = async (req, res, next) => {
         res.status(200).json({
             message: 'User Details fetched successfully',
             user: user
-        });
+        }); 
     } catch (err) {
         console.log(`Error in updating staff: ${err.message}`);
         next(err);
