@@ -62,7 +62,7 @@ router.put('/updateMultipleLockerPrices', async (req, res) => {
 
         res.status(200).json({
             message: 'Locker prices updated successfully.',
-            updatedCount: result.nModified
+            updatedCount: result.nModified   
         })
     } catch (error) {
         console.error('Error updating locker prices:', error);
