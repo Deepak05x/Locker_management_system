@@ -100,11 +100,33 @@ const AdminProvider = ({ children }) => {
         }
     };
 
+    const deleteLocker = async (lockerNumber) => {
+        try {
+            const res = await axios.post(
+                "http://localhost:3000/api/locker/deleteLocker",
+                {
+                    lockerNumber,
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            if (res.status === 200) {
+                navigate("/staff_management");
+                window.location.reload();
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     useEffect(() => {
         getStaffs();
     }, []);
 
-    return <AdminContext.Provider value={{ staffs, addSingleStaff, handleStaffDetails, staffDetails, deleteStaff }}>{children}</AdminContext.Provider>;
+    return <AdminContext.Provider value={{ deleteLocker, staffs, addSingleStaff, handleStaffDetails, staffDetails, deleteStaff }}>{children}</AdminContext.Provider>;
 };
 
 export default AdminProvider;
