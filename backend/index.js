@@ -25,14 +25,12 @@ app.use(cors({
   origin: "http://localhost:5173"
 }));
 
-
 app.use('/api/user', userroute);
 app.use('/api/admin', adminRoute);
 app.use('/api/resetPassword', resetPasswordRoute);
 app.use('/api/locker', lockerRoute);
 app.use('/api/issue', issueRoute);
 app.use('/api/profile', profileRoute);
-
 
 app.listen(process.env.PORT, () => {
   console.log(`server is running on port ${process.env.PORT}`);
@@ -92,7 +90,7 @@ app.post('/upload-excel', upload.single('file'),async (req, res) => {
 
       const response = await axios.post('http://localhost:3000/api/admin/addMultipleLocker', { data });
 
-      // Check response status and return it
+      // Check response status and return it/
       if (response.status === 200) {
         res.status(200).json({ message: "File processed and lockers added successfully", data });
       } else {

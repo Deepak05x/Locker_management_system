@@ -391,3 +391,33 @@ exports.chageLockerStatusToExpired = async (req, res, next) => {
         next(err);
     }
 };
+
+
+exports.deleteLocker = async (req, res, next) => {
+    try {
+        const { id } = req.body;
+        
+        console.log(id);
+        
+        if (!id) {
+            return res.status(400).json({ message: "Locker ID is required" });
+        }
+
+        const deletedLocker = await Locker.findByIdAndDelete(id);
+
+        if (!deletedLocker) {
+            return res.status(404).json({ message: "Locker not found" });
+        }
+
+        res.status(200).json({
+            message: "Locker deleted successfully",
+            data: deletedLocker
+        });
+
+    } catch (err) {
+        console.error(`Error in deleting locker: ${err.message}`);
+        res.status(500).json({ message: `Error deleting locker: ${err.message}` });
+        next(err);
+    }
+};
+

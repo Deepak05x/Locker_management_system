@@ -23,7 +23,6 @@ exports.addStaff = async (req, res, next) => {
             expiresIn: "2d",
         });
 
-        // console.log(token);
         const userWithToken = { ...user.toObject(), token };
 
         const { password: pass, ...rest } = userWithToken;
