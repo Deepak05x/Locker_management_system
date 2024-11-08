@@ -22,6 +22,65 @@ const LockerProvider = ({ children }) => {
     const [renewLocker, setRenewLocker] = useState(null);
     const [expireIn7Days, setExpireIn7Days] = useState(null);
 
+    const [isEditable, setIsEditable] = useState({
+        halfMale: false,
+        fullMale: false,
+        halfFemale: false,
+        fullFemale: false,
+    });
+
+    const [lockerPrices, setLockerPrices] = useState({
+        halfMale: { threeMonths: 300, sixMonths: 600, twelveMonths: 900 },
+        fullMale: { threeMonths: 500, sixMonths: 800, twelveMonths: 1200 },
+        halfFemale: { threeMonths: 300, sixMonths: 400, twelveMonths: 500 },
+        fullFemale: { threeMonths: 400, sixMonths: 500, twelveMonths: 600 },
+    });
+
+    const toggleEditable = (lockerType) => {
+        setIsEditable((prevState) => ({
+            ...prevState,
+            [lockerType]: !prevState[lockerType],
+        }));
+    };
+
+    const handleInputChange = (e, lockerType, duration) => {
+        const { value } = e.target;
+        setLockerPrices((prevPrices) => ({
+            ...prevPrices,
+            [lockerType]: {
+                ...prevPrices[lockerType],
+                [duration]: value,
+            },
+        }));
+    };
+
+    const saveLockerPrice = async (lockerType) => {
+        const { threeMonths, sixMonths, twelveMonths } = lockerPrices[lockerType];
+        const data = {
+            LockerPrice3Month: parseInt(threeMonths, 10),
+            LockerPrice6Month: parseInt(sixMonths, 10),
+            LockerPrice12Month: parseInt(twelveMonths, 10),
+            LockerType: lockerType.includes("half") ? "half" : "full",
+            availableForGender: lockerType.includes("Male") ? "Male" : "Female",
+        };
+
+        try {
+            const response = await axios.put("http://localhost:3000/api/locker/updateMultipleLockerPrices", data, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            if (response.status === 200) {
+                console.log("Locker price updated successfully!");
+            } else {
+                console.error("Failed to update locker price.");
+            }
+        } catch (error) {
+            console.error("An error occurred while updating locker price:", error);
+        }
+    };
+
     const addLocker = async (LockerType, LockerNumber, LockerCode, LockerPrice3Month, LockerPrice6Month, LockerPrice12Month, availableForGender) => {
         try {
             const res = await axios.post(
@@ -282,6 +341,11 @@ const LockerProvider = ({ children }) => {
                 availableLockers,
                 allocateLocker,
                 handleRenewLocker,
+                isEditable,
+                lockerPrices,
+                toggleEditable,
+                handleInputChange,
+                saveLockerPrice,
             }}
         >
             {children}

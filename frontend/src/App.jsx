@@ -29,6 +29,7 @@ const AddSingleStaff = lazy(() => import("./components/AddSingleStaff"));
 const ViewStaffDetails = lazy(() => import("./components/ViewStaffDetails"));
 const DeleteLocker = lazy(() => import("./components/DeleteLocker"));
 const UpdateLockerPrice = lazy(() => import("./components/UpdateLockerPrice"));
+const AccountPage = lazy(() => import("./components/AccountPage"));
 
 const App = () => {
     return (
@@ -61,6 +62,7 @@ const App = () => {
                             <Route path="/view_staff_details" element={<ViewStaffDetails />} />
                             <Route path="/delete_locker" element={<DeleteLocker />} />
                             <Route path="/update_locker_price" element={<UpdateLockerPrice />} />
+                            <Route path="/account_page" element={<AccountPage />} />
                         </Routes>
                     </Suspense>
                 </AdminProvider>
