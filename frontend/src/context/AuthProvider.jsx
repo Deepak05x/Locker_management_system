@@ -119,7 +119,35 @@ const AuthProvider = ({ children }) => {
         }
     };
 
-    return <AuthContext.Provider value={{ login, checkEmail, setCheckEmail, loginDetails, generateOtp, getOtp, validateOtp, resetPassword, logout }}>{children}</AuthContext.Provider>;
+    const handleProfileUpdate = async (userId, name, email, password, phone) => {
+        try {
+            const res = await axios.post(
+                "http://localhost:3000/api/profile/updateProfile",
+                {
+                    userId,
+                    name,
+                    email,
+                    password,
+                    phone,
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            if (res.status === 200) {
+                navigate("/dashboard");
+                window.location.reload();
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    return (
+        <AuthContext.Provider value={{ handleProfileUpdate, login, checkEmail, setCheckEmail, loginDetails, generateOtp, getOtp, validateOtp, resetPassword, logout }}>{children}</AuthContext.Provider>
+    );
 };
 
 export default AuthProvider;

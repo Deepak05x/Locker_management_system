@@ -2,6 +2,7 @@ import React from "react";
 import { lazy } from "react";
 import { useState, useContext } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Lock, User, Key, Building } from "lucide-react";
 import { AuthContext } from "../context/AuthProvider";
 
 const Navbar = lazy(() => import("./Navbar"));
@@ -31,29 +32,50 @@ const EnterEmail = () => {
     return (
         <>
             <Navbar />
-            <section className="flex flex-col items-center py-24 gap-12">
-                <div className="flex flex-col  rounded-3xl items-center md:px-16 sm:px-12 ssm:px-8 py-16 gap-12 bg-white drop-shadow-2xl shadow-black">
-                    <h1 className="text-3xl font-medium">
-                        Enter your registered <span className="text-blue">email</span>
-                    </h1>
-                    <form onSubmit={handleSubmit} className="w-full flex flex-col items-center gap-8">
-                        <div className="flex flex-col gap-8 items-center w-full">
+            <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-xl">
+                {/* Header */}
+                <div className="text-center space-y-2 flex flex-col items-center gap-4">
+                    <div className="flex justify-center ">
+                        <Building className="w-16 h-16 text-blue-600" />
+                    </div>
+                    <h1 className="text-3xl font-bold text-blue-900">Locker Management System</h1>
+                    <p className="text-blue-600 text-sm">Secure Access to Your Digital Lockers</p>
+                </div>
+
+                {/* Login Form */}
+                <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+                    {/* Username Field */}
+                    <div className="relative">
+                        <label htmlFor="username" className="sr-only">
+                            Username
+                        </label>
+                        <div className="flex items-center">
+                            <User className="absolute left-3 h-5 w-5 text-blue-500" />
                             <input
-                                type="email"
-                                id="email"
+                                id="username"
+                                name="username"
+                                type="text"
+                                required
+                                className="pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                placeholder="Username or Email"
                                 value={resetEmail}
-                                placeholder="Enter your email"
-                                className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none"
                                 onChange={handleResetEmail}
                             />
-
-                            <button type="submit" className="bg-blue px-6 py-2 rounded-sm text-white font-medium">
-                                Send OTP
-                            </button>
                         </div>
-                    </form>
-                </div>
-            </section>
+                    </div>
+
+                    {/* Login Button */}
+                    <button
+                        type="submit"
+                        className="group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                    >
+                        <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+                            <Lock className="h-5 w-5 text-white group-hover:text-blue-300" />
+                        </span>
+                        Access Locker System
+                    </button>
+                </form>
+            </div>
         </>
     );
 };

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { lazy, useContext } from "react";
 import { Link } from "react-router-dom";
 import { LockerContext } from "../context/LockerProvider";
+import Layout from "./Layout";
 
 const DashNav = lazy(() => import("./DashNav"));
 
@@ -76,8 +77,7 @@ const AddSingleLocker = () => {
     );
 
     return (
-        <>
-            <DashNav />
+        <Layout>
             <section className="flex flex-col items-center py-24 gap-12">
                 <section className="py-8">
                     <div className="max-w-4xl mx-auto">
@@ -182,7 +182,7 @@ const AddSingleLocker = () => {
                     </form>
                 </div>
             </section>
-        </>
+        </Layout>
     );
 };
 

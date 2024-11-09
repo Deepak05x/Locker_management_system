@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthProvider";
 import { Lock, User, Key, Building } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -79,9 +80,9 @@ const Login = () => {
 
                     {/* Remember Me & Forgot Password */}
                     <div className="flex items-center justify-center hover:underline text-blue text-sm">
-                        <button type="button" className="text-blue-600 hover:text-blue-500">
+                        <Link to={"/enter"} type="button" className="text-blue-600 hover:text-blue-500">
                             Forgot password?
-                        </button>
+                        </Link>
                     </div>
 
                     {/* Login Button */}

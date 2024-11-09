@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { lazy, useContext } from "react";
 
 import { LockerContext } from "../context/LockerProvider";
+import Layout from "./Layout";
 
 const DashNav = lazy(() => import("./DashNav"));
 
@@ -29,8 +30,7 @@ const CancelLocker = () => {
     };
 
     return (
-        <>
-            <DashNav />
+        <Layout>
             <section className="flex flex-col items-center py-24 gap-12">
                 <div className="flex flex-col  rounded-3xl items-center md:px-16 sm:px-12 ssm:px-8 py-16 gap-12 bg-white drop-shadow-2xl shadow-black">
                     <h1 className="text-3xl font-medium">
@@ -60,7 +60,7 @@ const CancelLocker = () => {
                     </form>
                 </div>
             </section>
-        </>
+        </Layout>
     );
 };
 

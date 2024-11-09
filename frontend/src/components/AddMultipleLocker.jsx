@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { lazy } from "react";
-import axios from "axios";
 
-const DashNav = lazy(() => import("./DashNav"));
+import axios from "axios";
+import Layout from "./Layout";
 
 const AddMultipleLocker = () => {
     const [file, setFile] = useState(null);
@@ -38,9 +37,8 @@ const AddMultipleLocker = () => {
     };
 
     return (
-        <>
-            <DashNav />
-            <section className="min-h-screen flex gap-12 flex-col items-center justify-center">
+        <Layout>
+            <section className=" flex gap-12 flex-col items-center justify-center py-24">
                 <a href="/addMultipleLockers.xlsx" download="Lockers.xlsx">
                     <p className="bg-blue px-6 py-2 rounded-sm text-white font-medium">Download Template</p>
                 </a>
@@ -52,7 +50,7 @@ const AddMultipleLocker = () => {
                 </div>
                 {uploadStatus && <p>{uploadStatus}</p>}
             </section>
-        </>
+        </Layout>
     );
 };
 
