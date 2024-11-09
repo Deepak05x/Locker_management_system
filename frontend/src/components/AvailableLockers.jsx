@@ -54,9 +54,14 @@ const AvailableLockers = () => {
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
                             </select>
-                            <button type="submit" className="bg-blue px-6 py-2 rounded-sm text-white font-medium">
-                                Check Availability
-                            </button>
+                            <div className="flex flex-col items-center gap-12 justify-between w-full">
+                                <button type="submit" className="bg-blue px-6 py-2 rounded-sm text-white font-medium">
+                                    Check Availability
+                                </button>
+                                <button type="submit" className="bg-blue px-6 py-2 rounded-sm text-white font-medium">
+                                    back
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>
