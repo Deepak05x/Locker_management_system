@@ -66,9 +66,7 @@ const LockerProvider = ({ children }) => {
 
         try {
             const response = await axios.put("http://localhost:3000/api/locker/updateMultipleLockerPrices", data, {
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                withCredentials: true
             });
 
             if (response.status === 200) {
@@ -87,9 +85,7 @@ const LockerProvider = ({ children }) => {
                 "http://localhost:3000/api/admin/addSingleLocker",
                 { LockerType, LockerNumber, LockerCodeCombinations, LockerPrice3Month, LockerPrice6Month, LockerPrice12Month, availableForGender, LockerSerialNumber },
                 {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
+                    withCredentials: true
                 }
             );
             if (res.status === 200) {
@@ -108,9 +104,7 @@ const LockerProvider = ({ children }) => {
                 "http://localhost:3000/api/locker/getAvailableLocker",
                 { lockerType, employeeGender },
                 {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
+                    withCredentials: true
                 }
             );
             if (res.status === 200) {
@@ -142,9 +136,7 @@ const LockerProvider = ({ children }) => {
                     endDate,
                 },
                 {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
+                    withCredentials: true
                 }
             );
 
@@ -160,7 +152,7 @@ const LockerProvider = ({ children }) => {
 
     const fetchAllLockers = async () => {
         try {
-            const res = await axios.get("http://localhost:3000/api/locker/getAllLockers");
+            const res = await axios.get("http://localhost:3000/api/locker/getAllLockers",{ withCredentials: true});
             const data = res.data;
             if (res.status === 200) {
                 setAllLockerDetails(data.data);
@@ -172,7 +164,7 @@ const LockerProvider = ({ children }) => {
 
     const fetchExpiredLockers = async () => {
         try {
-            const res = await axios.get("http://localhost:3000/api/locker/getExpiredLockers");
+            const res = await axios.get("http://localhost:3000/api/locker/getExpiredLockers",{ withCredentials: true});
             const data = res.data;
             if (res.status === 200) {
                 setExpiredLockerDetails(data.data);
@@ -184,7 +176,7 @@ const LockerProvider = ({ children }) => {
 
     const fetchAvailableLockers = async () => {
         try {
-            const res = await axios.get("http://localhost:3000/api/locker/getAvailableLockers");
+            const res = await axios.get("http://localhost:3000/api/locker/getAvailableLockers",{ withCredentials: true});
             const data = res.data;
             if (res.status === 200) {
                 setAvailableLockerDetails(data.data);
@@ -196,7 +188,7 @@ const LockerProvider = ({ children }) => {
 
     const fetchAllocatedLockers = async () => {
         try {
-            const res = await axios.get("http://localhost:3000/api/locker/getAllocatedLockers");
+            const res = await axios.get("http://localhost:3000/api/locker/getAllocatedLockers",{ withCredentials: true});
             const data = res.data;
             if (res.status === 200) {
                 setAllocatedLockerDetails(data.data);
@@ -212,9 +204,7 @@ const LockerProvider = ({ children }) => {
                 "http://localhost:3000/api/locker/cancelLockerAllocation",
                 { lockerNumber, EmployeeEmail },
                 {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
+                    withCredentials: true
                 }
             );
 
@@ -238,9 +228,7 @@ const LockerProvider = ({ children }) => {
                     LockerNumber,
                 },
                 {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
+                    withCredentials: true
                 }
             );
             if (res.status === 200) {
@@ -262,9 +250,7 @@ const LockerProvider = ({ children }) => {
                     description,
                 },
                 {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
+                    withCredentials: true
                 }
             );
             if (res.status === 200) {
@@ -290,9 +276,7 @@ const LockerProvider = ({ children }) => {
                     EmployeeEmail,
                 },
                 {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
+                    withCredentials: true
                 }
             );
             if (res.status === 200) {
@@ -307,7 +291,7 @@ const LockerProvider = ({ children }) => {
 
     const getExpiredLockers7Days = async () => {
         try {
-            const res = await axios.get("http://localhost:3000/api/locker/getExpiringIn7daysLockers");
+            const res = await axios.get("http://localhost:3000/api/locker/getExpiringIn7daysLockers",{ withCredentials: true});
             if (res.status === 200) {
                 const data = res.data;
                 setExpireIn7Days(data);

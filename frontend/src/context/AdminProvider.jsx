@@ -15,7 +15,9 @@ const AdminProvider = ({ children }) => {
 
     const getStaffs = async () => {
         try {
-            const res = await axios.get("http://localhost:3000/api/admin/viewAllStaff");
+            const res = await axios.get("http://localhost:3000/api/admin/viewAllStaff", {
+                withCredentials: true // Include credentials (cookies) in the request
+              });
             if (res.status === 200) {
                 const data = res.data.users;
                 setStaffs(data);
@@ -38,9 +40,7 @@ const AdminProvider = ({ children }) => {
                     gender,
                 },
                 {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
+                   withCredentials: true
                 }
             );
             if (res.status === 200) {
@@ -62,9 +62,7 @@ const AdminProvider = ({ children }) => {
                     id,
                 },
                 {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
+                   withCredentials: true
                 }
             );
             if (res.status === 200) {
@@ -86,9 +84,7 @@ const AdminProvider = ({ children }) => {
                     id,
                 },
                 {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
+                    withCredentials: true
                 }
             );
             if (res.status === 200) {
@@ -108,9 +104,7 @@ const AdminProvider = ({ children }) => {
                     lockerNumber,
                 },
                 {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
+                    withCredentials: true
                 }
             );
             if (res.status === 200) {

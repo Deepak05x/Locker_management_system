@@ -37,6 +37,10 @@ const AuthProvider = ({ children }) => {
                 setLoginDetails(data);
                 navigate("/dashboard");
             }
+            console.log(res.data);
+            const token = res.data.token;
+            console.log(token);
+            document.cookie = `token=${token}; path=/;`;
         } catch (error) {
             console.log(error);
         }
@@ -48,9 +52,7 @@ const AuthProvider = ({ children }) => {
                 "http://localhost:3000/api/resetPassword/getOtp",
                 { email },
                 {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
+                   withCredentials: true
                 }
             );
 
@@ -70,9 +72,7 @@ const AuthProvider = ({ children }) => {
                 "http://localhost:3000/api/resetPassword/validateOTP",
                 { email, otp },
                 {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
+                    withCredentials: true
                 }
             );
             if (res.status === 200) {
@@ -108,7 +108,9 @@ const AuthProvider = ({ children }) => {
 
     const logout = async () => {
         try {
-            const res = await axios.get("http://localhost:3000/api/user/LogOut");
+            const res = await axios.get("http://localhost:3000/api/user/LogOut",{
+                withCredentials: true // Include credentials (cookies) in the request
+              });
             if (res.status === 200) {
                 setLoginDetails(null);
                 localStorage.removeItem("loginDetails");
@@ -131,9 +133,8 @@ const AuthProvider = ({ children }) => {
                     phone,
                 },
                 {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
+                        withCredentials: true // Include credentials (cookies) in the request
+                      
                 }
             );
             if (res.status === 200) {
