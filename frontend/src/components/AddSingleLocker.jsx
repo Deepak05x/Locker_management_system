@@ -54,9 +54,13 @@ const AddSingleLocker = () => {
         setLockerCode(newLockerCode);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        addLocker(lockerType, lockerNumber, lockerCode, lockerPriceThree, lockerPriceSix, lockerPriceYear, gender);
+        try {
+            await addLocker(lockerType, lockerNumber, lockerCode, lockerPriceThree, lockerPriceSix, lockerPriceYear, gender, lockerSerialNumber);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const renderLockerRow = (lockerType, lockerLabel) => (

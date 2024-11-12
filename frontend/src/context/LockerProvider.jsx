@@ -81,11 +81,11 @@ const LockerProvider = ({ children }) => {
         }
     };
 
-    const addLocker = async (LockerType, LockerNumber, LockerCode, LockerPrice3Month, LockerPrice6Month, LockerPrice12Month, availableForGender) => {
+    const addLocker = async (LockerType, LockerNumber, LockerCodeCombinations, LockerPrice3Month, LockerPrice6Month, LockerPrice12Month, availableForGender, LockerSerialNumber) => {
         try {
             const res = await axios.post(
                 "http://localhost:3000/api/admin/addSingleLocker",
-                { LockerType, LockerNumber, LockerCode, LockerPrice3Month, LockerPrice6Month, LockerPrice12Month, availableForGender },
+                { LockerType, LockerNumber, LockerCodeCombinations, LockerPrice3Month, LockerPrice6Month, LockerPrice12Month, availableForGender, LockerSerialNumber },
                 {
                     headers: {
                         "Content-Type": "application/json",

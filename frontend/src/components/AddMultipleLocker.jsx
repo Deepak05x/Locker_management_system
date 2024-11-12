@@ -39,7 +39,7 @@ const AddMultipleLocker = () => {
     return (
         <Layout>
             <section className=" flex gap-12 flex-col items-center justify-center py-24">
-                <a href="/addMultipleLockers.xlsx" download="Lockers.xlsx">
+                <a href="/addMultipleLockersxlsx 2" download="Lockers.xlsx">
                     <p className="bg-blue px-6 py-2 rounded-sm text-white font-medium">Download Template</p>
                 </a>
                 <div className="flex flex-col gap-12 items-center">

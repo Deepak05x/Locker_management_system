@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { lazy, useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { LockerContext } from "../context/LockerProvider";
 import Layout from "./Layout";
 
@@ -9,20 +8,14 @@ const DashNav = lazy(() => import("./DashNav"));
 const AssignLocker = () => {
     const { availableLockers, allocateLocker } = useContext(LockerContext);
 
-    const [lockerType, setLockerType] = useState(null);
     const [months, setMonths] = useState(null);
     const [empName, setEmpName] = useState(null);
     const [empId, setEmpId] = useState(null);
     const [empEmail, setEmpEmail] = useState(null);
     const [empPhone, setEmpPhone] = useState(null);
-    const [empGender, setEmpGender] = useState(null);
     const [cost, setCost] = useState(null);
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
-
-    const handleLockerType = (e) => {
-        setLockerType(e.target.value);
-    };
 
     useEffect(() => {
         if (months === "3") {
@@ -50,7 +43,7 @@ const AssignLocker = () => {
             empId,
             empEmail,
             empPhone,
-            empGender,
+            availableLockers.data.availableForGender,
             cost,
             months,
             startDate,
@@ -77,6 +70,13 @@ const AssignLocker = () => {
                             <input
                                 type="text"
                                 value={availableLockers.data.LockerCode}
+                                id="code"
+                                placeholder="Locker code"
+                                className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none"
+                            />
+                            <input
+                                type="text"
+                                value={availableLockers.data.LockerSerialNumber}
                                 id="code"
                                 placeholder="Locker code"
                                 className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none"
