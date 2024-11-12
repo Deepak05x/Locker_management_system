@@ -13,8 +13,8 @@ const DashNav = () => {
     };
 
     return (
-        <nav className="fixed top-0 left-0 w-full z-50 bg-blue-900/90 text-white backdrop-blur-md shadow-md">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        <nav className="flex flex-row items-center justify-between w-full  bg-blue-900/90 text-white backdrop-blur-md shadow-md">
+            <div className="w-full px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
                 {/* Logo Section (Left Corner) */}
                 <div className="flex items-center space-x-3">
                     <img src="/DraconX1.png" alt="SafeLocker Logo" className="h-12 sm:h-10 transition-transform duration-300 hover:scale-110" />
