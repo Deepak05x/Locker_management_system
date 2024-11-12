@@ -198,6 +198,8 @@ exports.cancelLockerAllocation = async (req, res, next) => {
         if (!locker) {
             return res.status(404).json({ message: "Locker is not available or does not exist" });
         }
+// ********************************************************************************************************************************
+
         let oldCode = locker.LockerCode;
         oldCode = oldCode.substring(1) + oldCode[0];
         locker.LockerStatus = 'available';
@@ -342,27 +344,38 @@ exports.findLockerByUserEmail = async (req, res, next) => {
     }
 };
 
-
 exports.updateLockerCode = async (req, res, next) => {
     try {
-        const { id, newCode } = req.body;
+        const { id } = req.body;
         console.log(id);
+
+        // Find the locker by ID
         const locker = await Locker.findById(id);
         if (!locker) {
             return res.status(404).json({ message: "Locker not found" });
         }
 
-        // locker.LockerCode=newCode;
+        const { LockerCodeCombinations, LockerCode } = locker;
 
+        // Find the current index of LockerCode in LockerCodeCombinations
+        const currentIndex = LockerCodeCombinations.indexOf(LockerCode);
+
+        // Calculate the next index in a circular manner
+        const nextIndex = (currentIndex + 1) % LockerCodeCombinations.length;
+
+        // Update LockerCode to the next code in the array
+        locker.LockerCode = LockerCodeCombinations[nextIndex];
+
+        // Save the updated locker
         await locker.save();
-        return res.status(200).json({ message: "Locker pricing updated successfully", locker });
-
+        
+        return res.status(200).json({ message: "Locker code updated successfully", locker });
     } catch (err) {
-        console.log(`Error in finding lockers: ${err.message}`);
+        console.log(`Error in updating locker code: ${err.message}`);
         return next(err);
     }
 };
-
+ 
 
 exports.chageLockerStatusToExpired = async (req, res, next) => {
     try {
@@ -418,6 +431,26 @@ exports.deleteLocker = async (req, res, next) => {
     } catch (err) {
         console.error(`Error in deleting locker: ${err.message}`);
         res.status(500).json({ message: `Error deleting locker: ${err.message}` });
+        next(err);
+    }
+};
+
+
+exports.getLockersByTypeandGender = async (req, res, next) => {
+    try {
+        const { type,gender } = req.body;
+        
+        const lockers = await Locker.find({ LockerType:type,
+            availableForGender:gender  });
+
+        res.status(200).json({
+            message: "Locker Fetched successfully",
+            data: lockers
+        });
+
+    } catch (err) {
+        console.error(`Error in Fetching locker: ${err.message}`);
+        res.status(500).json({ message: `Error in Fetching  locker: ${err.message}` });
         next(err);
     }
 };

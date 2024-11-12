@@ -15,7 +15,8 @@ const {
     findLockerByUserEmail,
     updateLockerCode,
     chageLockerStatusToExpired,
-    deleteLocker
+    deleteLocker,
+    getLockersByTypeandGender
 }
     = require('../controllers/lockerController.js');
 
@@ -33,6 +34,7 @@ router.post('/changeLockerPricing', changeLockerPricing);
 router.post('/findLockerByUserEmail', findLockerByUserEmail);
 router.post('/updateLockerCode', updateLockerCode);
 router.post('/chageLockerStatusToExpired', chageLockerStatusToExpired);
+router.get('/getLockersByTypeandGender', getLockersByTypeandGender);
 
 router.put('/updateMultipleLockerPrices', async (req, res) => {
     try {

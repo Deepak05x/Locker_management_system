@@ -6,7 +6,7 @@ const lockerSchema = new mongoose.Schema(
         // LockerType,LockerStatus,LockerNumber,LockerCode,
         LockerType: {
             type: String,
-            required: true,
+            // required: true,
             enum: ['half', 'full'],
         },
         LockerStatus: {
@@ -16,28 +16,33 @@ const lockerSchema = new mongoose.Schema(
         },
         LockerNumber: {
             type: Number,
-            required: true,
+            // required: true,
             unique: true,
         },
         LockerCode: {
             type: String,
-            required: true,
+        },
+        LockerSerialNumber: {
+            type: String
+        },
+        LockerCodeCombinations: {
+            type: [String],
         },
         LockerPrice3Month: {
             type: Number,
-            required: true,
+            // required: true,
         },
         LockerPrice6Month: {
             type: Number,
-            required: true,
+            // required: true,
         },
         LockerPrice12Month: {
             type: Number,
-            required: true,
+            // required: true,
         },
         availableForGender: {
             type: String,
-            required: true,
+            // required: true,
             enum: ['Male', 'Female'],
         },
         employeeName: {

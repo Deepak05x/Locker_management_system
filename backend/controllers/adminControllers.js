@@ -6,10 +6,9 @@ const { errorHandler } = require('../utils/error.js');
 const jwt = require('jsonwebtoken');
 
 exports.addStaff = async (req, res, next) => {
-  
     try {
         const { name, role, email, password, phoneNumber, gender } = req.body;
-
+        
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const user = await User.create({ name, role, email, phoneNumber, password: hashedPassword, gender });
@@ -89,7 +88,7 @@ exports.editStaff = async (req, res, next) => {
 
 exports.viewStaffDetails = async (req, res, next) => {
     try {
-
+        console.log(req.cookies.token)
         const { id } = req.body;
 
         let user = await User.findById(id);
@@ -111,7 +110,8 @@ exports.viewStaffDetails = async (req, res, next) => {
 
 exports.viewAllStaff = async (req, res, next) => {
     try {
-
+        console.log(req.cookies.token);
+        console.log("in");
         let users = await User.find({ role: "Staff" });
         if (!users) {
             return res.status(404).json({ message: 'User not found' });
@@ -150,25 +150,45 @@ exports.removeStaff = async (req, res, next) => {
 
 exports.addLocker = async (req, res, next) => {
     try {
-        const { LockerType, LockerNumber, LockerCode, LockerPrice3Month, LockerPrice6Month, LockerPrice12Month, availableForGender } = req.body;
-        const locker = await Locker.create({ LockerType, LockerNumber, LockerCode, LockerPrice3Month, LockerPrice6Month, LockerPrice12Month, availableForGender });
+        const { LockerType, LockerNumber, LockerCodeCombinations, LockerPrice3Month, LockerPrice6Month, LockerPrice12Month, availableForGender , LockerSerialNumber} = req.body;
+        console.log({ LockerType, LockerNumber, LockerCodeCombinations, LockerPrice3Month, LockerPrice6Month, LockerPrice12Month, availableForGender , LockerSerialNumber} )
+        const locker = await Locker.create({ LockerType, LockerNumber, LockerCodeCombinations, LockerPrice3Month, LockerPrice6Month, LockerPrice12Month, availableForGender, LockerSerialNumber });
+        
+        locker.LockerCode=LockerCodeCombinations[0];
+        await locker.save();
+        
         return res.status(200).json({
             message: "Locker Created Successfully",
             data: locker
         });
-
     } catch (err) {
         console.log(`error in adding ${err.message}`);
         next(err);
     }
     // LockerType, LockerNumber, LockerCode, LockerPrice3Month, LockerPrice6Month, LockerPrice12Month, availableForGender 
 }
+
 exports.addMultipleLocker = async (req, res, next) => {
     try {
-        const lockers = req.body.data;
-        console.log("adding multiple lockers")
-        console.log(lockers);
-        const newLockers = await Locker.insertMany(lockers);
+        const lockersData = req.body;
+
+        // Check if lockersData is an array
+        if (!Array.isArray(lockersData)) {
+            return res.status(400).json({
+                message: "Invalid input: Expected an array of locker objects"
+            });
+        }
+
+        // Update each locker object with LockerCode from LockerCodeCombinations[0]
+        const updatedLockersData = lockersData.map((lockerData) => {
+            if (lockerData.LockerCodeCombinations && lockerData.LockerCodeCombinations.length > 0) {
+                lockerData.LockerCode = lockerData.LockerCodeCombinations[0];
+            }
+            return lockerData;
+        });
+
+        // Insert all updated locker objects at once
+        const newLockers = await Locker.insertMany(updatedLockersData);
 
         return res.status(200).json({
             message: "Lockers Created Successfully",
@@ -179,3 +199,43 @@ exports.addMultipleLocker = async (req, res, next) => {
         next(err);
     }
 };
+
+// exports.addMultipleLocker = async (req, res, next) => {
+//     try {
+//         const lockersData = req.body.data;
+
+//         // Update each locker object with LockerCode from LockerCodeCombinations[0]
+//         const updatedLockersData = lockersData.map((lockerData) => {
+//             lockerData.LockerCode = lockerData.LockerCodeCombinations[0];
+//             return lockerData;
+//         });
+
+//         // Insert all updated locker objects at once
+//         const newLockers = await Locker.insertMany(updatedLockersData);
+
+//         return res.status(200).json({
+//             message: "Lockers Created Successfully",
+//             data: newLockers
+//         });
+//     } catch (err) {
+//         console.log(`Error in creating lockers: ${err.message}`);
+//         next(err);
+//     }
+// };
+
+// exports.addMultipleLocker = async (req, res, next) => {
+//     try {
+//         const lockers = req.body.data;
+//         console.log("adding multiple lockers")
+//         console.log(lockers);
+//         const newLockers = await Locker.insertMany(lockers);
+        
+//         return res.status(200).json({
+//             message: "Lockers Created Successfully",
+//             data: newLockers
+//         });
+//     } catch (err) {
+//         console.log(`Error in creating lockers: ${err.message}`);
+//         next(err);
+//     }
+// };
