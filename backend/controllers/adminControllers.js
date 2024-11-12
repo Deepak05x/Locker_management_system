@@ -7,11 +7,14 @@ const jwt = require('jsonwebtoken');
 
 exports.addStaff = async (req, res, next) => {
     try {
+        if(req.user.role!=='Admin'){
+            return res.status(501).json("Unauthorized");
+        }
         const { name, role, email, password, phoneNumber, gender } = req.body;
         
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const user = await User.create({ name, role, email, phoneNumber, password: hashedPassword, gender });
+        const  user = await User.create({ name, role, email, phoneNumber, password: hashedPassword, gender });
 
         const payload = {
             email: email,
@@ -68,7 +71,7 @@ exports.editStaff = async (req, res, next) => {
         await user.save();
 
         // Create a new token with updated information          
-        const payload = { email: user.email, id: user._id };
+        const payload = { email: user.email, id: user._id,role: user.role};
         const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "2d" });
 
         const options = {
@@ -89,6 +92,7 @@ exports.editStaff = async (req, res, next) => {
 exports.viewStaffDetails = async (req, res, next) => {
     try {
         console.log(req.cookies.token)
+        console.log(req.user)
         const { id } = req.body;
 
         let user = await User.findById(id);

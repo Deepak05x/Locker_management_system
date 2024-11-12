@@ -17,6 +17,7 @@ const app = express();
 const upload = multer({ storage: multer.memoryStorage() });
 const axios = require('axios'); // Import axios
 
+const verifyToken=require('./utils/verifyUser.js')
 dbConnect();
 
 app.use(express.json());
@@ -103,7 +104,6 @@ app.post('/upload-excel', upload.single('file'), async (req, res) => {
 
     // Send data array directly in the request body to match addMultipleLocker
     const response = await axios.post('http://localhost:3000/api/admin/addMultipleLocker', data);
-
     if (response.status === 200) {
       res.status(200).json({ message: "File processed and lockers added successfully", data });
     } else {
@@ -113,49 +113,3 @@ app.post('/upload-excel', upload.single('file'), async (req, res) => {
     res.status(500).json({ message: `Error processing file: ${err.message}` });
   }
 });
-
-// const COLUMN_MAPPING = {
-//   0:  "LockerType",
-//   1: "LockerNumber",
-//   2:  "LockerCode", 
-//   3: "LockerPrice3Month",
-//   4: "LockerPrice6Month",
-//   5:  "LockerPrice12Month",
-//   6:   "availableForGender"
-// };
- 
-// app.post('/upload-excel', upload.single('file'),async (req, res) => {
-//   try {
-//      const buffer = req.file.buffer;
-    
-//       const workbook = XLSX.read(buffer, { type: 'buffer' });
-//       const sheetName = workbook.SheetNames[0];
-//       const rows = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1 });
-
-//       // Skip the first row
-//       const data = rows.slice(1).map((row) => {
-//           let mappedRow = {};
-//           row.forEach((cell, index) => {
-//               if (COLUMN_MAPPING[index]) {
-//                   mappedRow[COLUMN_MAPPING[index]] = cell;
-//               }
-//           });
-//           // console.log(mappedRow);
-//           return mappedRow;
-//       });
-
-//       const response = await axios.post('http://localhost:3000/api/admin/addMultipleLocker', { data });
-
-//       // Check response status and return it/
-//       if (response.status === 200) {
-//         res.status(200).json({ message: "File processed and lockers added successfully", data });
-//       } else {
-//         res.status(response.status).json({ message: "Failed to add lockers", details: response.data });
-//       }
-     
-//       // Send the processed data as a response
-//       // res.status(200).json({ message: "File processed successfully", data });
-//   } catch (err) {
-//       res.status(500).json({ message: `Error processing file: ${err.message}` });
-//   }
-// });

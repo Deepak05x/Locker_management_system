@@ -20,27 +20,28 @@ const {
     getExpiringToday
 }
     = require('../controllers/lockerController.js');
+    const verifyToken=require('../utils/verifyUser.js')
 
-router.post('/getAvailableLocker', getAvailableLocker);
-router.post('/allocateLocker', allocateLocker);
-router.post('/renewLocker', renewLocker);
-router.post('/deleteLocker', deleteLocker);
-router.post('/cancelLockerAllocation', cancelLockerAllocation);
-router.get('/getAllLockers', getAllLockers);
+router.post('/getAvailableLocker',verifyToken, getAvailableLocker);
+router.post('/allocateLocker',verifyToken, allocateLocker);
+router.post('/renewLocker',verifyToken, renewLocker);
+router.post('/deleteLocker',verifyToken, deleteLocker);
+router.post('/cancelLockerAllocation', verifyToken,cancelLockerAllocation);
+router.get('/getAllLockers',verifyToken, getAllLockers);
 
 
-router.get('/getExpiredLockers', getExpiredLockers);
-router.get('/getAllocatedLockers', getAllocatedLockers);
-router.get('/getAvailableLockers', getAvailableLockers);
-router.get('/getExpiringIn7daysLockers', getExpiringIn7daysLockers);
-router.get('/getExpiringToday', getExpiringToday);
-router.post('/changeLockerPricing', changeLockerPricing);
-router.post('/findLockerByUserEmail', findLockerByUserEmail);
-router.post('/updateLockerCode', updateLockerCode);
-router.post('/chageLockerStatusToExpired', chageLockerStatusToExpired);
-router.get('/getLockersByTypeandGender', getLockersByTypeandGender);
+router.get('/getExpiredLockers',verifyToken, getExpiredLockers);
+router.get('/getAllocatedLockers',verifyToken, getAllocatedLockers);
+router.get('/getAvailableLockers',verifyToken, getAvailableLockers);
+router.get('/getExpiringIn7daysLockers',verifyToken, getExpiringIn7daysLockers);
+router.get('/getExpiringToday',verifyToken, getExpiringToday);
+router.post('/changeLockerPricing',verifyToken, changeLockerPricing);
+router.post('/findLockerByUserEmail',verifyToken, findLockerByUserEmail);
+router.post('/updateLockerCode',verifyToken, updateLockerCode);
+router.post('/chageLockerStatusToExpired',verifyToken, chageLockerStatusToExpired);
+router.get('/getLockersByTypeandGender',verifyToken, getLockersByTypeandGender);
 
-router.put('/updateMultipleLockerPrices', async (req, res) => {
+router.put('/updateMultipleLockerPrices',verifyToken, async (req, res) => {
     try {
         const { LockerPrice3Month,
             LockerPrice6Month,
