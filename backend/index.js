@@ -41,8 +41,8 @@ app.get('/', (req, res) => {
 });
 
 
-cron.schedule('* * * * *', async () => {    // will run every hour
-// cron.schedule('0 0 * * *', async () => {   // will run every midnight
+// cron.schedule('* * * * *', async () => {    // will run every hour
+cron.schedule('0 0 * * *', async () => {   // will run every midnight
   try {
      
     const result = await Locker.updateMany(

@@ -27,6 +27,8 @@ router.post('/renewLocker', renewLocker);
 router.post('/deleteLocker', deleteLocker);
 router.post('/cancelLockerAllocation', cancelLockerAllocation);
 router.get('/getAllLockers', getAllLockers);
+
+
 router.get('/getExpiredLockers', getExpiredLockers);
 router.get('/getAllocatedLockers', getAllocatedLockers);
 router.get('/getAvailableLockers', getAvailableLockers);
