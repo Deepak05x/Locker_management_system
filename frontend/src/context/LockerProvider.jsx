@@ -21,6 +21,7 @@ const LockerProvider = ({ children }) => {
     const [technicalIssue, setTechnicalIssue] = useState(null);
     const [renewLocker, setRenewLocker] = useState(null);
     const [expireIn7Days, setExpireIn7Days] = useState(null);
+    const [expireIn1Day, setExpireIn1Day] = useState(null);
 
     const [isEditable, setIsEditable] = useState({
         halfMale: false,
@@ -66,7 +67,7 @@ const LockerProvider = ({ children }) => {
 
         try {
             const response = await axios.put("http://localhost:3000/api/locker/updateMultipleLockerPrices", data, {
-                withCredentials: true
+                withCredentials: true,
             });
 
             if (response.status === 200) {
@@ -85,7 +86,7 @@ const LockerProvider = ({ children }) => {
                 "http://localhost:3000/api/admin/addSingleLocker",
                 { LockerType, LockerNumber, LockerCodeCombinations, LockerPrice3Month, LockerPrice6Month, LockerPrice12Month, availableForGender, LockerSerialNumber },
                 {
-                    withCredentials: true
+                    withCredentials: true,
                 }
             );
             if (res.status === 200) {
@@ -104,7 +105,7 @@ const LockerProvider = ({ children }) => {
                 "http://localhost:3000/api/locker/getAvailableLocker",
                 { lockerType, employeeGender },
                 {
-                    withCredentials: true
+                    withCredentials: true,
                 }
             );
             if (res.status === 200) {
@@ -136,7 +137,7 @@ const LockerProvider = ({ children }) => {
                     endDate,
                 },
                 {
-                    withCredentials: true
+                    withCredentials: true,
                 }
             );
 
@@ -152,7 +153,7 @@ const LockerProvider = ({ children }) => {
 
     const fetchAllLockers = async () => {
         try {
-            const res = await axios.get("http://localhost:3000/api/locker/getAllLockers",{ withCredentials: true});
+            const res = await axios.get("http://localhost:3000/api/locker/getAllLockers", { withCredentials: true });
             const data = res.data;
             if (res.status === 200) {
                 setAllLockerDetails(data.data);
@@ -164,7 +165,7 @@ const LockerProvider = ({ children }) => {
 
     const fetchExpiredLockers = async () => {
         try {
-            const res = await axios.get("http://localhost:3000/api/locker/getExpiredLockers",{ withCredentials: true});
+            const res = await axios.get("http://localhost:3000/api/locker/getExpiredLockers", { withCredentials: true });
             const data = res.data;
             if (res.status === 200) {
                 setExpiredLockerDetails(data.data);
@@ -176,7 +177,7 @@ const LockerProvider = ({ children }) => {
 
     const fetchAvailableLockers = async () => {
         try {
-            const res = await axios.get("http://localhost:3000/api/locker/getAvailableLockers",{ withCredentials: true});
+            const res = await axios.get("http://localhost:3000/api/locker/getAvailableLockers", { withCredentials: true });
             const data = res.data;
             if (res.status === 200) {
                 setAvailableLockerDetails(data.data);
@@ -188,7 +189,7 @@ const LockerProvider = ({ children }) => {
 
     const fetchAllocatedLockers = async () => {
         try {
-            const res = await axios.get("http://localhost:3000/api/locker/getAllocatedLockers",{ withCredentials: true});
+            const res = await axios.get("http://localhost:3000/api/locker/getAllocatedLockers", { withCredentials: true });
             const data = res.data;
             if (res.status === 200) {
                 setAllocatedLockerDetails(data.data);
@@ -204,7 +205,7 @@ const LockerProvider = ({ children }) => {
                 "http://localhost:3000/api/locker/cancelLockerAllocation",
                 { lockerNumber, EmployeeEmail },
                 {
-                    withCredentials: true
+                    withCredentials: true,
                 }
             );
 
@@ -228,7 +229,7 @@ const LockerProvider = ({ children }) => {
                     LockerNumber,
                 },
                 {
-                    withCredentials: true
+                    withCredentials: true,
                 }
             );
             if (res.status === 200) {
@@ -250,7 +251,7 @@ const LockerProvider = ({ children }) => {
                     description,
                 },
                 {
-                    withCredentials: true
+                    withCredentials: true,
                 }
             );
             if (res.status === 200) {
@@ -276,7 +277,7 @@ const LockerProvider = ({ children }) => {
                     EmployeeEmail,
                 },
                 {
-                    withCredentials: true
+                    withCredentials: true,
                 }
             );
             if (res.status === 200) {
@@ -291,10 +292,22 @@ const LockerProvider = ({ children }) => {
 
     const getExpiredLockers7Days = async () => {
         try {
-            const res = await axios.get("http://localhost:3000/api/locker/getExpiringIn7daysLockers",{ withCredentials: true});
+            const res = await axios.get("http://localhost:3000/api/locker/getExpiringIn7daysLockers", { withCredentials: true });
             if (res.status === 200) {
                 const data = res.data;
                 setExpireIn7Days(data);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const getExpiredLockers1Day = async () => {
+        try {
+            const res = await axios.get("http://localhost:3000/api/locker/getExpiringToday");
+            if (res.status === 200) {
+                const data = res.data;
+                setExpireIn1Day(data);
             }
         } catch (error) {
             console.log(error);
@@ -307,6 +320,7 @@ const LockerProvider = ({ children }) => {
         fetchAllocatedLockers();
         fetchAvailableLockers();
         getExpiredLockers7Days();
+        getExpiredLockers1Day();
     }, []);
 
     return (
