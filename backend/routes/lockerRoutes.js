@@ -16,7 +16,8 @@ const {
     updateLockerCode,
     chageLockerStatusToExpired,
     deleteLocker,
-    getLockersByTypeandGender
+    getLockersByTypeandGender,
+    getExpiringToday
 }
     = require('../controllers/lockerController.js');
 
@@ -30,6 +31,7 @@ router.get('/getExpiredLockers', getExpiredLockers);
 router.get('/getAllocatedLockers', getAllocatedLockers);
 router.get('/getAvailableLockers', getAvailableLockers);
 router.get('/getExpiringIn7daysLockers', getExpiringIn7daysLockers);
+router.get('/getExpiringToday', getExpiringToday);
 router.post('/changeLockerPricing', changeLockerPricing);
 router.post('/findLockerByUserEmail', findLockerByUserEmail);
 router.post('/updateLockerCode', updateLockerCode);

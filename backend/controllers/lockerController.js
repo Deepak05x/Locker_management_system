@@ -303,6 +303,24 @@ exports.getExpiringIn7daysLockers = async (req, res, next) => {
         next(err);
     }
 }
+exports.getExpiringToday = async (req, res, next) => {
+    try {
+        const today = new Date();
+        const sevenDaysFromNow = new Date(today);
+        sevenDaysFromNow.setDate(today.getDate());
+
+        const data = await Locker.find({
+            expiresOn: { $lte: sevenDaysFromNow },
+        });
+        return res.status(200).json({
+            message: "All expired Lockers",
+            data
+        });
+    } catch (err) {
+        console.log(`Error in allocating locker: ${err.message}`);
+        next(err);
+    }
+}
 
 exports.changeLockerPricing = async (req, res, next) => {
     try {
