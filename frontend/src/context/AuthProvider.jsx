@@ -36,13 +36,16 @@ const AuthProvider = ({ children }) => {
                 const data = res.data;
                 setLoginDetails(data);
                 navigate("/dashboard");
+                document.cookie = `token=${data.token}; path=/;`;
             }
-            console.log(res.data);
-            const token = res.data.token;
-            console.log(token);
-            document.cookie = `token=${token}; path=/;`;
         } catch (error) {
-            console.log(error);
+            // Extract and handle the error message
+            if (error.response) {
+                setError(error.response.data.error); // Set the error message from the backend
+            } else {
+                setError("Something went wrong. Please try again.");
+            }
+            console.error("Login failed:", error);
         }
     };
 
@@ -52,7 +55,7 @@ const AuthProvider = ({ children }) => {
                 "http://localhost:3000/api/resetPassword/getOtp",
                 { email },
                 {
-                   withCredentials: true
+                    withCredentials: true,
                 }
             );
 
@@ -72,7 +75,7 @@ const AuthProvider = ({ children }) => {
                 "http://localhost:3000/api/resetPassword/validateOTP",
                 { email, otp },
                 {
-                    withCredentials: true
+                    withCredentials: true,
                 }
             );
             if (res.status === 200) {
@@ -108,9 +111,9 @@ const AuthProvider = ({ children }) => {
 
     const logout = async () => {
         try {
-            const res = await axios.get("http://localhost:3000/api/user/LogOut",{
-                withCredentials: true // Include credentials (cookies) in the request
-              });
+            const res = await axios.get("http://localhost:3000/api/user/LogOut", {
+                withCredentials: true, // Include credentials (cookies) in the request
+            });
             if (res.status === 200) {
                 setLoginDetails(null);
                 localStorage.removeItem("loginDetails");
@@ -133,8 +136,7 @@ const AuthProvider = ({ children }) => {
                     phone,
                 },
                 {
-                        withCredentials: true // Include credentials (cookies) in the request
-                      
+                    withCredentials: true, // Include credentials (cookies) in the request
                 }
             );
             if (res.status === 200) {

@@ -39,7 +39,7 @@ const AvailableLockers = () => {
                             <BadgeAlert className="w-16 h-16 text-blue-600" />
                         </div>
                         <h1 className="text-3xl flex flex-col font-bold text-blue-900">
-                            Report An Locker <span>Issue</span>
+                            Check the Locker <span>Availability</span>
                         </h1>
                     </div>
 
