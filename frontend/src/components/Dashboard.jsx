@@ -30,14 +30,14 @@ const Dashboard = () => {
     return (
         <Layout>
             <main className=" px-4 ssm:px-2 sm:px-4 md:px-6 lg:px-8 xxl:px-10 py-24">
-                <div className="grid  ssm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xxl:grid-cols-4  px-12 gap-12">
+                <div className="grid ssm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xxl:grid-cols-4  px-12 gap-12">
                     {loginDetails.role === "Staff" ? (
                         <>
                             {staff.map((feature) => (
                                 <Link to={feature.path} key={feature.path}>
                                     <Card className="hover:shadow-lg transition-transform duration-300 cursor-pointer bg-white border border-gray-200 transform hover:-translate-y-1">
                                         <CardContent className="px-6 py-8">
-                                            <div className="space-y-4">
+                                            <div className="space-y-4 flex flex-col items-center justify-center text-center">
                                                 <div className="flex items-center justify-between">
                                                     <div className="bg-blue/10 p-2 md:p-3 rounded-lg">{React.createElement(feature.icon, { className: "h-6 w-6 text-blue" })}</div>
                                                 </div>

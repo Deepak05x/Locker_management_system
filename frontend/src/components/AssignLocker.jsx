@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { lazy, useContext, useEffect } from "react";
 import { LockerContext } from "../context/LockerProvider";
+import { MoveRight, Lock, BadgeAlert, BookOpen, ShieldCheck, User, Hash, Key, ClipboardType, FolderOpen, Mail, CircleDollarSign } from "lucide-react";
 import Layout from "./Layout";
+import { Link } from "react-router-dom";
 
-const DashNav = lazy(() => import("./DashNav"));
+const BackButton = lazy(() => import("../components/BackButton"));
 
 const AssignLocker = () => {
     const { availableLockers, allocateLocker } = useContext(LockerContext);
@@ -27,7 +29,7 @@ const AssignLocker = () => {
         } else {
             setCost("");
         }
-    }, [months, availableLockers.data]);
+    }, [months]);
 
     const handleMonths = (e) => {
         setMonths(e.target.value);
@@ -53,143 +55,274 @@ const AssignLocker = () => {
 
     return (
         <Layout>
-            <section className="flex flex-col items-center py-24 gap-12">
-                <div className="flex flex-col  rounded-3xl items-center md:px-16 sm:px-12 ssm:px-8 py-16 gap-12 bg-white drop-shadow-2xl shadow-black">
-                    <h1 className="text-3xl font-medium">
-                        Assign the available <span className="text-blue">Locker</span>
-                    </h1>
-                    <form onSubmit={handleSubmit} className="w-full flex flex-col items-center gap-8">
-                        <div className="flex flex-col gap-8 items-center w-full">
-                            <input
-                                type="number"
-                                id="number"
-                                value={availableLockers.data.LockerNumber}
-                                placeholder="Locker number"
-                                className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none"
-                            />
-                            <input
-                                type="text"
-                                value={availableLockers.data.LockerCode}
-                                id="code"
-                                placeholder="Locker code"
-                                className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none"
-                            />
-                            <input
-                                type="text"
-                                value={availableLockers.data.LockerSerialNumber}
-                                id="code"
-                                placeholder="Locker code"
-                                className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none"
-                            />
-                            <input
-                                type="text"
-                                value={availableLockers.data.LockerType}
-                                id="type"
-                                placeholder="Locker type"
-                                className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none"
-                            />
-                            <input
-                                value={availableLockers.data.availableForGender}
-                                type="text"
-                                id="gender"
-                                placeholder="Employee Gender"
-                                className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none"
-                            />
-                            <input
-                                onChange={(e) => setEmpName(e.target.value)}
-                                type="text"
-                                id="name"
-                                placeholder="Employee Name"
-                                className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none"
-                            />
-                            <input
-                                onChange={(e) => setEmpId(e.target.value)}
-                                type="number"
-                                id="id"
-                                placeholder="Employee ID"
-                                className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none"
-                            />
-                            <input
-                                onChange={(e) => setEmpEmail(e.target.value)}
-                                type="text"
-                                id="email"
-                                placeholder="Employee Email"
-                                className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none"
-                            />
-                            <input
-                                onChange={(e) => setEmpPhone(e.target.value)}
-                                type="number"
-                                id="phone"
-                                placeholder="Employee Phone"
-                                className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none"
-                            />
+            <div className="flex flex-col items-center justify-center p-24">
+                <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-xl">
+                    <div className="text-center space-y-2 flex flex-col items-center gap-4">
+                        <div className="flex justify-center ">
+                            <ShieldCheck className="w-16 h-16 text-blue-600" />
+                        </div>
+                        <h1 className="text-3xl flex flex-col font-bold text-blue-900">
+                            Assign an Locker To <span>Employee</span>
+                        </h1>
+                    </div>
 
-                            <select id="gender" value={months} onChange={handleMonths} className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none">
-                                <option value="" disabled selected hidden>
-                                    Duration
-                                </option>
-                                <option value="3">3 months</option>
-                                <option value="6">6 months</option>
-                                <option value="12">12 months</option>
-                                <option value="customize">Customize</option>
-                            </select>
-                            {months === "customize" ? (
-                                <>
-                                    <div className="relative w-full">
-                                        <label
-                                            htmlFor="startDate"
-                                            className="absolute left-4 top-4 text-gray-500 pointer-events-none transition-all duration-200 ease-in-out transform -translate-y-1/2"
-                                        >
-                                            Start date
-                                        </label>
-                                        <input
-                                            onChange={(e) => setStartDate(e.target.value)}
-                                            type="date"
-                                            id="startDate"
-                                            className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none pt-6"
-                                        />
-                                    </div>
+                    <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+                        <div className="relative">
+                            <label htmlFor="number" className="sr-only">
+                                Number
+                            </label>
+                            <div className="flex items-center">
+                                <Hash className="absolute left-3 h-5 w-5 text-blue-500" />
+                                <input
+                                    id="number"
+                                    name="number"
+                                    type="number"
+                                    required
+                                    className="pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                    placeholder="Enter the locker number"
+                                    value={availableLockers.data.LockerNumber}
+                                />
+                            </div>
+                        </div>
 
-                                    <div className="relative w-full">
-                                        <label
-                                            htmlFor="startDate"
-                                            className="absolute left-4 top-4 text-gray-500 pointer-events-none transition-all duration-200 ease-in-out transform -translate-y-1/2"
-                                        >
-                                            End date
-                                        </label>
-                                        <input
-                                            onChange={(e) => setEndDate(e.target.value)}
-                                            type="date"
-                                            id="startDate"
-                                            className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none pt-6"
-                                        />
-                                    </div>
+                        <div className="relative">
+                            <label htmlFor="subject" className="sr-only">
+                                Code
+                            </label>
+                            <div className="flex items-center">
+                                <Key className="absolute left-3 h-5 w-5 text-blue-500" />
+                                <input
+                                    id="subject"
+                                    name="subject"
+                                    type="text"
+                                    required
+                                    className="pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                    placeholder="Enter the subject"
+                                    value={availableLockers.data.LockerCode}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="relative">
+                            <label htmlFor="subject" className="sr-only">
+                                Serial Number
+                            </label>
+                            <div className="flex items-center">
+                                <Hash className="absolute left-3 h-5 w-5 text-blue-500" />
+                                <input
+                                    id="subject"
+                                    name="subject"
+                                    type="text"
+                                    required
+                                    className="pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                    placeholder="Enter the subject"
+                                    value={availableLockers.data.LockerSerialNumber}
+                                />
+                            </div>
+                        </div>
+                        <div className="relative">
+                            <label htmlFor="subject" className="sr-only">
+                                Type
+                            </label>
+                            <div className="flex items-center">
+                                <ClipboardType className="absolute left-3 h-5 w-5 text-blue-500" />
+                                <input
+                                    id="subject"
+                                    name="subject"
+                                    type="text"
+                                    required
+                                    className="pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                    placeholder="Enter the subject"
+                                    value={availableLockers.data.LockerType}
+                                />
+                            </div>
+                        </div>
+                        <div className="relative">
+                            <label htmlFor="subject" className="sr-only">
+                                Gender
+                            </label>
+                            <div className="flex items-center">
+                                <User className="absolute left-3 h-5 w-5 text-blue-500" />
+                                <input
+                                    id="subject"
+                                    name="subject"
+                                    type="text"
+                                    required
+                                    className="pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                    placeholder="Enter the subject"
+                                    value={availableLockers.data.availableForGender}
+                                />
+                            </div>
+                        </div>
+                        <div className="relative">
+                            <label htmlFor="subject" className="sr-only">
+                                Name
+                            </label>
+                            <div className="flex items-center">
+                                <FolderOpen className="absolute left-3 h-5 w-5 text-blue-500" />
+                                <input
+                                    id="subject"
+                                    name="subject"
+                                    type="text"
+                                    required
+                                    className="pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                    placeholder="Enter the employee name"
+                                    value={empName}
+                                    onChange={(e) => setEmpName(e.target.value)}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="relative">
+                            <label htmlFor="subject" className="sr-only">
+                                ID
+                            </label>
+                            <div className="flex items-center">
+                                <Hash className="absolute left-3 h-5 w-5 text-blue-500" />
+                                <input
+                                    id="subject"
+                                    name="subject"
+                                    type="text"
+                                    required
+                                    className="pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                    placeholder="Enter the employee ID"
+                                    value={empId}
+                                    onChange={(e) => setEmpId(e.target.value)}
+                                />
+                            </div>
+                        </div>
+                        <div className="relative">
+                            <label htmlFor="subject" className="sr-only">
+                                Email
+                            </label>
+                            <div className="flex items-center">
+                                <Mail className="absolute left-3 h-5 w-5 text-blue-500" />
+                                <input
+                                    id="subject"
+                                    name="subject"
+                                    type="text"
+                                    required
+                                    className="pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                    placeholder="Enter the employee email"
+                                    value={empEmail}
+                                    onChange={(e) => setEmpEmail(e.target.value)}
+                                />
+                            </div>
+                        </div>
+                        <div className="relative">
+                            <label htmlFor="subject" className="sr-only">
+                                Phone
+                            </label>
+                            <div className="flex items-center">
+                                <Hash className="absolute left-3 h-5 w-5 text-blue-500" />
+                                <input
+                                    id="subject"
+                                    name="subject"
+                                    type="text"
+                                    required
+                                    className="pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                    placeholder="Enter the employee phone number"
+                                    value={empPhone}
+                                    onChange={(e) => setEmpPhone(e.target.value)}
+                                />
+                            </div>
+                        </div>
+
+                        <select
+                            id="duration"
+                            value={months}
+                            onChange={(e) => setMonths(e.target.value)}
+                            className=" outline-none w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                        >
+                            <option value="" disabled>
+                                Duration
+                            </option>
+                            <option value="3">3 months</option>
+                            <option value="6">6 months</option>
+                            <option value="12">12 months</option>
+                            <option value="customize">Customize</option>
+                        </select>
+
+                        {months === "customize" ? (
+                            <>
+                                <div className="relative w-full">
                                     <input
-                                        type="number"
+                                        id="description"
+                                        name="description"
+                                        type="date"
+                                        required
+                                        className=" outline-none w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                        placeholder="Enter the start date"
+                                        value={startDate}
+                                        onChange={(e) => setStartDate(e.target.value)}
+                                    />
+                                </div>
+
+                                <div className="relative w-full">
+                                    <input
+                                        id="description"
+                                        name="description"
+                                        type="date"
+                                        required
+                                        className=" outline-none w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                        placeholder="Enter the end date"
+                                        value={endDate}
+                                        onChange={(e) => setEndDate(e.target.value)}
+                                    />
+                                </div>
+                                <div className="relative">
+                                    <label htmlFor="subject" className="sr-only">
+                                        Cost
+                                    </label>
+                                    <div className="flex items-center">
+                                        <CircleDollarSign className="absolute left-3 h-5 w-5 text-blue-500" />
+                                        <input
+                                            id="subject"
+                                            name="subject"
+                                            type="text"
+                                            required
+                                            className="pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                            placeholder="Enter the cost"
+                                            value={cost}
+                                            onChange={(e) => setCost(e.target.value)}
+                                        />
+                                    </div>
+                                </div>
+                            </>
+                        ) : (
+                            <div className="relative">
+                                <label htmlFor="subject" className="sr-only">
+                                    Cost
+                                </label>
+                                <div className="flex items-center">
+                                    <CircleDollarSign className="absolute left-3 h-5 w-5 text-blue-500" />
+                                    <input
+                                        id="subject"
+                                        name="subject"
+                                        type="text"
+                                        required
+                                        className="pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                        placeholder="Enter the cost"
                                         value={cost}
                                         onChange={(e) => setCost(e.target.value)}
-                                        id="cost"
-                                        placeholder="Total Cost"
-                                        className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none"
                                     />
-                                </>
-                            ) : (
-                                <input
-                                    type="number"
-                                    value={cost}
-                                    id="cost"
-                                    placeholder="Total Cost"
-                                    className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none"
-                                />
-                            )}
+                                </div>
+                            </div>
+                        )}
 
-                            <button type="submit" className="bg-blue px-6 py-2 rounded-sm text-white font-medium">
-                                Add Locker
-                            </button>
-                        </div>
+                        <button
+                            type="submit"
+                            className="group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                        >
+                            <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+                                <MoveRight className="h-5 w-5 text-white group-hover:text-blue-300" />
+                            </span>
+                            Assign the Locker
+                        </button>
+                        <BackButton />
                     </form>
                 </div>
-            </section>
+            </div>
         </Layout>
     );
 };

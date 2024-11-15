@@ -30,7 +30,7 @@ const DashNav = () => {
                     </Link>
 
                     {/* User Profile Picture Link */}
-                    <Link to="/profile" className="relative group">
+                    <Link to="/account_page" className="relative group">
                         <img
                             src={user?.photoURL || "/user-1.png"}
                             alt="User Profile"

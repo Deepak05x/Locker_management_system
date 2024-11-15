@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import Layout from "./Layout";
 import { AuthContext } from "../context/AuthProvider";
-import { User, Key, ArrowBigRight, Edit2, X } from "lucide-react";
+import { User, Key, ArrowBigRight, Edit2, X, Hash } from "lucide-react";
 
 const AccountPage = () => {
     const { loginDetails, handleProfileUpdate } = useContext(AuthContext);
@@ -14,6 +14,8 @@ const AccountPage = () => {
     const [isEmailEditable, setIsEmailEditable] = useState(false);
     const [isPhoneEditable, setIsPhoneEditable] = useState(false);
     const [close, setClose] = useState(false);
+
+    console.log(phone);
 
     const handleClickUser = () => {
         setIsUsernameEditable((prev) => !prev);
@@ -96,7 +98,7 @@ const AccountPage = () => {
 
                         {/* Phone Field */}
                         <div className="relative group">
-                            <Key className="absolute left-3 top-4   h-5 w-5 text-blue-500" />
+                            <Hash className="absolute left-3 top-4   h-5 w-5 text-blue-500" />
                             <input
                                 id="phone"
                                 name="phone"

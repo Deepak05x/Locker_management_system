@@ -1,10 +1,12 @@
 import React from "react";
-import { useState } from "react";
+import { useState, lazy } from "react";
 import { useContext } from "react";
 import { LockerContext } from "../context/LockerProvider";
 import { MoveRight, Lock, BadgeAlert, BookOpen } from "lucide-react";
 import { Link } from "react-router-dom";
 import Layout from "./Layout";
+
+const BackButton = lazy(() => import("../components/BackButton"));
 
 const TechnicalIssue = () => {
     const [lockerNumber, setLockerNumber] = useState("");
@@ -36,7 +38,7 @@ const TechnicalIssue = () => {
 
     return (
         <Layout>
-            <div className="min-h-screen bg-gradient-to-b from-blue-100 to-white flex flex-col items-center justify-center p-4">
+            <div className="flex flex-col items-center justify-center p-24">
                 <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-xl">
                     <div className="text-center space-y-2 flex flex-col items-center gap-4">
                         <div className="flex justify-center ">
@@ -113,6 +115,7 @@ const TechnicalIssue = () => {
                             </span>
                             Submit The Issue
                         </button>
+                        <BackButton />
                     </form>
 
                     <div className="mt-6 text-center">
