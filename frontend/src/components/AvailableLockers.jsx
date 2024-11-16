@@ -1,7 +1,7 @@
 import React, { useState, lazy, useContext } from "react";
 import { LockerContext } from "../context/LockerProvider";
 import Layout from "./Layout";
-import { MoveRight, BadgeAlert } from "lucide-react";
+import { MoveRight, BadgeAlert, ArrowRight, Loader } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const BackButton = lazy(() => import("../components/BackButton"));
@@ -11,6 +11,8 @@ const AvailableLockers = () => {
 
     const [lockerType, setLockerType] = useState("");
     const [gender, setGender] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [availableError, setAvailableError] = useState("");
 
     const handleLockerType = (e) => {
         setLockerType(e.target.value);
@@ -22,11 +24,14 @@ const AvailableLockers = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
             await availableLocker(lockerType, gender);
             console.log("Success");
         } catch (error) {
-            console.log(error);
+            setAvailableError(error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -82,14 +87,19 @@ const AvailableLockers = () => {
                             </select>
                         </div>
 
+                        {availableError && <p className="text-red-500 text-sm mt-2">{availableError}</p>}
+
                         <button
                             type="submit"
-                            className="group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                            disabled={loading}
+                            className={`group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-white ${
+                                loading ? "bg-blue-500 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
+                            } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors`}
                         >
                             <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                                <MoveRight className="h-5 w-5 text-white group-hover:text-blue-300" />
+                                {loading ? <Loader className="h-5 w-5 text-white animate-spin" /> : <ArrowRight className="h-5 w-5 text-white group-hover:text-blue-300" />}
                             </span>
-                            Check the availability
+                            {loading ? "Checking..." : "Check the availability"}
                         </button>
                         <BackButton />
                     </form>

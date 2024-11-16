@@ -22,6 +22,11 @@ const LockerProvider = ({ children }) => {
     const [renewLocker, setRenewLocker] = useState(null);
     const [expireIn7Days, setExpireIn7Days] = useState(null);
     const [expireIn1Day, setExpireIn1Day] = useState(null);
+    const [assignSuccess, setAssignSuccess] = useState(false);
+    const [cancelSuccess, setCancelSuccess] = useState(false);
+    const [lockerSuccess, setLockerSuccess] = useState(false);
+    const [technicalSuccess, setTechnicalSuccess] = useState(false);
+    const [addSuccess, setAddSuccess] = useState(false);
 
     const [isEditable, setIsEditable] = useState({
         halfMale: false,
@@ -92,6 +97,7 @@ const LockerProvider = ({ children }) => {
             if (res.status === 200) {
                 const data = res.data;
                 setAddedLocker(data);
+                setAddSuccess(true);
                 navigate("/dashboard");
             }
         } catch (error) {
@@ -114,7 +120,7 @@ const LockerProvider = ({ children }) => {
                 navigate("/assign_locker");
             }
         } catch (error) {
-            console.log(error);
+            throw "Selected Locker Criteria is not Available";
         }
     };
 
@@ -144,6 +150,7 @@ const LockerProvider = ({ children }) => {
             if (res.status === 200) {
                 const data = res.data;
                 setAssignedLockers(data);
+                setAssignSuccess(true);
                 navigate("/dashboard");
             }
         } catch (error) {
@@ -212,6 +219,7 @@ const LockerProvider = ({ children }) => {
             if (res.status === 200) {
                 const data = res.data;
                 setCancelLockers(data);
+                setCancelSuccess(true);
                 navigate("/dashboard");
             }
         } catch (error) {
@@ -235,6 +243,7 @@ const LockerProvider = ({ children }) => {
             if (res.status === 200) {
                 const data = res.data;
                 setLockerIssue(data);
+                setLockerSuccess(true);
                 navigate("/dashboard");
             }
         } catch (error) {
@@ -257,6 +266,7 @@ const LockerProvider = ({ children }) => {
             if (res.status === 200) {
                 const data = res.data;
                 setTechnicalIssue(data);
+                setTechnicalSuccess(true);
                 navigate("/dashboard");
             }
         } catch (error) {
@@ -344,6 +354,16 @@ const LockerProvider = ({ children }) => {
                 toggleEditable,
                 handleInputChange,
                 saveLockerPrice,
+                assignSuccess,
+                setAssignSuccess,
+                cancelSuccess,
+                setCancelSuccess,
+                lockerSuccess,
+                setLockerSuccess,
+                technicalSuccess,
+                setTechnicalSuccess,
+                addSuccess,
+                setAddSuccess,
             }}
         >
             {children}

@@ -24,13 +24,13 @@ const CancelLocker = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setLoading(true); // Set loading to true when form is submitted
+        setLoading(true);
         try {
             await cancelLocker(lockerNumber, lockerEmail);
         } catch (error) {
             console.log(error);
         } finally {
-            setLoading(false); // Reset loading state after the submission is complete
+            setLoading(false);
         }
     };
 

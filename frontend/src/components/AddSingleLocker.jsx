@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { lazy, useContext } from "react";
+import { lazy, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { LockerContext } from "../context/LockerProvider";
+import { ArrowRight, Loader, ShieldCheck, User, Hash, Key, ClipboardType, FolderOpen, Mail, CircleDollarSign } from "lucide-react";
 import Layout from "./Layout";
+import { toast } from "react-toastify";
 
-const DashNav = lazy(() => import("./DashNav"));
+const BackButton = lazy(() => import("../components/BackButton"));
 
 const AddSingleLocker = () => {
     const { addLocker } = useContext(LockerContext);
@@ -18,34 +20,11 @@ const AddSingleLocker = () => {
     const [lockerPriceYear, setLockerPriceYear] = useState(null);
     const [gender, setGender] = useState(null);
     const [lockerSerialNumber, setLockerSerialNumber] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     console.log(lockerCode[0], lockerCode[1], lockerCode[2], lockerCode[3], lockerCode[4]);
     const handleLockerType = (e) => {
         setLockerType(e.target.value);
-    };
-
-    const handleLockerNumber = (e) => {
-        setLockerNumber(e.target.value);
-    };
-
-    const handleLockerPriceThree = (e) => {
-        setLockerPriceThree(e.target.value);
-    };
-
-    const handleLockerPriceSix = (e) => {
-        setLockerPriceSix(e.target.value);
-    };
-
-    const handleLockerPriceYear = (e) => {
-        setLockerPriceYear(e.target.value);
-    };
-
-    const handleLockerSerialNumber = (e) => {
-        setLockerSerialNumber(e.target.value);
-    };
-
-    const handleGender = (e) => {
-        setGender(e.target.value);
     };
 
     const handleLockerCode = (index, event) => {
@@ -56,10 +35,13 @@ const AddSingleLocker = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
             await addLocker(lockerType, lockerNumber, lockerCode, lockerPriceThree, lockerPriceSix, lockerPriceYear, gender, lockerSerialNumber);
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -104,85 +86,164 @@ const AddSingleLocker = () => {
                         </table>
                     </div>
                 </section>
-                <div className="flex flex-col  rounded-3xl items-center md:px-16 sm:px-12 ssm:px-8 py-16 gap-12 bg-white drop-shadow-2xl shadow-black">
-                    <h1 className="text-3xl font-medium">
-                        Want to add a <span className="text-blue">locker?</span>
-                    </h1>
-                    <form onSubmit={handleSubmit} className="w-full flex flex-col items-center gap-8">
-                        <div className="flex flex-col gap-8 items-center w-full">
-                            <select id="lockerType" value={lockerType} onChange={handleLockerType} className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none">
-                                <option value="" disabled selected hidden>
-                                    Type of the locker
-                                </option>
-                                <option value="half">Half</option>
-                                <option value="full">Full</option>
-                            </select>
-                            <select id="gender" value={gender} onChange={handleGender} className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none">
-                                <option value="" disabled selected hidden>
-                                    Type of the gender
-                                </option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                            </select>
-                            <input
-                                type="number"
-                                id="number"
-                                value={lockerNumber}
-                                placeholder="Enter the locker number"
-                                className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none"
-                                onChange={handleLockerNumber}
-                            />
-                            <input
-                                type="number"
-                                id="number"
-                                value={lockerSerialNumber}
-                                placeholder="Enter the locker serial number"
-                                className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none"
-                                onChange={handleLockerSerialNumber}
-                            />
-                            {Array.from({ length: 5 }).map((_, index) => (
-                                <input
-                                    key={index}
-                                    type="number"
-                                    value={lockerCode[index]}
-                                    placeholder={`Enter the combination ${index + 1}`}
-                                    className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none"
-                                    onChange={(e) => handleLockerCode(index, e)}
-                                />
-                            ))}
-
-                            <input
-                                type="number"
-                                id="3"
-                                value={lockerPriceThree}
-                                placeholder="Enter the price for 3 months"
-                                className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none"
-                                onChange={handleLockerPriceThree}
-                            />
-                            <input
-                                type="number"
-                                id="6"
-                                value={lockerPriceSix}
-                                placeholder="Enter the price for 6 months"
-                                className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none"
-                                onChange={handleLockerPriceSix}
-                            />
-                            <input
-                                type="number"
-                                id="12"
-                                value={lockerPriceYear}
-                                placeholder="Enter the price for 12 months"
-                                className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none"
-                                onChange={handleLockerPriceYear}
-                            />
-
-                            <button type="submit" className="bg-blue px-6 py-2 rounded-sm text-white font-medium">
-                                Add Locker
-                            </button>
+                <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-xl">
+                    <div className="text-center space-y-2 flex flex-col items-center gap-4">
+                        <div className="flex justify-center ">
+                            <ShieldCheck className="w-16 h-16 text-blue-600" />
                         </div>
-                        <Link className="bg-blue px-6 py-2 rounded-sm text-white font-medium" to={"/add_multiple_locker"}>
-                            Add Multiple Locker
-                        </Link>
+                        <h1 className="text-3xl flex flex-col font-bold text-blue-900">
+                            Add a New Locker to the <span>System</span>
+                        </h1>
+                    </div>
+
+                    <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+                        <select id="lockerType" value={lockerType} onChange={handleLockerType} className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none">
+                            <option value="" disabled selected hidden>
+                                Type of the locker
+                            </option>
+                            <option value="half">Half</option>
+                            <option value="full">Full</option>
+                        </select>
+
+                        <select
+                            id="gender"
+                            value={gender}
+                            onChange={(e) => setGender(e.target.value)}
+                            className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none"
+                        >
+                            <option value="" disabled selected hidden>
+                                Type of the gender
+                            </option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+
+                        <div className="relative">
+                            <label htmlFor="subject" className="sr-only">
+                                Serial Number
+                            </label>
+                            <div className="flex items-center">
+                                <Hash className="absolute left-3 h-5 w-5 text-blue-500" />
+                                <input
+                                    id="subject"
+                                    name="subject"
+                                    type="text"
+                                    required
+                                    className="pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                    placeholder="Enter the locker number"
+                                    value={lockerNumber}
+                                    onChange={(e) => setLockerNumber(e.target.value)}
+                                />
+                            </div>
+                        </div>
+                        <div className="relative">
+                            <label htmlFor="subject" className="sr-only">
+                                Type
+                            </label>
+                            <div className="flex items-center">
+                                <ClipboardType className="absolute left-3 h-5 w-5 text-blue-500" />
+                                <input
+                                    id="subject"
+                                    name="subject"
+                                    type="text"
+                                    required
+                                    className="pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                    placeholder="Enter the locker serial number"
+                                    value={lockerSerialNumber}
+                                    onChange={(e) => setLockerSerialNumber(e.target.value)}
+                                />
+                            </div>
+                        </div>
+                        {Array.from({ length: 5 }).map((_, index) => (
+                            <div className="relative" key={index}>
+                                <label htmlFor={`Code-${index}`} className="sr-only">
+                                    Gender
+                                </label>
+                                <div className="flex items-center">
+                                    <Key className="absolute left-3 h-5 w-5 text-blue-500" />
+                                    <input
+                                        id={`code-${index}`}
+                                        name="subject"
+                                        type="text"
+                                        required
+                                        className="pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                        placeholder={`Enter the Locker Code ${index + 1}`}
+                                        value={lockerCode[index]}
+                                        onChange={(e) => handleLockerCode(index, e)}
+                                    />
+                                </div>
+                            </div>
+                        ))}
+
+                        <div className="relative">
+                            <label htmlFor="subject" className="sr-only">
+                                Name
+                            </label>
+                            <div className="flex items-center">
+                                <CircleDollarSign className="absolute left-3 h-5 w-5 text-blue-500" />
+                                <input
+                                    id="subject"
+                                    name="subject"
+                                    type="text"
+                                    required
+                                    className="pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                    placeholder="Enter the 3 months price"
+                                    value={lockerPriceThree}
+                                    onChange={(e) => setLockerPriceThree(e.target.value)}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="relative">
+                            <label htmlFor="subject" className="sr-only">
+                                ID
+                            </label>
+                            <div className="flex items-center">
+                                <CircleDollarSign className="absolute left-3 h-5 w-5 text-blue-500" />
+                                <input
+                                    id="subject"
+                                    name="subject"
+                                    type="text"
+                                    required
+                                    className="pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                    placeholder="Enter the 6 months price"
+                                    value={lockerPriceSix}
+                                    onChange={(e) => setLockerPriceSix(e.target.value)}
+                                />
+                            </div>
+                        </div>
+                        <div className="relative">
+                            <label htmlFor="subject" className="sr-only">
+                                Email
+                            </label>
+                            <div className="flex items-center">
+                                <CircleDollarSign className="absolute left-3 h-5 w-5 text-blue-500" />
+                                <input
+                                    id="subject"
+                                    name="subject"
+                                    type="text"
+                                    required
+                                    className="pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                    placeholder="Enter the 12 months price"
+                                    value={lockerPriceYear}
+                                    onChange={(e) => setLockerPriceYear(e.target.value)}
+                                />
+                            </div>
+                        </div>
+
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className={`group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-white ${
+                                loading ? "bg-blue-500 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
+                            } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors`}
+                        >
+                            <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+                                {loading ? <Loader className="h-5 w-5 text-white animate-spin" /> : <ArrowRight className="h-5 w-5 text-white group-hover:text-blue-300" />}
+                            </span>
+                            {loading ? "Adding..." : "Add the locker"}
+                        </button>
+                        <BackButton />
                     </form>
                 </div>
             </section>

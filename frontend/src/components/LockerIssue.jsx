@@ -2,7 +2,7 @@ import React from "react";
 import { useState, lazy } from "react";
 import { useContext } from "react";
 import { LockerContext } from "../context/LockerProvider";
-import { MoveRight, Lock, BadgeAlert, BookOpen } from "lucide-react";
+import { ArrowRight, Loader, Lock, BadgeAlert, BookOpen } from "lucide-react";
 import { Link } from "react-router-dom";
 import Layout from "./Layout";
 
@@ -12,6 +12,7 @@ const TechnicalIssue = () => {
     const [lockerNumber, setLockerNumber] = useState("");
     const [subject, setSubject] = useState("");
     const [description, setDescription] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const { handleLockerIssue } = useContext(LockerContext);
 
@@ -29,10 +30,13 @@ const TechnicalIssue = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
             await handleLockerIssue(subject, description, lockerNumber);
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -108,12 +112,15 @@ const TechnicalIssue = () => {
 
                         <button
                             type="submit"
-                            className="group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                            disabled={loading}
+                            className={`group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-white ${
+                                loading ? "bg-blue-500 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
+                            } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors`}
                         >
                             <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                                <MoveRight className="h-5 w-5 text-white group-hover:text-blue-300" />
+                                {loading ? <Loader className="h-5 w-5 text-white animate-spin" /> : <ArrowRight className="h-5 w-5 text-white group-hover:text-blue-300" />}
                             </span>
-                            Submit The Issue
+                            {loading ? "Reporting..." : "Submit the Issue"}
                         </button>
                         <BackButton />
                     </form>

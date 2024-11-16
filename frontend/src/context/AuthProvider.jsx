@@ -12,6 +12,7 @@ const AuthProvider = ({ children }) => {
     const [validatedOtp, setValidatedOtp] = useState(null);
     const [resetedPassword, setResetedPassword] = useState(null);
     const [checkEmail, setCheckEmail] = useState(null);
+    const [loginSuccess, setLoginSuccess] = useState(false);
 
     useEffect(() => {
         if (loginDetails) {
@@ -35,17 +36,12 @@ const AuthProvider = ({ children }) => {
             if (res.status === 200) {
                 const data = res.data;
                 setLoginDetails(data);
-                navigate("/dashboard");
+                setLoginSuccess(true);
                 document.cookie = `token=${data.token}; path=/;`;
+                navigate("/dashboard");
             }
         } catch (error) {
-            // Extract and handle the error message
-            if (error.response) {
-                setError(error.response.data.error); // Set the error message from the backend
-            } else {
-                setError("Something went wrong. Please try again.");
-            }
-            console.error("Login failed:", error);
+            throw error.response.data.error || "Invalid Username or Password";
         }
     };
 
@@ -112,7 +108,7 @@ const AuthProvider = ({ children }) => {
     const logout = async () => {
         try {
             const res = await axios.get("http://localhost:3000/api/user/LogOut", {
-                withCredentials: true, // Include credentials (cookies) in the request
+                withCredentials: true,
             });
             if (res.status === 200) {
                 setLoginDetails(null);
@@ -136,7 +132,7 @@ const AuthProvider = ({ children }) => {
                     phone,
                 },
                 {
-                    withCredentials: true, // Include credentials (cookies) in the request
+                    withCredentials: true,
                 }
             );
             if (res.status === 200) {
@@ -149,7 +145,9 @@ const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ handleProfileUpdate, login, checkEmail, setCheckEmail, loginDetails, generateOtp, getOtp, validateOtp, resetPassword, logout }}>{children}</AuthContext.Provider>
+        <AuthContext.Provider value={{ setLoginSuccess, loginSuccess, handleProfileUpdate, login, checkEmail, setCheckEmail, loginDetails, generateOtp, getOtp, validateOtp, resetPassword, logout }}>
+            {children}
+        </AuthContext.Provider>
     );
 };
 

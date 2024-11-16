@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState(""); // Error message state
+    const [loginError, setLoginError] = useState("");
     const { login } = useContext(AuthContext);
 
     const handleEmail = (e) => {
@@ -20,12 +20,10 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            // Attempt login
             await login(email, password);
-            setError(""); // Clear any existing error if login is successful
+            setLoginError("");
         } catch (err) {
-            // Set error message if login fails
-            setError("Invalid email or password. Please try again.");
+            setLoginError(err);
         }
     };
 
@@ -84,7 +82,7 @@ const Login = () => {
                     </div>
 
                     {/* Error Message */}
-                    {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+                    {loginError && <p className="text-red-500 text-sm mt-2">{loginError}</p>}
 
                     {/* Remember Me & Forgot Password */}
                     <div className="flex items-center justify-center hover:underline text-blue text-sm">

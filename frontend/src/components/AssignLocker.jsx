@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { lazy, useContext, useEffect } from "react";
 import { LockerContext } from "../context/LockerProvider";
-import { MoveRight, Lock, BadgeAlert, BookOpen, ShieldCheck, User, Hash, Key, ClipboardType, FolderOpen, Mail, CircleDollarSign } from "lucide-react";
+import { ArrowRight, Loader, ShieldCheck, User, Hash, Key, ClipboardType, FolderOpen, Mail, CircleDollarSign } from "lucide-react";
 import Layout from "./Layout";
-import { Link } from "react-router-dom";
 
 const BackButton = lazy(() => import("../components/BackButton"));
 
@@ -18,6 +17,7 @@ const AssignLocker = () => {
     const [cost, setCost] = useState(null);
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (months === "3") {
@@ -31,26 +31,29 @@ const AssignLocker = () => {
         }
     }, [months]);
 
-    const handleMonths = (e) => {
-        setMonths(e.target.value);
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
-        allocateLocker(
-            availableLockers.data.LockerNumber,
-            availableLockers.data.LockerType,
-            availableLockers.data.LockerCode,
-            empName,
-            empId,
-            empEmail,
-            empPhone,
-            availableLockers.data.availableForGender,
-            cost,
-            months,
-            startDate,
-            endDate
-        );
+        setLoading(true);
+        try {
+            await allocateLocker(
+                availableLockers.data.LockerNumber,
+                availableLockers.data.LockerType,
+                availableLockers.data.LockerCode,
+                empName,
+                empId,
+                empEmail,
+                empPhone,
+                availableLockers.data.availableForGender,
+                cost,
+                months,
+                startDate,
+                endDate
+            );
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -115,7 +118,7 @@ const AssignLocker = () => {
                                     type="text"
                                     required
                                     className="pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                                    placeholder="Enter the subject"
+                                    placeholder="Enter the locker serial number"
                                     value={availableLockers.data.LockerSerialNumber}
                                 />
                             </div>
@@ -312,12 +315,15 @@ const AssignLocker = () => {
 
                         <button
                             type="submit"
-                            className="group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                            disabled={loading}
+                            className={`group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-white ${
+                                loading ? "bg-blue-500 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
+                            } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors`}
                         >
                             <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                                <MoveRight className="h-5 w-5 text-white group-hover:text-blue-300" />
+                                {loading ? <Loader className="h-5 w-5 text-white animate-spin" /> : <ArrowRight className="h-5 w-5 text-white group-hover:text-blue-300" />}
                             </span>
-                            Assign the Locker
+                            {loading ? "Assigning..." : "Assign the locker"}
                         </button>
                         <BackButton />
                     </form>

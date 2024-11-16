@@ -16,8 +16,8 @@ const AdminProvider = ({ children }) => {
     const getStaffs = async () => {
         try {
             const res = await axios.get("http://localhost:3000/api/admin/viewAllStaff", {
-                withCredentials: true // Include credentials (cookies) in the request
-              });
+                withCredentials: true, // Include credentials (cookies) in the request
+            });
             if (res.status === 200) {
                 const data = res.data.users;
                 setStaffs(data);
@@ -40,7 +40,7 @@ const AdminProvider = ({ children }) => {
                     gender,
                 },
                 {
-                   withCredentials: true
+                    withCredentials: true,
                 }
             );
             if (res.status === 200) {
@@ -62,7 +62,7 @@ const AdminProvider = ({ children }) => {
                     id,
                 },
                 {
-                   withCredentials: true
+                    withCredentials: true,
                 }
             );
             if (res.status === 200) {
@@ -84,7 +84,7 @@ const AdminProvider = ({ children }) => {
                     id,
                 },
                 {
-                    withCredentials: true
+                    withCredentials: true,
                 }
             );
             if (res.status === 200) {
@@ -104,7 +104,7 @@ const AdminProvider = ({ children }) => {
                     lockerNumber,
                 },
                 {
-                    withCredentials: true
+                    withCredentials: true,
                 }
             );
             if (res.status === 200) {

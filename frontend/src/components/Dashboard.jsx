@@ -1,13 +1,60 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { User, Box, RefreshCw, X, Plus, AlertTriangle, Settings, KeyRound } from "lucide-react";
 import { Card, CardContent } from "./ui/card";
-import { Badge } from "./ui/Badge";
+import { toast } from "react-toastify";
 import Layout from "./Layout";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { LockerContext } from "../context/LockerProvider";
 
 const Dashboard = () => {
-    const { loginDetails } = useContext(AuthContext);
+    const { loginDetails, loginSuccess, setLoginSuccess } = useContext(AuthContext);
+    const { assignSuccess, setAssignSuccess, cancelSuccess, setCancelSuccess, technicalSuccess, setTechnicalSuccess, lockerSuccess, setLockerSuccess, addSuccess, setAddSuccess } =
+        useContext(LockerContext);
+
+    useEffect(() => {
+        if (loginSuccess) {
+            toast.success("Login successful! Welcome to the Dashboard");
+            setLoginSuccess(false);
+        }
+    }, [loginSuccess]);
+
+    useEffect(() => {
+        if (assignSuccess) {
+            toast.success("Locker Assignment was done Successfully");
+            setAssignSuccess(false);
+        }
+    }, [assignSuccess]);
+
+    useEffect(() => {
+        if (cancelSuccess) {
+            toast.success("The Locker has been Cancelled Successfully");
+            setCancelSuccess(false);
+        }
+    }, [cancelSuccess]);
+
+    useEffect(() => {
+        if (lockerSuccess) {
+            toast.success("Locker Issue has been Reported Successfully");
+            setLockerSuccess(false);
+        }
+    }, [lockerSuccess]);
+
+    useEffect(() => {
+        if (technicalSuccess) {
+            toast.success("Technical Issue has been Reported Successfully");
+            setTechnicalSuccess(false);
+        }
+    }, [technicalSuccess]);
+
+    useEffect(() => {
+        if (addSuccess) {
+            toast.success("Locker has been added to the System Successfully");
+            setAddSuccess(false);
+        }
+    }, [addSuccess]);
 
     const staff = [
         { title: "Assign Locker", icon: User, path: "/available_lockers", description: "Assign lockers to the users", stats: "2.4k Users" },
@@ -29,6 +76,7 @@ const Dashboard = () => {
 
     return (
         <Layout>
+            <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="colored" />
             <main className=" px-4 ssm:px-2 sm:px-4 md:px-6 lg:px-8 xxl:px-10 py-24">
                 <div className="grid ssm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xxl:grid-cols-4  px-12 gap-12">
                     {loginDetails.role === "Staff" ? (
