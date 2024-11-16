@@ -1,27 +1,30 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { LockerContext } from "../context/LockerProvider";
 import Layout from "./Layout";
 
 const UpdateLockerPrice = () => {
     const { isEditable, lockerPrices, toggleEditable, handleInputChange, saveLockerPrice } = useContext(LockerContext);
 
-    const renderLockerRow = (lockerType, lockerLabel) => (
-        <tr>
-            <td className="border border-gray-300 p-4">{lockerLabel}</td>
+    const renderLockerRow = (lockerType, lockerLabel, lockerGender) => (
+        <tr className="bg-white hover:bg-blue-50 transition-colors">
+            <td className="border-b border-gray-200 px-6 py-4 text-center text-gray-700">{lockerGender}</td>
+            <td className="border-b border-gray-200 px-6 py-4 text-center text-gray-700">{lockerLabel}</td>
             {["threeMonths", "sixMonths", "twelveMonths"].map((duration) => (
-                <td key={duration} className="border border-gray-300 p-4">
+                <td key={duration} className="border-b border-gray-200 px-6 py-4">
                     <input
                         type="text"
-                        className="w-full px-2 py-1 border rounded"
+                        className={`w-full px-3 py-2 text-gray-700 border rounded-lg outline-none focus:ring-2 ${
+                            isEditable[lockerType] ? "border-blue-500 focus:ring-blue-500" : "border-gray-300 bg-gray-100 cursor-not-allowed"
+                        }`}
                         value={lockerPrices[lockerType][duration]}
                         readOnly={!isEditable[lockerType]}
                         onChange={(e) => handleInputChange(e, lockerType, duration)}
                     />
                 </td>
             ))}
-            <td className="border border-gray-300 p-4 text-center">
+            <td className="border-b border-gray-200 px-6 py-4 text-center">
                 <button
-                    className="px-4 py-2 bg-blue-500 text-white rounded"
+                    className={`px-4 py-2 rounded-lg ${isEditable[lockerType] ? "bg-green-500 text-white hover:bg-green-600" : "bg-blue-500 text-white hover:bg-blue-600"} transition-colors`}
                     onClick={() => {
                         if (isEditable[lockerType]) {
                             saveLockerPrice(lockerType);
@@ -37,26 +40,29 @@ const UpdateLockerPrice = () => {
 
     return (
         <Layout>
-            <section className="py-8">
-                <div className="max-w-4xl mx-auto">
-                    <h2 className="text-2xl font-bold mb-6 text-center">Update Locker Price</h2>
-                    <table className="w-full border-collapse border border-gray-300">
-                        <thead>
-                            <tr>
-                                <th className="border border-gray-300 p-4 bg-gray-100">Locker Type</th>
-                                <th className="border border-gray-300 p-4 bg-gray-100">3 Months</th>
-                                <th className="border border-gray-300 p-4 bg-gray-100">6 Months</th>
-                                <th className="border border-gray-300 p-4 bg-gray-100">12 Months</th>
-                                <th className="border border-gray-300 p-4 bg-gray-100">Customize</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {renderLockerRow("halfMale", "Half Male")}
-                            {renderLockerRow("fullMale", "Full Male")}
-                            {renderLockerRow("halfFemale", "Half Female")}
-                            {renderLockerRow("fullFemale", "Full Female")}
-                        </tbody>
-                    </table>
+            <section className="py-24 bg-gradient-to-b from-blue-100 to-blue-50">
+                <div className="max-w-5xl mx-auto p-6 bg-white rounded-2xl shadow-xl flex flex-col gap-8">
+                    <h2 className="text-3xl font-bold mb-6 text-center text-blue-900">Update Locker Price</h2>
+                    <div className="overflow-x-auto">
+                        <table className="w-full  text-md border-blue-500 overflow-hidden">
+                            <thead className=" text-blue-500">
+                                <tr>
+                                    <th className="px-6 py-3 text-center "> Gender</th>
+                                    <th className="px-6 py-3 text-center "> Type</th>
+                                    <th className="px-6 py-3 text-center">3 Months</th>
+                                    <th className="px-6 py-3 text-center">6 Months</th>
+                                    <th className="px-6 py-3 text-center">12 Months</th>
+                                    <th className="px-6 py-3 text-center">Customize</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {renderLockerRow("halfMale", "Half", "Male")}
+                                {renderLockerRow("fullMale", "Full", "Male")}
+                                {renderLockerRow("halfFemale", "Half", "Female")}
+                                {renderLockerRow("fullFemale", "Full", "Female")}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </section>
         </Layout>

@@ -237,7 +237,7 @@ const AssignLocker = () => {
                             onChange={(e) => setMonths(e.target.value)}
                             className=" outline-none w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                         >
-                            <option value="" disabled>
+                            <option value="" disabled selected>
                                 Duration
                             </option>
                             <option value="3">3 months</option>

@@ -8,11 +8,13 @@ import { AuthContext } from "../context/AuthProvider";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { LockerContext } from "../context/LockerProvider";
+import { AdminContext } from "../context/AdminProvider";
 
 const Dashboard = () => {
     const { loginDetails, loginSuccess, setLoginSuccess } = useContext(AuthContext);
     const { assignSuccess, setAssignSuccess, cancelSuccess, setCancelSuccess, technicalSuccess, setTechnicalSuccess, lockerSuccess, setLockerSuccess, addSuccess, setAddSuccess } =
         useContext(LockerContext);
+    const { deleteSuccess, setDeleteSuccess } = useContext(AdminContext);
 
     useEffect(() => {
         if (loginSuccess) {
@@ -55,6 +57,13 @@ const Dashboard = () => {
             setAddSuccess(false);
         }
     }, [addSuccess]);
+
+    useEffect(() => {
+        if (deleteSuccess) {
+            toast.success("Locker has been Deleted Successfully");
+            setDeleteSuccess(false);
+        }
+    }, [deleteSuccess]);
 
     const staff = [
         { title: "Assign Locker", icon: User, path: "/available_lockers", description: "Assign lockers to the users", stats: "2.4k Users" },

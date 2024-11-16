@@ -99,6 +99,7 @@ const LockerProvider = ({ children }) => {
                 setAddedLocker(data);
                 setAddSuccess(true);
                 navigate("/dashboard");
+                window.location.reload();
             }
         } catch (error) {
             console.log(error);
@@ -152,6 +153,7 @@ const LockerProvider = ({ children }) => {
                 setAssignedLockers(data);
                 setAssignSuccess(true);
                 navigate("/dashboard");
+                window.location.reload();
             }
         } catch (error) {
             console.log(error);
@@ -221,6 +223,7 @@ const LockerProvider = ({ children }) => {
                 setCancelLockers(data);
                 setCancelSuccess(true);
                 navigate("/dashboard");
+                window.location.reload();
             }
         } catch (error) {
             console.log(error);

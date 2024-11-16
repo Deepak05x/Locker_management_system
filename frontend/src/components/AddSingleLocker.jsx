@@ -97,7 +97,12 @@ const AddSingleLocker = () => {
                     </div>
 
                     <form onSubmit={handleSubmit} className="mt-8 space-y-6">
-                        <select id="lockerType" value={lockerType} onChange={handleLockerType} className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none">
+                        <select
+                            id="lockerType"
+                            value={lockerType}
+                            onChange={handleLockerType}
+                            className="pl-4 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-white"
+                        >
                             <option value="" disabled selected hidden>
                                 Type of the locker
                             </option>
@@ -109,7 +114,7 @@ const AddSingleLocker = () => {
                             id="gender"
                             value={gender}
                             onChange={(e) => setGender(e.target.value)}
-                            className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none"
+                            className="pl-4 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-white"
                         >
                             <option value="" disabled selected hidden>
                                 Type of the gender
@@ -245,6 +250,17 @@ const AddSingleLocker = () => {
                         </button>
                         <BackButton />
                     </form>
+
+                    <div className="mt-6 text-center">
+                        <div className="space-y-2">
+                            <p className="text-sm text-gray-600">
+                                Want to Add Multiple Lockers?{" "}
+                                <Link to={"/add_multiple_locker"} className="text-blue hover:underline cursor-pointer">
+                                    Multiple Lockers
+                                </Link>
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </section>
         </Layout>

@@ -10,6 +10,7 @@ const AdminProvider = ({ children }) => {
     const [staffs, setStaffs] = useState([]);
     const [addedStaffs, setAddedStaffs] = useState([]);
     const [staffDetails, setStaffDetails] = useState([]);
+    const [deleteSuccess, setDeleteSuccess] = useState(false);
 
     const navigate = useNavigate();
 
@@ -108,7 +109,8 @@ const AdminProvider = ({ children }) => {
                 }
             );
             if (res.status === 200) {
-                navigate("/staff_management");
+                setDeleteSuccess(true);
+                navigate("/dashboard");
                 window.location.reload();
             }
         } catch (error) {
@@ -120,7 +122,7 @@ const AdminProvider = ({ children }) => {
         getStaffs();
     }, []);
 
-    return <AdminContext.Provider value={{ deleteLocker, staffs, addSingleStaff, handleStaffDetails, staffDetails, deleteStaff }}>{children}</AdminContext.Provider>;
+    return <AdminContext.Provider value={{ deleteSuccess, setDeleteSuccess, deleteLocker, staffs, addSingleStaff, handleStaffDetails, staffDetails, deleteStaff }}>{children}</AdminContext.Provider>;
 };
 
 export default AdminProvider;

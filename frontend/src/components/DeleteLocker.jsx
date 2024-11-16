@@ -1,22 +1,29 @@
 import React from "react";
 import { useState } from "react";
-import { useContext } from "react";
+import { useContext, lazy } from "react";
 import { AdminContext } from "../context/AdminProvider";
-import { Hash, CircleOff, ArrowBigRight } from "lucide-react";
+import { Hash, CircleOff, ArrowRight, Loader } from "lucide-react";
 import Layout from "./Layout";
+import { LockerContext } from "../context/LockerProvider";
+
+const BackButton = lazy(() => import("../components/BackButton"));
 
 const DeleteLocker = () => {
     const { deleteLocker } = useContext(AdminContext);
     const [lockerNumber, setLockerNumber] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     console.log(lockerNumber);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
             await deleteLocker(lockerNumber);
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -57,13 +64,17 @@ const DeleteLocker = () => {
 
                         <button
                             type="submit"
-                            className="group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                            disabled={loading}
+                            className={`group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-white ${
+                                loading ? "bg-blue-500 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
+                            } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors`}
                         >
                             <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                                <ArrowBigRight className="h-5 w-5 text-white group-hover:text-blue-300" />
+                                {loading ? <Loader className="h-5 w-5 text-white animate-spin" /> : <ArrowRight className="h-5 w-5 text-white group-hover:text-blue-300" />}
                             </span>
-                            Remove the locker
+                            {loading ? "Deleting..." : "Delete the locker"}
                         </button>
+                        <BackButton />
                     </form>
                 </div>
             </div>
