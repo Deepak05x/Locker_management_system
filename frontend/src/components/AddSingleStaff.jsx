@@ -1,9 +1,11 @@
 import React from "react";
-import { useState } from "react";
+import { useState, lazy } from "react";
 import { useContext } from "react";
-import { Lock, User, Key, Building, ArrowBigRight, FolderPen, Mail, Hash } from "lucide-react";
+import { ArrowRight, Loader, User, Key, FolderPen, Mail, Hash } from "lucide-react";
 import Layout from "./Layout";
 import { AdminContext } from "../context/AdminProvider";
+
+const BackButton = lazy(() => import("../components/BackButton"));
 
 const AddSingleStaff = () => {
     const { addSingleStaff } = useContext(AdminContext);
@@ -14,14 +16,18 @@ const AddSingleStaff = () => {
     const [gender, setGender] = useState(null);
     const [phone, setPhone] = useState(null);
     const [role, setRole] = useState("Staff");
+    const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
             console.log(username, role, email, password, phone, gender);
             await addSingleStaff(username, role, email, password, phone, gender);
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -161,13 +167,17 @@ const AddSingleStaff = () => {
                         {/* Login Button */}
                         <button
                             type="submit"
-                            className="group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                            disabled={loading}
+                            className={`group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-white ${
+                                loading ? "bg-blue-500 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
+                            } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors`}
                         >
                             <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                                <ArrowBigRight className="h-5 w-5 text-white group-hover:text-blue-300" />
+                                {loading ? <Loader className="h-5 w-5 text-white animate-spin" /> : <ArrowRight className="h-5 w-5 text-white group-hover:text-blue-300" />}
                             </span>
-                            Add Staff
+                            {loading ? "Adding..." : "Add Staff"}
                         </button>
+                        <BackButton />
                     </form>
                 </div>
             </div>

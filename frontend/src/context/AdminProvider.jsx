@@ -118,11 +118,46 @@ const AdminProvider = ({ children }) => {
         }
     };
 
+    const editStaffDetails = async (id, name, role, email, password, phoneNumber, gender) => {
+        try {
+            const res = await axios.put(
+                "http://localhost:3000/api/admin/editStaff",
+                {
+                    id,
+                    name,
+                    role,
+                    email,
+                    password,
+                    phoneNumber,
+                    gender,
+                },
+                {
+                    withCredentials: true,
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            if (res.status === 200) {
+                navigate("/dashboard");
+                window.location.reload();
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     useEffect(() => {
         getStaffs();
     }, []);
 
-    return <AdminContext.Provider value={{ deleteSuccess, setDeleteSuccess, deleteLocker, staffs, addSingleStaff, handleStaffDetails, staffDetails, deleteStaff }}>{children}</AdminContext.Provider>;
+    return (
+        <AdminContext.Provider value={{ editStaffDetails, deleteSuccess, setDeleteSuccess, deleteLocker, staffs, addSingleStaff, handleStaffDetails, staffDetails, deleteStaff }}>
+            {children}
+        </AdminContext.Provider>
+    );
 };
 
 export default AdminProvider;

@@ -3,9 +3,10 @@ import { lazy, useContext } from "react";
 import { Link } from "react-router-dom";
 import { LockerContext } from "../context/LockerProvider";
 import { FaEnvelope, FaGenderless, FaClock, FaUser, FaPhone, FaCalendarAlt } from "react-icons/fa";
+import { ShieldCheck } from "lucide-react";
 import Layout from "./Layout";
 
-const DashNav = lazy(() => import("./DashNav"));
+const BackButton = lazy(() => import("./BackButton"));
 
 const LockerManagement = () => {
     const { allLockerDetails, allocatedLockerDetails, availableLockerDetails, expiredLockerDetails } = useContext(LockerContext);
@@ -38,17 +39,34 @@ const LockerManagement = () => {
     return (
         <Layout>
             <section className="flex flex-col items-center  w-full px-24 py-24 gap-12">
-                <section className="flex flex-col gap-4 items-center justify-between w-full  font-medium">
-                    <h1 className="text-3xl font-medium">
-                        View all <span className="text-blue">lockers</span>
-                    </h1>
-                    <select name="" id="" value={locker} onChange={(e) => setLocker(e.target.value)} className="border-2 border-black px-2 py-1">
-                        <option value="all">All Lockers</option>
-                        <option value="expired"> Expired</option>
-                        <option value="available">Available</option>
-                        <option value="allocated">Allocated</option>
-                    </select>
-                </section>
+                <div className="flex flex-col items-center justify-center py-4">
+                    <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-xl">
+                        <div className="text-center space-y-2 flex flex-col items-center gap-4">
+                            <div className="flex justify-center ">
+                                <ShieldCheck className="w-16 h-16 text-blue-600" />
+                            </div>
+                            <h1 className="text-3xl flex flex-col font-bold text-blue-900">Locker Management</h1>
+                        </div>
+
+                        <form className="mt-8 space-y-6 w-full">
+                            <div className="flex items-center w-full gap-4">
+                                <select
+                                    id="filter"
+                                    value={locker}
+                                    onChange={(e) => setLocker(e.target.value)}
+                                    className="border-2 border-black w-full px-4 py-2 rounded-lg shadow-sm focus:outline-none  cursor-pointer"
+                                >
+                                    <option value="all">All Lockers</option>
+                                    <option value="expired">Expired</option>
+                                    <option value="available">Available</option>
+                                    <option value="allocated">Allocated</option>
+                                </select>
+                            </div>
+                            <BackButton />
+                        </form>
+                    </div>
+                </div>
+
                 <section className="grid grid-cols-3 items-center justify-between gap-16">
                     {filteredLockers.map((item, index) => (
                         <div

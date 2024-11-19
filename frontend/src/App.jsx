@@ -30,6 +30,7 @@ const ViewStaffDetails = lazy(() => import("./components/ViewStaffDetails"));
 const DeleteLocker = lazy(() => import("./components/DeleteLocker"));
 const UpdateLockerPrice = lazy(() => import("./components/UpdateLockerPrice"));
 const AccountPage = lazy(() => import("./components/AccountPage"));
+const EditStaffDetails = lazy(() => import("./components/EditStaffDetails"));
 
 const App = () => {
     return (
@@ -63,6 +64,7 @@ const App = () => {
                             <Route path="/delete_locker" element={<DeleteLocker />} />
                             <Route path="/update_locker_price" element={<UpdateLockerPrice />} />
                             <Route path="/account_page" element={<AccountPage />} />
+                            <Route path="/edit_staff_details" element={<EditStaffDetails />} />
                         </Routes>
                     </Suspense>
                 </AdminProvider>

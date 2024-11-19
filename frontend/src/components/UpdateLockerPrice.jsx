@@ -1,9 +1,13 @@
 import React, { useContext } from "react";
 import { LockerContext } from "../context/LockerProvider";
+import { AuthContext } from "../context/AuthProvider";
 import Layout from "./Layout";
 
 const UpdateLockerPrice = () => {
     const { isEditable, lockerPrices, toggleEditable, handleInputChange, saveLockerPrice } = useContext(LockerContext);
+    const { halfFemalePrice } = useContext(AuthContext);
+
+    console.log(halfFemalePrice);
 
     const renderLockerRow = (lockerType, lockerLabel, lockerGender) => (
         <tr className="bg-white hover:bg-blue-50 transition-colors">
