@@ -2,7 +2,7 @@ import React from "react";
 import { useContext, lazy } from "react";
 import { Link } from "react-router-dom";
 import { AdminContext } from "../context/AdminProvider";
-import { FaEnvelope, FaGenderless, FaClock, FaUser, FaPhone, FaCalendarAlt } from "react-icons/fa";
+import { FaEnvelope, FaGenderless } from "react-icons/fa";
 import Layout from "./Layout";
 import { useNavigate } from "react-router-dom";
 import { User } from "lucide-react";

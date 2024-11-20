@@ -13,6 +13,7 @@ const AuthProvider = ({ children }) => {
     const [resetedPassword, setResetedPassword] = useState(null);
     const [checkEmail, setCheckEmail] = useState(null);
     const [loginSuccess, setLoginSuccess] = useState(false);
+    const [updateSuccess, setUpdateSuccess] = useState(false);
     const [halfFemalePrice, setHalfFemalePrice] = useState(null);
 
     useEffect(() => {
@@ -137,8 +138,8 @@ const AuthProvider = ({ children }) => {
                 }
             );
             if (res.status === 200) {
+                setUpdateSuccess(true);
                 navigate("/dashboard");
-                window.location.reload();
             }
         } catch (error) {
             console.log(error);
@@ -167,7 +168,23 @@ const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider
-            value={{ halfFemalePrice, setLoginSuccess, loginSuccess, handleProfileUpdate, login, checkEmail, setCheckEmail, loginDetails, generateOtp, getOtp, validateOtp, resetPassword, logout }}
+            value={{
+                halfFemalePrice,
+                updateSuccess,
+                setUpdateSuccess,
+                setLoginSuccess,
+                loginSuccess,
+                handleProfileUpdate,
+                login,
+                checkEmail,
+                setCheckEmail,
+                loginDetails,
+                generateOtp,
+                getOtp,
+                validateOtp,
+                resetPassword,
+                logout,
+            }}
         >
             {children}
         </AuthContext.Provider>

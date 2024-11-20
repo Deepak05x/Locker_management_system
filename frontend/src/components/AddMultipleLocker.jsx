@@ -1,18 +1,21 @@
 import React, { useState } from "react";
+import { useContext } from "react";
+import { LockerContext } from "../context/LockerProvider";
+import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
 import Layout from "./Layout";
 
 const AddMultipleLocker = () => {
+    const { setAddMulSuccess } = useContext(LockerContext);
+
     const [file, setFile] = useState(null);
     const [uploadStatus, setUploadStatus] = useState("");
 
-    // Handle file selection
     const handleFileChange = (e) => {
         setFile(e.target.files[0]);
     };
 
-    // Handle file upload
     const handleFileUpload = async () => {
         if (!file) {
             setUploadStatus("Please select a file to upload.");
@@ -29,6 +32,8 @@ const AddMultipleLocker = () => {
                 },
             });
             setUploadStatus("File uploaded successfully!");
+            setAddMulSuccess(true);
+
             console.log("Server Response:", response.data);
         } catch (error) {
             setUploadStatus("Error uploading file.");

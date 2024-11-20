@@ -11,10 +11,29 @@ import { LockerContext } from "../context/LockerProvider";
 import { AdminContext } from "../context/AdminProvider";
 
 const Dashboard = () => {
-    const { loginDetails, loginSuccess, setLoginSuccess } = useContext(AuthContext);
-    const { assignSuccess, setAssignSuccess, cancelSuccess, setCancelSuccess, technicalSuccess, setTechnicalSuccess, lockerSuccess, setLockerSuccess, addSuccess, setAddSuccess } =
-        useContext(LockerContext);
-    const { deleteSuccess, setDeleteSuccess } = useContext(AdminContext);
+    const { loginDetails, loginSuccess, setLoginSuccess, updateSuccess, setUpdateSuccess } = useContext(AuthContext);
+    const {
+        assignSuccess,
+        setAssignSuccess,
+        cancelSuccess,
+        setCancelSuccess,
+        technicalSuccess,
+        setTechnicalSuccess,
+        lockerSuccess,
+        setLockerSuccess,
+        addSuccess,
+        setAddSuccess,
+        addMulSuccess,
+        setAddMulSuccess,
+    } = useContext(LockerContext);
+    const { deleteSuccess, setDeleteSuccess, staffSuccess, setStaffSuccess, staffDeleteSuccess, setStaffDeleteSuccess, editStaffSuccess, setEditStaffSuccess } = useContext(AdminContext);
+
+    useEffect(() => {
+        if (editStaffSuccess) {
+            toast.success("The Staff Details are Updated Successfully");
+            setEditStaffSuccess(false);
+        }
+    }, [editStaffSuccess]);
 
     useEffect(() => {
         if (loginSuccess) {
@@ -24,11 +43,39 @@ const Dashboard = () => {
     }, [loginSuccess]);
 
     useEffect(() => {
+        if (staffSuccess) {
+            toast.success("The Staff has been Added to the System");
+            setStaffSuccess(false);
+        }
+    }, [staffSuccess]);
+
+    useEffect(() => {
+        if (staffDeleteSuccess) {
+            toast.success("The Staff has been Deleted Successfully");
+            setStaffDeleteSuccess(false);
+        }
+    }, [staffDeleteSuccess]);
+
+    useEffect(() => {
+        if (addMulSuccess) {
+            toast.success("Multiple Lockers has been Added to the System");
+            setAddMulSuccess(false);
+        }
+    }, [addMulSuccess]);
+
+    useEffect(() => {
         if (assignSuccess) {
             toast.success("Locker Assignment was done Successfully");
             setAssignSuccess(false);
         }
     }, [assignSuccess]);
+
+    useEffect(() => {
+        if (updateSuccess) {
+            toast.success("Profile Updated Successfully, Please Login Again to See the Changes");
+            setUpdateSuccess(false);
+        }
+    }, [updateSuccess]);
 
     useEffect(() => {
         if (cancelSuccess) {

@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, lazy } from "react";
+import { useState, lazy, useEffect } from "react";
 import { useContext } from "react";
 import { LockerContext } from "../context/LockerProvider";
 import { ArrowRight, Loader, Lock, BadgeAlert, BookOpen } from "lucide-react";

@@ -1,7 +1,9 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef, lazy } from "react";
 import Layout from "./Layout";
 import { AuthContext } from "../context/AuthProvider";
-import { User, Key, ArrowBigRight, Edit2, X, Hash } from "lucide-react";
+import { User, Key, ArrowRight, Loader, Edit2, X, Hash } from "lucide-react";
+
+const BackButton = lazy(() => import("../components/BackButton"));
 
 const AccountPage = () => {
     const { loginDetails, handleProfileUpdate } = useContext(AuthContext);
@@ -14,30 +16,43 @@ const AccountPage = () => {
     const [isEmailEditable, setIsEmailEditable] = useState(false);
     const [isPhoneEditable, setIsPhoneEditable] = useState(false);
     const [close, setClose] = useState(false);
+    const [loading, setLoading] = useState(false);
 
-    console.log(phone);
+    // Create refs for input fields
+    const usernameRef = useRef(null);
+    const emailRef = useRef(null);
+    const phoneRef = useRef(null);
 
     const handleClickUser = () => {
         setIsUsernameEditable((prev) => !prev);
         setClose((prev) => !prev);
+        setTimeout(() => usernameRef.current?.focus(), 0);
+        usernameRef.current?.select();
     };
 
     const handleClickEmail = () => {
         setIsEmailEditable((prev) => !prev);
         setClose((prev) => !prev);
+        setTimeout(() => emailRef.current?.focus(), 0);
+        emailRef.current?.select();
     };
+
     const handleClickPhone = () => {
         setIsPhoneEditable((prev) => !prev);
         setClose((prev) => !prev);
+        setTimeout(() => phoneRef.current?.focus(), 0);
+        phoneRef.current?.select();
     };
-    console.log(username);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
             await handleProfileUpdate(loginDetails._id, username, email, loginDetails.password, phone);
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -59,6 +74,7 @@ const AccountPage = () => {
                                 id="username"
                                 name="username"
                                 type="text"
+                                ref={usernameRef}
                                 readOnly={!isUsernameEditable}
                                 className={`pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition-colors ${
                                     isUsernameEditable ? "bg-white" : "bg-gray-100"
@@ -68,9 +84,9 @@ const AccountPage = () => {
                                 onChange={(e) => setUsername(e.target.value)}
                             />
                             {close ? (
-                                <X className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={() => handleClickUser()} />
+                                <X className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={handleClickUser} />
                             ) : (
-                                <Edit2 className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={() => handleClickUser()} />
+                                <Edit2 className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={handleClickUser} />
                             )}
                         </div>
 
@@ -81,6 +97,7 @@ const AccountPage = () => {
                                 id="email"
                                 name="email"
                                 type="email"
+                                ref={emailRef}
                                 readOnly={!isEmailEditable}
                                 className={`pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition-colors ${
                                     isEmailEditable ? "bg-white" : "bg-gray-100"
@@ -90,19 +107,20 @@ const AccountPage = () => {
                                 onChange={(e) => setEmail(e.target.value)}
                             />
                             {close ? (
-                                <X className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={() => handleClickEmail()} />
+                                <X className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={handleClickEmail} />
                             ) : (
-                                <Edit2 className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={() => handleClickEmail()} />
+                                <Edit2 className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={handleClickEmail} />
                             )}
                         </div>
 
                         {/* Phone Field */}
                         <div className="relative group">
-                            <Hash className="absolute left-3 top-4   h-5 w-5 text-blue-500" />
+                            <Hash className="absolute left-3 top-4 h-5 w-5 text-blue-500" />
                             <input
                                 id="phone"
                                 name="phone"
                                 type="number"
+                                ref={phoneRef}
                                 readOnly={!isPhoneEditable}
                                 className={`pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition-colors ${
                                     isPhoneEditable ? "bg-white" : "bg-gray-100"
@@ -112,22 +130,26 @@ const AccountPage = () => {
                                 onChange={(e) => setPhone(e.target.value)}
                             />
                             {close ? (
-                                <X className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={() => handleClickPhone()} />
+                                <X className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={handleClickPhone} />
                             ) : (
-                                <Edit2 className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={() => handleClickPhone()} />
+                                <Edit2 className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={handleClickPhone} />
                             )}
                         </div>
 
                         {/* Submit Button */}
                         <button
                             type="submit"
-                            className="group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                            disabled={loading}
+                            className={`group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-white ${
+                                loading ? "bg-blue-500 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
+                            } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors`}
                         >
                             <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                                <ArrowBigRight className="h-5 w-5 text-white group-hover:text-blue-300" />
+                                {loading ? <Loader className="h-5 w-5 text-white animate-spin" /> : <ArrowRight className="h-5 w-5 text-white group-hover:text-blue-300" />}
                             </span>
-                            Submit
+                            {loading ? "Updating..." : "Update the Details"}
                         </button>
+                        <BackButton />
                     </form>
                 </div>
             </div>

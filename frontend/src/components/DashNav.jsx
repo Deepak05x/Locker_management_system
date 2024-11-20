@@ -4,7 +4,7 @@ import { AuthContext } from "../context/AuthProvider";
 import { LayoutDashboard, LogOut } from "lucide-react";
 
 const DashNav = () => {
-    const { logout, user } = useContext(AuthContext);
+    const { logout, loginDetails } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -14,47 +14,41 @@ const DashNav = () => {
 
     return (
         <nav className="flex flex-row items-center justify-between w-full  bg-blue-900/90 text-white backdrop-blur-md shadow-md">
-            <div className="w-full px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div className="w-full px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
                 {/* Logo Section (Left Corner) */}
                 <div className="flex items-center space-x-3">
-                    <img src="/DraconX1.png" alt="SafeLocker Logo" className="h-12 sm:h-10 transition-transform duration-300 hover:scale-110" />
-                    <span className="text-xl sm:text-2xl font-bold">DraconX</span>
+                    <img src="/dashboard_img.png" alt="SafeLocker Logo" className="h-12 sm:h-10 transition-transform duration-300 hover:scale-110" />
+                    <span className="text-xl sm:text-2xl font-bold">LockerWise</span>
                 </div>
 
                 {/* Navigation Links and User Profile Section (Right Corner) */}
                 <div className="flex items-center space-x-6 ml-auto">
                     {/* Dashboard Link */}
-                    <Link to="/dashboard" className="group flex items-center space-x-2 text-gray-300 hover:text-white transition-colors duration-300 px-3 py-2 rounded-md hover:bg-blue-700">
-                        <LayoutDashboard className="w-5 h-5 group-hover:text-white" />
+                    <Link
+                        to="/dashboard"
+                        className="group flex items-center space-x-2 text-white bg-green-600 hover:bg-green-500 hover:text-white transition-colors duration-300 px-4 py-2 rounded-md shadow-lg hover:shadow-xl"
+                    >
+                        <LayoutDashboard className="w-5 h-5 text-white group-hover:rotate-6" />
                         <span className="hidden md:inline text-sm font-medium">Dashboard</span>
                     </Link>
 
                     {/* User Profile Picture Link */}
                     <Link to="/account_page" className="relative group">
-                        <img
-                            src={user?.photoURL || "/user-1.png"}
-                            alt="User Profile"
-                            className="w-8 sm:w-10 h-8 sm:h-10 rounded-full cursor-pointer ring-2 ring-blue-400 group-hover:ring-blue-500 transition-all duration-300"
-                        />
+                        {loginDetails.role === "Admin" ? (
+                            <div className="bg-white text-black px-4 py-2 rounded-full font-bold hover:text-white hover:bg-black">A</div>
+                        ) : (
+                            <div className="bg-white text-black px-4 py-2 rounded-full font-bold hover:text-white hover:bg-black">S</div>
+                        )}
                     </Link>
 
                     {/* Logout Button */}
                     <button
                         onClick={handleLogout}
-                        className="hidden sm:flex items-center space-x-2 bg-blue-700 text-gray-200 px-4 py-2 rounded-md hover:bg-blue-600 transition-colors duration-300 group"
+                        className="hidden sm:flex items-center space-x-2 bg-red-600 text-white px-4 py-2 rounded-md shadow-lg hover:bg-red-500 hover:shadow-xl transition-colors duration-300 group"
                         aria-label="Logout"
                     >
-                        <LogOut className="w-5 h-5 group-hover:rotate-6 transition-transform" />
+                        <LogOut className="w-5 h-5 text-white group-hover:rotate-6 transition-transform" />
                         <span className="text-sm font-medium">Logout</span>
-                    </button>
-
-                    {/* Responsive Logout for Smaller Screens */}
-                    <button
-                        onClick={handleLogout}
-                        className="sm:hidden flex items-center space-x-2 bg-blue-700 text-gray-200 px-3 py-2 rounded-md hover:bg-blue-600 transition-colors duration-300 group"
-                        aria-label="Logout"
-                    >
-                        <LogOut className="w-5 h-5 group-hover:rotate-6 transition-transform" />
                     </button>
                 </div>
             </div>

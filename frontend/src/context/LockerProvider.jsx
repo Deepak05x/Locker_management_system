@@ -27,6 +27,7 @@ const LockerProvider = ({ children }) => {
     const [lockerSuccess, setLockerSuccess] = useState(false);
     const [technicalSuccess, setTechnicalSuccess] = useState(false);
     const [addSuccess, setAddSuccess] = useState(false);
+    const [addMulSuccess, setAddMulSuccess] = useState(false);
 
     const [isEditable, setIsEditable] = useState({
         halfMale: false,
@@ -339,6 +340,8 @@ const LockerProvider = ({ children }) => {
     return (
         <LockerContext.Provider
             value={{
+                addMulSuccess,
+                setAddMulSuccess,
                 expireIn7Days,
                 handleTechnicalIssue,
                 handleLockerIssue,

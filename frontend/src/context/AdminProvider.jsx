@@ -11,13 +11,16 @@ const AdminProvider = ({ children }) => {
     const [addedStaffs, setAddedStaffs] = useState([]);
     const [staffDetails, setStaffDetails] = useState([]);
     const [deleteSuccess, setDeleteSuccess] = useState(false);
+    const [staffSuccess, setStaffSuccess] = useState(false);
+    const [staffDeleteSuccess, setStaffDeleteSuccess] = useState(false);
+    const [editStaffSuccess, setEditStaffSuccess] = useState(false);
 
     const navigate = useNavigate();
 
     const getStaffs = async () => {
         try {
             const res = await axios.get("http://localhost:3000/api/admin/viewAllStaff", {
-                withCredentials: true, // Include credentials (cookies) in the request
+                withCredentials: true,
             });
             if (res.status === 200) {
                 const data = res.data.users;
@@ -47,7 +50,8 @@ const AdminProvider = ({ children }) => {
             if (res.status === 200) {
                 const data = res.data;
                 setAddedStaffs(data);
-                navigate("/staff_management");
+                setStaffSuccess(true);
+                navigate("/dashboard");
                 window.location.reload();
             }
         } catch (error) {
@@ -68,7 +72,6 @@ const AdminProvider = ({ children }) => {
             );
             if (res.status === 200) {
                 const data = res.data;
-                console.log("STAFF DETAILS WORKED");
                 setStaffDetails(data);
                 navigate("/staff_management");
             }
@@ -89,8 +92,11 @@ const AdminProvider = ({ children }) => {
                 }
             );
             if (res.status === 200) {
-                navigate("/staff_management");
-                window.location.reload();
+                setStaffDeleteSuccess(true);
+                navigate("/dashboard");
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
             }
         } catch (error) {
             console.log(error);
@@ -111,7 +117,9 @@ const AdminProvider = ({ children }) => {
             if (res.status === 200) {
                 setDeleteSuccess(true);
                 navigate("/dashboard");
-                window.location.reload();
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
             }
         } catch (error) {
             console.log(error);
@@ -141,8 +149,11 @@ const AdminProvider = ({ children }) => {
                 }
             );
             if (res.status === 200) {
+                setEditStaffSuccess(true);
                 navigate("/dashboard");
-                window.location.reload();
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
             }
         } catch (error) {
             console.log(error);
@@ -154,7 +165,25 @@ const AdminProvider = ({ children }) => {
     }, []);
 
     return (
-        <AdminContext.Provider value={{ editStaffDetails, deleteSuccess, setDeleteSuccess, deleteLocker, staffs, addSingleStaff, handleStaffDetails, staffDetails, deleteStaff }}>
+        <AdminContext.Provider
+            value={{
+                editStaffSuccess,
+                setEditStaffSuccess,
+                staffDeleteSuccess,
+                setStaffDeleteSuccess,
+                staffSuccess,
+                setStaffSuccess,
+                editStaffDetails,
+                deleteSuccess,
+                setDeleteSuccess,
+                deleteLocker,
+                staffs,
+                addSingleStaff,
+                handleStaffDetails,
+                staffDetails,
+                deleteStaff,
+            }}
+        >
             {children}
         </AdminContext.Provider>
     );

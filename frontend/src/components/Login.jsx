@@ -35,7 +35,7 @@ const Login = () => {
                     <div className="flex justify-center">
                         <Building className="w-16 h-16 text-blue-600" />
                     </div>
-                    <h1 className="text-3xl font-bold text-blue-900">Locker Management System</h1>
+                    <h1 className="text-3xl font-bold text-blue-900">Locker Wise</h1>
                     <p className="text-blue-600 text-sm">Secure Access to Your Digital Lockers</p>
                 </div>
 
@@ -106,8 +106,7 @@ const Login = () => {
                 {/* Footer */}
                 <div className="mt-6 text-center">
                     <div className="space-y-2">
-                        <p className="text-sm text-gray-600">Need assistance? Contact your system administrator</p>
-                        <p className="text-xs text-gray-500">© 2024 Locker Management System. All rights reserved.</p>
+                        <p className="text-xs text-gray-500">© 2024 Locker Wise. All rights reserved.</p>
                     </div>
                 </div>
             </div>
