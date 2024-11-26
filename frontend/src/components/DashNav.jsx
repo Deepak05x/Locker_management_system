@@ -14,10 +14,10 @@ const DashNav = () => {
 
     return (
         <nav className="flex flex-row items-center justify-between w-full  bg-blue-900/90 text-white backdrop-blur-md shadow-md">
-            <div className="w-full px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div className="w-full px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
                 {/* Logo Section (Left Corner) */}
-                <div className="flex items-center space-x-3">
-                    <img src="/dashboard_img.png" alt="SafeLocker Logo" className="h-12 sm:h-10 transition-transform duration-300 hover:scale-110" />
+                <div className="flex items-center space-x-3 h-full">
+                    <img src="/removed.png" alt="SafeLocker Logo" className="h-[3rem] w-[3rem] transition-transform duration-300 hover:scale-110" />
                     <span className="text-xl sm:text-2xl font-bold">LockerWise</span>
                 </div>
 

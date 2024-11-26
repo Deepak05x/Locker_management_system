@@ -4,6 +4,7 @@ import { lazy, Suspense } from "react";
 import AuthProvider from "./context/AuthProvider";
 import LockerProvider from "./context/LockerProvider";
 import AdminProvider from "./context/AdminProvider";
+import IssueManagement from "./components/IssueManagement";
 
 const Login = lazy(() => import("./components/Login"));
 const Home = lazy(() => import("./components/Home"));
@@ -65,6 +66,7 @@ const App = () => {
                             <Route path="/update_locker_price" element={<UpdateLockerPrice />} />
                             <Route path="/account_page" element={<AccountPage />} />
                             <Route path="/edit_staff_details" element={<EditStaffDetails />} />
+                            <Route path="/issue_management" element={<IssueManagement />} />
                         </Routes>
                     </Suspense>
                 </AdminProvider>

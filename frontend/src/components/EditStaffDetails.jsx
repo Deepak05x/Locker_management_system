@@ -1,6 +1,5 @@
-import React, { useState, useContext, lazy } from "react";
+import React, { useState, useContext, lazy, useRef } from "react";
 import Layout from "./Layout";
-import { AuthContext } from "../context/AuthProvider";
 import { User, Mail, ArrowRight, Loader, Edit2, X, Hash } from "lucide-react";
 import { AdminContext } from "../context/AdminProvider";
 
@@ -15,30 +14,37 @@ const EditStaffDetails = () => {
     const [gender, setGender] = useState(staffDetails.user.gender || "");
     const [loading, setLoading] = useState(false);
 
-    console.log(staffDetails);
-
     const [isUsernameEditable, setIsUsernameEditable] = useState(false);
     const [isEmailEditable, setIsEmailEditable] = useState(false);
     const [isPhoneEditable, setIsPhoneEditable] = useState(false);
     const [isGenderEditable, setIsGenderEditable] = useState(false);
-    const [close, setClose] = useState(false);
 
-    const handleClickUser = () => {
-        setIsUsernameEditable((prev) => !prev);
-        setClose((prev) => !prev);
-    };
+    const usernameRef = useRef(null);
+    const emailRef = useRef(null);
+    const phoneRef = useRef(null);
+    const genderRef = useRef(null);
 
-    const handleClickEmail = () => {
-        setIsEmailEditable((prev) => !prev);
-        setClose((prev) => !prev);
-    };
-    const handleClickPhone = () => {
-        setIsPhoneEditable((prev) => !prev);
-        setClose((prev) => !prev);
-    };
-    const handleClickGender = () => {
-        setIsGenderEditable((prev) => !prev);
-        setClose((prev) => !prev);
+    const handleEditClick = (field) => {
+        switch (field) {
+            case "username":
+                setIsUsernameEditable(!isUsernameEditable);
+                if (!isUsernameEditable) usernameRef.current?.focus();
+                break;
+            case "email":
+                setIsEmailEditable(!isEmailEditable);
+                if (!isEmailEditable) emailRef.current?.focus();
+                break;
+            case "phone":
+                setIsPhoneEditable(!isPhoneEditable);
+                if (!isPhoneEditable) phoneRef.current?.focus();
+                break;
+            case "gender":
+                setIsGenderEditable(!isGenderEditable);
+                if (!isGenderEditable) genderRef.current?.focus();
+                break;
+            default:
+                break;
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -46,6 +52,11 @@ const EditStaffDetails = () => {
         e.preventDefault();
         try {
             await editStaffDetails(staffDetails.user._id, username, staffDetails.user.role, email, staffDetails.user.password, phone, gender);
+            // Reset all fields to readonly
+            setIsUsernameEditable(false);
+            setIsEmailEditable(false);
+            setIsPhoneEditable(false);
+            setIsGenderEditable(false);
         } catch (error) {
             console.log(error);
         } finally {
@@ -70,6 +81,7 @@ const EditStaffDetails = () => {
                             <input
                                 id="username"
                                 name="username"
+                                ref={usernameRef}
                                 type="text"
                                 readOnly={!isUsernameEditable}
                                 className={`pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition-colors ${
@@ -79,10 +91,10 @@ const EditStaffDetails = () => {
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
                             />
-                            {close ? (
-                                <X className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={() => handleClickUser()} />
+                            {isUsernameEditable ? (
+                                <X className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={() => handleEditClick("username")} />
                             ) : (
-                                <Edit2 className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={() => handleClickUser()} />
+                                <Edit2 className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={() => handleEditClick("username")} />
                             )}
                         </div>
 
@@ -92,6 +104,7 @@ const EditStaffDetails = () => {
                             <input
                                 id="email"
                                 name="email"
+                                ref={emailRef}
                                 type="email"
                                 readOnly={!isEmailEditable}
                                 className={`pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition-colors ${
@@ -101,19 +114,20 @@ const EditStaffDetails = () => {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                             />
-                            {close ? (
-                                <X className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={() => handleClickEmail()} />
+                            {isEmailEditable ? (
+                                <X className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={() => handleEditClick("email")} />
                             ) : (
-                                <Edit2 className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={() => handleClickEmail()} />
+                                <Edit2 className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={() => handleEditClick("email")} />
                             )}
                         </div>
 
                         {/* Phone Field */}
                         <div className="relative group">
-                            <Hash className="absolute left-3 top-4   h-5 w-5 text-blue-500" />
+                            <Hash className="absolute left-3 top-4 h-5 w-5 text-blue-500" />
                             <input
                                 id="phone"
                                 name="phone"
+                                ref={phoneRef}
                                 type="number"
                                 readOnly={!isPhoneEditable}
                                 className={`pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition-colors ${
@@ -123,31 +137,33 @@ const EditStaffDetails = () => {
                                 value={phone}
                                 onChange={(e) => setPhone(e.target.value)}
                             />
-                            {close ? (
-                                <X className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={() => handleClickPhone()} />
+                            {isPhoneEditable ? (
+                                <X className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={() => handleEditClick("phone")} />
                             ) : (
-                                <Edit2 className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={() => handleClickPhone()} />
+                                <Edit2 className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={() => handleEditClick("phone")} />
                             )}
                         </div>
 
+                        {/* Gender Field */}
                         <div className="relative group">
-                            <User className="absolute left-3 top-4   h-5 w-5 text-blue-500" />
+                            <User className="absolute left-3 top-4 h-5 w-5 text-blue-500" />
                             <input
                                 id="gender"
                                 name="gender"
+                                ref={genderRef}
                                 type="text"
                                 readOnly={!isGenderEditable}
                                 className={`pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition-colors ${
                                     isGenderEditable ? "bg-white" : "bg-gray-100"
                                 }`}
-                                placeholder="Phone"
+                                placeholder="Gender"
                                 value={gender}
                                 onChange={(e) => setGender(e.target.value)}
                             />
-                            {close ? (
-                                <X className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={() => handleClickGender()} />
+                            {isGenderEditable ? (
+                                <X className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={() => handleEditClick("gender")} />
                             ) : (
-                                <Edit2 className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={() => handleClickGender()} />
+                                <Edit2 className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={() => handleEditClick("gender")} />
                             )}
                         </div>
 

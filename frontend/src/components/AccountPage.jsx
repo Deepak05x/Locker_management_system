@@ -15,33 +15,29 @@ const AccountPage = () => {
     const [isUsernameEditable, setIsUsernameEditable] = useState(false);
     const [isEmailEditable, setIsEmailEditable] = useState(false);
     const [isPhoneEditable, setIsPhoneEditable] = useState(false);
-    const [close, setClose] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    // Create refs for input fields
     const usernameRef = useRef(null);
     const emailRef = useRef(null);
     const phoneRef = useRef(null);
 
-    const handleClickUser = () => {
-        setIsUsernameEditable((prev) => !prev);
-        setClose((prev) => !prev);
-        setTimeout(() => usernameRef.current?.focus(), 0);
-        usernameRef.current?.select();
-    };
-
-    const handleClickEmail = () => {
-        setIsEmailEditable((prev) => !prev);
-        setClose((prev) => !prev);
-        setTimeout(() => emailRef.current?.focus(), 0);
-        emailRef.current?.select();
-    };
-
-    const handleClickPhone = () => {
-        setIsPhoneEditable((prev) => !prev);
-        setClose((prev) => !prev);
-        setTimeout(() => phoneRef.current?.focus(), 0);
-        phoneRef.current?.select();
+    const handleEditClick = (field) => {
+        switch (field) {
+            case "username":
+                setIsUsernameEditable(!isUsernameEditable);
+                if (!isUsernameEditable) usernameRef.current?.focus();
+                break;
+            case "email":
+                setIsEmailEditable(!isEmailEditable);
+                if (!isEmailEditable) emailRef.current?.focus();
+                break;
+            case "phone":
+                setIsPhoneEditable(!isPhoneEditable);
+                if (!isPhoneEditable) phoneRef.current?.focus();
+                break;
+            default:
+                break;
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -49,6 +45,9 @@ const AccountPage = () => {
         setLoading(true);
         try {
             await handleProfileUpdate(loginDetails._id, username, email, loginDetails.password, phone);
+            setIsUsernameEditable(false);
+            setIsEmailEditable(false);
+            setIsPhoneEditable(false);
         } catch (error) {
             console.log(error);
         } finally {
@@ -83,10 +82,10 @@ const AccountPage = () => {
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
                             />
-                            {close ? (
-                                <X className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={handleClickUser} />
+                            {isUsernameEditable ? (
+                                <X className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={() => handleEditClick("username")} />
                             ) : (
-                                <Edit2 className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={handleClickUser} />
+                                <Edit2 className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={() => handleEditClick("username")} />
                             )}
                         </div>
 
@@ -106,10 +105,10 @@ const AccountPage = () => {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                             />
-                            {close ? (
-                                <X className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={handleClickEmail} />
+                            {isEmailEditable ? (
+                                <X className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={() => handleEditClick("email")} />
                             ) : (
-                                <Edit2 className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={handleClickEmail} />
+                                <Edit2 className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={() => handleEditClick("email")} />
                             )}
                         </div>
 
@@ -129,10 +128,10 @@ const AccountPage = () => {
                                 value={phone}
                                 onChange={(e) => setPhone(e.target.value)}
                             />
-                            {close ? (
-                                <X className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={handleClickPhone} />
+                            {isPhoneEditable ? (
+                                <X className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={() => handleEditClick("phone")} />
                             ) : (
-                                <Edit2 className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={handleClickPhone} />
+                                <Edit2 className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={() => handleEditClick("phone")} />
                             )}
                         </div>
 
