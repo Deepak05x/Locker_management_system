@@ -44,6 +44,9 @@ exports.addStaff = async (req, res, next) => {
 exports.editStaff = async (req, res, next) => {
     try {
         // Get the staff ID from request parameters
+        if(req.user.role!=='Admin'){
+            return res.status(501).json("Unauthorized");
+        }
         const { id } = req.body;
         // console.log(id)
         // Find the user by ID
@@ -132,6 +135,9 @@ exports.viewAllStaff = async (req, res, next) => {
 };
 
 exports.removeStaff = async (req, res, next) => {
+    if(req.user.role!=='Admin'){
+        return res.status(501).json("Unauthorized");
+    }
     console.log("in");
     try {
         const { id } = req.body;

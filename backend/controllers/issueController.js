@@ -52,3 +52,32 @@ exports.getAllIssue = async (req, res, next) => {
         return next(err);
     }
 };
+exports.getTechnicalIssue = async (req, res, next) => {
+    try {
+        const data = await Issue.find({"type":"technical"});
+        return res.status(200).json({ message: " issues fetched successfully", data });
+    } catch (err) { 
+        console.log(`Error in finding lockers: ${err.message}`);
+        return next(err);
+    }
+};
+exports.getLockerIssue = async (req, res, next) => {
+    try {
+        const data = await Issue.find({"type":"locker"});
+        return res.status(200).json({ message: " issues fetched successfully", data });
+    } catch (err) { 
+        console.log(`Error in finding lockers: ${err.message}`);
+        return next(err);
+    }
+};
+
+exports.deleteIssue = async (req, res, next) => {
+    try {
+         const {id}=req.body;
+         await Issue.findByIdAndDelete(id);
+         return res.status(200).json({ message: " issues deleted successfully" });
+    } catch (err) { 
+        console.log(`Error in finding lockers: ${err.message}`);
+        return next(err);
+    }
+};

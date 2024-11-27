@@ -34,6 +34,12 @@ exports.getAvailableLocker = async (req, res, next) => {
 };
 
 
+function convertToIST(date) {
+    // Adjust the date for IST (UTC + 5:30)
+    const istOffset = 5.5 * 60 * 60 * 1000; // 5 hours 30 minutes in milliseconds
+    return new Date(date.getTime() + istOffset);
+}
+
 
 exports.allocateLocker = async (req, res, next) => {
     try {
@@ -58,21 +64,22 @@ exports.allocateLocker = async (req, res, next) => {
             // Set expiresOn to 3 months from the current date
             const threeMonthsFromNow = new Date();
             threeMonthsFromNow.setMonth(threeMonthsFromNow.getMonth() + 3);
-            expiresOn = threeMonthsFromNow;
+            expiresOn = convertToIST(threeMonthsFromNow); // Convert to IST
         }
         else if (duration === "6") {
             // Set expiresOn to 6 months from the current date
             const sixMonthsFromNow = new Date();
             sixMonthsFromNow.setMonth(sixMonthsFromNow.getMonth() + 6);
-            expiresOn = sixMonthsFromNow;
+            expiresOn = convertToIST(sixMonthsFromNow); // Convert to IST
         } else if (duration === "12") {
             // Set expiresOn to 12 months from the current date
             const twelveMonthsFromNow = new Date();
             twelveMonthsFromNow.setMonth(twelveMonthsFromNow.getMonth() + 12);
-            expiresOn = twelveMonthsFromNow;
+            expiresOn = convertToIST(twelveMonthsFromNow); // Convert to IST
         } else if (endDate) {
             // Set expiresOn to provided endDate
             expiresOn = new Date(endDate);
+            expiresOn = convertToIST(expiresOn); // Convert to IST
         }
 
         // LockerType,LockerStatus,LockerNumber,LockerCode,
@@ -136,23 +143,23 @@ exports.renewLocker = async (req, res, next) => {
             // Set expiresOn to 3 months from the current date
             const threeMonthsFromNow = new Date();
             threeMonthsFromNow.setMonth(threeMonthsFromNow.getMonth() + 3);
-            expiresOn = threeMonthsFromNow;
+            expiresOn = convertToIST(threeMonthsFromNow); // Convert to IST
         }
         else if (duration === "6") {
             // Set expiresOn to 6 months from the current date
             const sixMonthsFromNow = new Date();
             sixMonthsFromNow.setMonth(sixMonthsFromNow.getMonth() + 6);
-            expiresOn = sixMonthsFromNow;
+            expiresOn = convertToIST(sixMonthsFromNow); // Convert to IST
         } else if (duration === "12") {
             // Set expiresOn to 12 months from the current date
             const twelveMonthsFromNow = new Date();
             twelveMonthsFromNow.setMonth(twelveMonthsFromNow.getMonth() + 12);
-            expiresOn = twelveMonthsFromNow;
+            expiresOn = convertToIST(twelveMonthsFromNow); // Convert to IST
         } else if (endDate) {
             // Set expiresOn to provided endDate
             expiresOn = new Date(endDate);
+            expiresOn = convertToIST(expiresOn); // Convert to IST
         }
-
         locker.CostToEmployee = costToEmployee;
         locker.Duration = duration;
         locker.StartDate = startDate;

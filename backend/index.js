@@ -43,21 +43,37 @@ app.get('/', (req, res) => {
 });
 
 
-// cron.schedule('* * * * *', async () => {    // will run every hour
-cron.schedule('0 0 * * *', async () => {   // will run every midnight
+cron.schedule('* * * * *', async () => {
   try {
-     
-    const result = await Locker.updateMany(
-          { expiresOn: { $lte: new Date() }, LockerStatus: { $ne: "expired" } },
-          { LockerStatus: "expired" }
-      );
+    const nowInIST = new Date(new Date().getTime() + 5.5 * 60 * 60 * 1000);
 
-      // console.log(result);
-      // console.log(`Expired lockers updated: ${result.nModified}`);
+    const result = await Locker.updateMany(
+      { expiresOn: { $lte: nowInIST }, LockerStatus: { $ne: "expired" } },
+      { LockerStatus: "expired" }
+    );
+
+    console.log(result);
   } catch (err) {
-      console.error(`Error updating expired lockers: ${err.message}`);
+    console.error(`Error updating expired lockers: ${err.message}`);
   }
 });
+
+
+// cron.schedule('* * * * *', async () => {   // will run every hour
+//   try {
+     
+//     const result = await Locker.updateMany(
+//           { expiresOn: { $lte: new Date() }, LockerStatus: { $ne: "expired" } },
+//           { LockerStatus: "expired" }
+//       );
+
+
+//       console.log(result);
+//       // console.log(`Expired lockers updated: ${result.nModified}`);
+//   } catch (err) {
+//       console.error(`Error updating expired lockers: ${err.message}`);
+//   }
+// });
 
 const COLUMN_MAPPING = {
   0: "LockerType",
