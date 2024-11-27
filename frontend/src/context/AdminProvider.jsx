@@ -14,6 +14,10 @@ const AdminProvider = ({ children }) => {
     const [staffSuccess, setStaffSuccess] = useState(false);
     const [staffDeleteSuccess, setStaffDeleteSuccess] = useState(false);
     const [editStaffSuccess, setEditStaffSuccess] = useState(false);
+    const [lockerIssue, setLockerIssue] = useState(null);
+    const [technicalIssue, setTechnicalIssue] = useState(null);
+
+    console.log(technicalIssue);
 
     const navigate = useNavigate();
 
@@ -160,13 +164,67 @@ const AdminProvider = ({ children }) => {
         }
     };
 
+    const getLockerIssue = async () => {
+        try {
+            const res = await axios.get("http://localhost:3000/api/issue/getLockerIssue", {
+                withCredentials: true,
+            });
+            if (res.status === 200) {
+                const data = res.data;
+                setLockerIssue(data);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const getTechnicalIssue = async () => {
+        try {
+            const res = await axios.get("http://localhost:3000/api/issue/getTechnicalIssue", {
+                withCredentials: true,
+            });
+            if (res.status === 200) {
+                const data = res.data;
+                setTechnicalIssue(data);
+                console.log(data);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const deleteIssue = async (id) => {
+        try {
+            const res = await axios.post(
+                "http://localhost:3000/api/issue/deleteIssue",
+                {
+                    id,
+                },
+                {
+                    withCredentials: true,
+                }
+            );
+            if (res.status === 200) {
+                navigate("/dashboard");
+                window.location.reload();
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     useEffect(() => {
         getStaffs();
+        getLockerIssue();
+        getTechnicalIssue();
     }, []);
 
     return (
         <AdminContext.Provider
             value={{
+                deleteIssue,
+                lockerIssue,
+                technicalIssue,
                 editStaffSuccess,
                 setEditStaffSuccess,
                 staffDeleteSuccess,
