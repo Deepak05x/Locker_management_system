@@ -17,8 +17,6 @@ const AdminProvider = ({ children }) => {
     const [lockerIssue, setLockerIssue] = useState(null);
     const [technicalIssue, setTechnicalIssue] = useState(null);
 
-    console.log(technicalIssue);
-
     const navigate = useNavigate();
 
     const getStaffs = async () => {
@@ -186,7 +184,6 @@ const AdminProvider = ({ children }) => {
             if (res.status === 200) {
                 const data = res.data;
                 setTechnicalIssue(data);
-                console.log(data);
             }
         } catch (error) {
             console.log(error);

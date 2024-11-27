@@ -98,6 +98,7 @@ const AuthProvider = ({ children }) => {
             );
             if (res.status === 200) {
                 const data = res.data;
+
                 setResetedPassword(data);
                 navigate("/login");
             }
@@ -137,6 +138,11 @@ const AuthProvider = ({ children }) => {
                 }
             );
             if (res.status === 200) {
+                const data = res.data.data;
+
+                setLoginDetails(data);
+                localStorage.setItem("loginDetails", JSON.stringify(data));
+
                 setUpdateSuccess(true);
                 navigate("/dashboard");
             }

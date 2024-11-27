@@ -67,7 +67,7 @@ const IssueManagement = () => {
                     {filterIssues?.data?.map((item, index) => (
                         <div key={index} className="flex flex-col  p-8 bg-white shadow-md rounded-md border border-gray-200 gap-4">
                             <div className="flex justify-between items-center mb-4 gap-12">
-                                <h2 className="text-xl font-bold">Locker #1</h2>
+                                <h2 className="text-xl font-bold">Locker #{item.LockerNumber}</h2>
                                 <span className={`px-3 py-1 text-sm font-semibold rounded-md ${status === "Resolved" ? "bg-green-200 text-green-800" : "bg-red-200 text-red-800"}`}>{status}</span>
                             </div>
                             <p className="text-sm font-medium text-gray-600 mb-2">
