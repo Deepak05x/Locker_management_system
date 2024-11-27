@@ -205,7 +205,7 @@ exports.cancelLockerAllocation = async (req, res, next) => {
         if (!locker) {
             return res.status(404).json({ message: "Locker is not available or does not exist" });
         }
-// ********************************************************************************************************************************
+        // ********************************************************************************************************************************
 
         let oldCode = locker.LockerCode;
         oldCode = oldCode.substring(1) + oldCode[0];
@@ -393,14 +393,14 @@ exports.updateLockerCode = async (req, res, next) => {
 
         // Save the updated locker
         await locker.save();
-        
+
         return res.status(200).json({ message: "Locker code updated successfully", locker });
     } catch (err) {
         console.log(`Error in updating locker code: ${err.message}`);
         return next(err);
     }
 };
- 
+
 
 exports.chageLockerStatusToExpired = async (req, res, next) => {
     try {
@@ -434,7 +434,7 @@ exports.chageLockerStatusToExpired = async (req, res, next) => {
 exports.deleteLocker = async (req, res, next) => {
     try {
         const { lockerNumber } = req.body;
-        
+
         console.log(lockerNumber);
 
         if (!lockerNumber) {
@@ -463,10 +463,12 @@ exports.deleteLocker = async (req, res, next) => {
 
 exports.getLockersByTypeandGender = async (req, res, next) => {
     try {
-        const type = req.query.type; 
-  const gender = req.query.gender; 
-        const lockers = await Locker.find({ LockerType:type,
-            availableForGender:gender  });
+        const type = req.query.type;
+        const gender = req.query.gender;
+        const lockers = await Locker.find({
+            LockerType: type,
+            availableForGender: gender
+        });
 
         res.status(200).json({
             message: "Locker Fetched successfully",

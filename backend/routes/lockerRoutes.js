@@ -39,7 +39,7 @@ router.post('/changeLockerPricing',verifyToken, changeLockerPricing);
 router.post('/findLockerByUserEmail',verifyToken, findLockerByUserEmail);
 router.post('/updateLockerCode',verifyToken, updateLockerCode);
 router.post('/chageLockerStatusToExpired',verifyToken, chageLockerStatusToExpired);
-router.post('/getLockersByTypeandGender',verifyToken, getLockersByTypeandGender);
+router.get('/getLockersByTypeandGender',verifyToken, getLockersByTypeandGender);
 
 router.put('/updateMultipleLockerPrices',verifyToken, async (req, res) => {
     try {
