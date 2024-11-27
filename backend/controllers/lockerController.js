@@ -463,8 +463,8 @@ exports.deleteLocker = async (req, res, next) => {
 
 exports.getLockersByTypeandGender = async (req, res, next) => {
     try {
-        const { type,gender } = req.body;
-        
+        const type = req.query.type; 
+  const gender = req.query.gender; 
         const lockers = await Locker.find({ LockerType:type,
             availableForGender:gender  });
 
