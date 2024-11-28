@@ -145,6 +145,7 @@ const AuthProvider = ({ children }) => {
 
                 setUpdateSuccess(true);
                 navigate("/dashboard");
+                window.location.reload();
             }
         } catch (error) {
             console.log(error);

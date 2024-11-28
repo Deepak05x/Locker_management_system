@@ -21,8 +21,6 @@ const IssueManagement = () => {
         filterIssues = technicalIssue;
     }
 
-    console.log(filterIssues);
-
     const handleDelete = async (id) => {
         setLoading(true);
         try {
@@ -70,17 +68,17 @@ const IssueManagement = () => {
                                 <h2 className="text-xl font-bold">Locker #{item.LockerNumber}</h2>
                                 <span className={`px-3 py-1 text-sm font-semibold rounded-md ${status === "Resolved" ? "bg-green-200 text-green-800" : "bg-red-200 text-red-800"}`}>{status}</span>
                             </div>
-                            <p className="text-sm font-medium text-gray-600 mb-2">
-                                <span className="font-bold text-gray-800">Subject: </span> {item.subject}
+                            <p className="text-[1rem] font-medium text-gray-600 mb-2 flex flex-row gap-2 items-center">
+                                <span className="font-bold  text-blue-500">Subject: </span> {item.subject}
                             </p>
-                            <p className="text-sm font-medium text-gray-600 mb-4">
-                                <span className="font-bold text-gray-800">Description: </span> {item.description}
+                            <p className="text-[1rem] font-medium text-gray-600 mb-4 flex flex-row gap-2 items-center">
+                                <span className="font-bold text-blue-500">Description: </span> {item.description}
                             </p>
 
                             <button
                                 type="submit"
                                 onClick={() => handleDelete(item._id)}
-                                disabled={loading} // Disable button while loading
+                                disabled={loading}
                                 className={`group relative w-full flex justify-center py-2 px-4 border border-transparent rounded-lg text-white ${
                                     loading ? "bg-blue-500 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
                                 } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors`}

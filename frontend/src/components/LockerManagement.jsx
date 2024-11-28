@@ -34,8 +34,6 @@ const LockerManagement = () => {
         filteredLockers = availableLockerDetails;
     }
 
-    console.log(filteredLockers);
-
     return (
         <Layout>
             <section className="flex flex-col items-center  w-full px-24 py-24 gap-12">

@@ -441,7 +441,7 @@ const LockerProvider = ({ children }) => {
 
     const getExpiredLockers1Day = async () => {
         try {
-            const res = await axios.get("http://localhost:3000/api/locker/getExpiringToday");
+            const res = await axios.get("http://localhost:3000/api/locker/getExpiringToday", { withCredentials: true });
             if (res.status === 200) {
                 const data = res.data;
                 setExpireIn1Day(data);
@@ -463,6 +463,7 @@ const LockerProvider = ({ children }) => {
     return (
         <LockerContext.Provider
             value={{
+                expireIn1Day,
                 addMulSuccess,
                 setAddMulSuccess,
                 expireIn7Days,
