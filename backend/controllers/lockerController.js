@@ -292,42 +292,42 @@ exports.getExpiredLockers = async (req, res, next) => {
     }
 }
 
-exports.getExpiringIn7daysLockers = async (req, res, next) => {
-    try {
-        const today = new Date();
-        const sevenDaysFromNow = new Date(today);
-        sevenDaysFromNow.setDate(today.getDate() + 7);
+// exports.getExpiringIn7daysLockers = async (req, res, next) => {
+//     try {
+//         const today = new Date();
+//         const sevenDaysFromNow = new Date(today);
+//         sevenDaysFromNow.setDate(today.getDate() + 7);
 
-        const data = await Locker.find({
-            expiresOn: { $lte: sevenDaysFromNow },
-        });
-        return res.status(200).json({
-            message: "All expired Lockers",
-            data
-        });
-    } catch (err) {
-        console.log(`Error in allocating locker: ${err.message}`);
-        next(err);
-    }
-}
-exports.getExpiringToday = async (req, res, next) => {
-    try {
-        const today = new Date();
-        const sevenDaysFromNow = new Date(today);
-        sevenDaysFromNow.setDate(today.getDate());
+//         const data = await Locker.find({
+//             expiresOn: { $lte: sevenDaysFromNow },
+//         });
+//         return res.status(200).json({
+//             message: "All expired Lockers",
+//             data
+//         });
+//     } catch (err) {
+//         console.log(`Error in allocating locker: ${err.message}`);
+//         next(err);
+//     }
+// }
+// exports.getExpiringToday = async (req, res, next) => {
+//     try {
+//         const today = new Date();
+//         const sevenDaysFromNow = new Date(today);
+//         sevenDaysFromNow.setDate(today.getDate());
 
-        const data = await Locker.find({
-            expiresOn: { $lte: sevenDaysFromNow },
-        });
-        return res.status(200).json({
-            message: "All expired Lockers",
-            data
-        });
-    } catch (err) {
-        console.log(`Error in allocating locker: ${err.message}`);
-        next(err);
-    }
-}
+//         const data = await Locker.find({
+//             expiresOn: { $lte: sevenDaysFromNow },
+//         });
+//         return res.status(200).json({
+//             message: "All expired Lockers",
+//             data
+//         });
+//     } catch (err) {
+//         console.log(`Error in allocating locker: ${err.message}`);
+//         next(err);
+//     }
+// }
 
 exports.changeLockerPricing = async (req, res, next) => {
     try {
@@ -344,6 +344,49 @@ exports.changeLockerPricing = async (req, res, next) => {
     } catch (err) {
         console.log(`Error in allocating locker: ${err.message}`);
         return next(err);
+    }
+};
+exports.getExpiringIn7daysLockers = async (req, res, next) => {
+    try {
+        const todayIST = new Date();
+        todayIST.setHours(0, 0, 0, 0); // Start of IST day
+
+        const sevenDaysFromNowIST = new Date(todayIST);
+        sevenDaysFromNowIST.setDate(todayIST.getDate() + 7); // 7 days from now
+
+        const data = await Locker.find({
+            expiresOn: { $gte: todayIST, $lte: sevenDaysFromNowIST },
+        });
+
+        return res.status(200).json({
+            message: "Lockers expiring within the next 7 days",
+            data,
+        });
+    } catch (err) {
+        console.log(`Error in fetching lockers expiring in 7 days: ${err.message}`);
+        next(err);
+    }
+};
+
+exports.getExpiringToday = async (req, res, next) => {
+    try {
+        const todayIST = new Date();
+        todayIST.setHours(0, 0, 0, 0); // Start of IST day
+
+        const endOfTodayIST = new Date(todayIST);
+        endOfTodayIST.setHours(23, 59, 59, 999); // End of IST day
+
+        const data = await Locker.find({
+            expiresOn: { $gte: todayIST, $lte: endOfTodayIST },
+        });
+
+        return res.status(200).json({
+            message: "Lockers expiring today",
+            data,
+        });
+    } catch (err) {
+        console.log(`Error in fetching lockers expiring today: ${err.message}`);
+        next(err);
     }
 };
 
