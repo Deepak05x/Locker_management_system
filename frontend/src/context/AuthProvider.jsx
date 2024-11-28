@@ -14,7 +14,6 @@ const AuthProvider = ({ children }) => {
     const [checkEmail, setCheckEmail] = useState(null);
     const [loginSuccess, setLoginSuccess] = useState(false);
     const [updateSuccess, setUpdateSuccess] = useState(false);
-    const [halfFemalePrice, setHalfFemalePrice] = useState(null);
 
     useEffect(() => {
         if (loginDetails) {
@@ -99,6 +98,7 @@ const AuthProvider = ({ children }) => {
             );
             if (res.status === 200) {
                 const data = res.data;
+
                 setResetedPassword(data);
                 navigate("/login");
             }
@@ -138,6 +138,11 @@ const AuthProvider = ({ children }) => {
                 }
             );
             if (res.status === 200) {
+                const data = res.data.data;
+
+                setLoginDetails(data);
+                localStorage.setItem("loginDetails", JSON.stringify(data));
+
                 setUpdateSuccess(true);
                 navigate("/dashboard");
             }
@@ -146,30 +151,9 @@ const AuthProvider = ({ children }) => {
         }
     };
 
-    const getLockerPriceHalfFemale = async () => {
-        try {
-            const token = loginDetails?.token;
-            console.log(token);
-            const res = await axios.get("http://localhost:3000/api/locker/getLockersByTypeandGender?type=half&gender=Female", {
-                withCredentials: true,
-            });
-            if (res.status === 200) {
-                const data = res.data;
-                setHalfFemalePrice(data);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    useEffect(() => {
-        getLockerPriceHalfFemale();
-    }, []);
-
     return (
         <AuthContext.Provider
             value={{
-                halfFemalePrice,
                 updateSuccess,
                 setUpdateSuccess,
                 setLoginSuccess,

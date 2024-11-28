@@ -1,5 +1,5 @@
 import React from "react";
-import { createContext, useState } from "react";
+import { createContext, useState, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
@@ -28,6 +28,10 @@ const LockerProvider = ({ children }) => {
     const [technicalSuccess, setTechnicalSuccess] = useState(false);
     const [addSuccess, setAddSuccess] = useState(false);
     const [addMulSuccess, setAddMulSuccess] = useState(false);
+    const [halfFemalePrice, setHalfFemalePrice] = useState(null);
+    const [halfMalePrice, setHalfMalePrice] = useState(null);
+    const [fullMalePrice, setFullMalePrice] = useState(null);
+    const [fullFemalePrice, setFullFemalePrice] = useState(null);
 
     const [isEditable, setIsEditable] = useState({
         halfMale: false,
@@ -37,11 +41,130 @@ const LockerProvider = ({ children }) => {
     });
 
     const [lockerPrices, setLockerPrices] = useState({
-        halfMale: { threeMonths: 300, sixMonths: 600, twelveMonths: 900 },
-        fullMale: { threeMonths: 500, sixMonths: 800, twelveMonths: 1200 },
-        halfFemale: { threeMonths: 300, sixMonths: 400, twelveMonths: 500 },
-        fullFemale: { threeMonths: 400, sixMonths: 500, twelveMonths: 600 },
+        halfMale: { threeMonths: 0, sixMonths: 0, twelveMonths: 0 },
+        fullMale: { threeMonths: 0, sixMonths: 0, twelveMonths: 0 },
+        halfFemale: { threeMonths: 0, sixMonths: 0, twelveMonths: 0 },
+        fullFemale: { threeMonths: 0, sixMonths: 0, twelveMonths: 0 },
     });
+
+    useEffect(() => {
+        if (halfFemalePrice?.data?.length > 0) {
+            setLockerPrices((prevPrices) => ({
+                ...prevPrices,
+                halfFemale: {
+                    ...prevPrices.halfFemale,
+                    threeMonths: halfFemalePrice.data[0].LockerPrice3Month,
+                    sixMonths: halfFemalePrice.data[0].LockerPrice6Month,
+                    twelveMonths: halfFemalePrice.data[0].LockerPrice12Month,
+                },
+            }));
+        }
+    }, [halfFemalePrice]);
+
+    useEffect(() => {
+        if (halfMalePrice?.data?.length > 0) {
+            setLockerPrices((prevPrices) => ({
+                ...prevPrices,
+                halfMale: {
+                    ...prevPrices.halfMale,
+                    threeMonths: halfMalePrice.data[0].LockerPrice3Month,
+                    sixMonths: halfMalePrice.data[0].LockerPrice6Month,
+                    twelveMonths: halfMalePrice.data[0].LockerPrice12Month,
+                },
+            }));
+        }
+    }, [halfMalePrice]);
+
+    useEffect(() => {
+        if (fullMalePrice?.data?.length > 0) {
+            setLockerPrices((prevPrices) => ({
+                ...prevPrices,
+                fullMale: {
+                    ...prevPrices.fullMale,
+                    threeMonths: fullMalePrice.data[0].LockerPrice3Month,
+                    sixMonths: fullMalePrice.data[0].LockerPrice6Month,
+                    twelveMonths: fullMalePrice.data[0].LockerPrice12Month,
+                },
+            }));
+        }
+    }, [fullMalePrice]);
+
+    useEffect(() => {
+        if (fullFemalePrice?.data?.length > 0) {
+            setLockerPrices((prevPrices) => ({
+                ...prevPrices,
+                fullFemale: {
+                    ...prevPrices.fullFemale,
+                    threeMonths: fullFemalePrice.data[0].LockerPrice3Month,
+                    sixMonths: fullFemalePrice.data[0].LockerPrice6Month,
+                    twelveMonths: fullFemalePrice.data[0].LockerPrice12Month,
+                },
+            }));
+        }
+    }, [fullFemalePrice]);
+
+    const getLockerPriceHalfFemale = async () => {
+        try {
+            const res = await axios.get("http://localhost:3000/api/locker/getLockersByTypeandGender?type=half&gender=Female", {
+                withCredentials: true,
+            });
+            if (res.status === 200) {
+                const data = res.data;
+                setHalfFemalePrice(data);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const getLockerPriceHalfMale = async () => {
+        try {
+            const res = await axios.get("http://localhost:3000/api/locker/getLockersByTypeandGender?type=half&gender=Male", {
+                withCredentials: true,
+            });
+            if (res.status === 200) {
+                const data = res.data;
+                setHalfMalePrice(data);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const getLockerPriceFullMale = async () => {
+        try {
+            const res = await axios.get("http://localhost:3000/api/locker/getLockersByTypeandGender?type=full&gender=Male", {
+                withCredentials: true,
+            });
+            if (res.status === 200) {
+                const data = res.data;
+                setFullMalePrice(data);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const getLockerPriceFullFemale = async () => {
+        try {
+            const res = await axios.get("http://localhost:3000/api/locker/getLockersByTypeandGender?type=full&gender=Female", {
+                withCredentials: true,
+            });
+            if (res.status === 200) {
+                const data = res.data;
+                setFullFemalePrice(data);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        getLockerPriceHalfFemale();
+        getLockerPriceHalfMale();
+        getLockerPriceFullMale();
+        getLockerPriceFullFemale();
+    }, []);
 
     const toggleEditable = (lockerType) => {
         setIsEditable((prevState) => ({

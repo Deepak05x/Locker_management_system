@@ -127,7 +127,8 @@ const Dashboard = () => {
         { title: "Add Locker", icon: Plus, path: "/add_single_locker", description: "Add a new locker to the system", stats: "Quick Add" },
         { title: "Delete Locker", icon: X, path: "/delete_locker", description: "Remove lockers from the system", stats: "Manage" },
         { title: "Update Locker Price", icon: Settings, path: "/update_locker_price", description: "Update existing locker details", stats: "Configure" },
-        { title: "Issue Reporting", icon: AlertTriangle, path: "/issue_reporting", description: "Report issues with lockers or staff", stats: "5 Active" },
+        { title: "Issue Reporting", icon: AlertTriangle, path: "/issue_reporting", description: "Report issues with lockers", stats: "5 Active" },
+        { title: "Issue Management", icon: AlertTriangle, path: "/issue_management", description: "View issues with lockers or staff", stats: "5 Active" },
     ];
 
     return (
