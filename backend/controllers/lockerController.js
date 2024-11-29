@@ -379,6 +379,24 @@ exports.getExpiringToday = async (req, res, next) => {
         const data = await Locker.find({
             expiresOn: { $gte: todayIST, $lte: endOfTodayIST },
         });
+        
+        for (const locker of data) {
+            const email = locker.employeeEmail; // Assuming the field is `employeeEmail`
+            if (email) {
+                try {
+                    await mailSender(
+                        email,
+                        "Locker Expiration Notification",
+                        `Your locker with ID ${locker._id} is expiring today. Please take necessary action.`
+                    );
+                    console.log(`Email sent to ${email} for locker ${locker._id}`);
+                } catch (emailError) {
+                    console.error(`Error sending email to ${email}: ${emailError.message}`);
+                }
+            } else {
+                console.warn(`No email found for locker ${locker._id}`);
+            }
+        }
 
         return res.status(200).json({
             message: "Lockers expiring today",

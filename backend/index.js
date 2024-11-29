@@ -3,12 +3,14 @@ const cookieParser = require('cookie-parser');
 const dbConnect = require('./utils/databaseConnect.js')
 const cors = require('cors');
 const userroute = require('./routes/authRoutes.js')
+// const Locker=require('./models/locker.js')
 const adminRoute = require('./routes/adminRoutes.js')
 const resetPasswordRoute = require('./routes/resetPasswordRoute.js')
 const lockerRoute = require('./routes/lockerRoutes.js')
 const issueRoute = require('./routes/issueRoute.js')
 const profileRoute = require('./routes/profileRoutes.js')
 require('dotenv').config();
+const mailSender=require('./utils/mailSender.js')
 const cron = require('node-cron');
 const Locker = require('./models/lockerModel.js')
 const multer = require('multer');
@@ -58,6 +60,40 @@ cron.schedule('* * * * *', async () => {
   }
 });
 
+cron.schedule('* * * * *', async () => {
+  try {
+    const todayIST = new Date();
+    todayIST.setHours(0, 0, 0, 0); // Start of IST day
+
+    const endOfTodayIST = new Date(todayIST);
+    endOfTodayIST.setHours(23, 59, 59, 999); // End of IST day
+
+    const data = await Locker.find({
+        expiresOn: { $gte: todayIST, $lte: endOfTodayIST },
+    });
+    
+    for (const locker of data) {
+        const email = locker.employeeEmail; // Assuming the field is `employeeEmail`
+        if (email) {
+            try {
+                await mailSender(
+                    email,
+                    "Locker Expiration Notification",
+                    `Your locker with ID ${locker._id} is expiring today. Please take necessary action.`
+                );
+                console.log(`Email sent to ${email} for locker ${locker._id}`);
+            } catch (emailError) {
+                console.error(`Error sending email to ${email}: ${emailError.message}`);
+            }
+        } else {
+            console.warn(`No email found for locker ${locker._id}`);
+        }
+    }
+  } catch (err) {
+    console.error(`Error updating expired lockers: ${err.message}`);
+  }
+});
+
 
 // cron.schedule('* * * * *', async () => {   // will run every hour
 //   try {
@@ -74,6 +110,7 @@ cron.schedule('* * * * *', async () => {
 //       console.error(`Error updating expired lockers: ${err.message}`);
 //   }
 // });
+
 
 const COLUMN_MAPPING = {
   0: "LockerType",
