@@ -5,7 +5,8 @@ const { addStaff,removeStaff,editStaff,viewStaffDetails,viewAllStaff, addLocker,
 
 router.post('/addStaff', verifyToken,addStaff);
 router.post('/removeStaff',verifyToken, removeStaff);
-router.put('/editStaff', verifyToken,editStaff);
+router.put('/editStaff', editStaff);
+// router.put('/editStaff', verifyToken,editStaff);
 router.get('/viewAllStaff', verifyToken,viewAllStaff);
 router.post('/viewStaffDetails',verifyToken, viewStaffDetails);
 router.post('/addSingleLocker', verifyToken,addLocker);

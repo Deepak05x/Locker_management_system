@@ -44,9 +44,9 @@ exports.addStaff = async (req, res, next) => {
 exports.editStaff = async (req, res, next) => {
     try {
         // Get the staff ID from request parameters
-        if(req.user.role!=='Admin'){
-            return res.status(501).json("Unauthorized");
-        }
+        // if(req.user.role!=='Admin'){
+        //     return res.status(501).json("Unauthorized");
+        // }
         const { id } = req.body;
         // console.log(id)
         // Find the user by ID
@@ -59,14 +59,14 @@ exports.editStaff = async (req, res, next) => {
         const { name, role, email, password, phoneNumber, gender } = req.body;
 
         // Update only the fields that are provided
-        if (name) user.name = name;
-        if (role) user.role = role;
-        if (email) user.email = email;
-        if (phoneNumber) user.phoneNumber = phoneNumber;
-        if (gender) user.gender = gender;
+        if (name &&  name.length!==0) user.name = name;
+        if (role && role.length!==0) user.role = role;
+        if (email &&  email.length!==0) user.email = email;
+        if (phoneNumber && phoneNumber.length!==0) user.phoneNumber = phoneNumber;
+        if (gender && gender.length!==0) user.gender = gender;
 
         // Hash the password if provided                       
-        if (password) {
+        if (password && password.length!==0) {
             user.password = await bcrypt.hash(password, 10);
         }
 
