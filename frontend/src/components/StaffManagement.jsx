@@ -11,7 +11,6 @@ const BackButton = lazy(() => import("../components/BackButton"));
 
 const StaffManagement = () => {
     const { staffs, handleStaffDetails } = useContext(AdminContext);
-    console.log(staffs);
 
     const navigate = useNavigate();
 

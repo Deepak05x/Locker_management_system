@@ -22,7 +22,6 @@ const AddSingleLocker = () => {
     const [lockerSerialNumber, setLockerSerialNumber] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    console.log(lockerCode[0], lockerCode[1], lockerCode[2], lockerCode[3], lockerCode[4]);
     const handleLockerType = (e) => {
         setLockerType(e.target.value);
     };

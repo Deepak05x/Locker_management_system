@@ -7,8 +7,6 @@ const UpdateLockerPrice = () => {
     const { isEditable, lockerPrices, toggleEditable, handleInputChange, saveLockerPrice } = useContext(LockerContext);
     const { halfFemalePrice } = useContext(AuthContext);
 
-    console.log(halfFemalePrice);
-
     const renderLockerRow = (lockerType, lockerLabel, lockerGender) => (
         <tr className="bg-white hover:bg-blue-50 transition-colors">
             <td className="border-b border-gray-200 px-6 py-4 text-center text-gray-700">{lockerGender}</td>

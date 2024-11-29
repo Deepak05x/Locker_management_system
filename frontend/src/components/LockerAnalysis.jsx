@@ -10,8 +10,6 @@ const LockerAnalysis = () => {
     let lockers = expireIn7Days?.data;
     let smallLocker = expireIn1Day?.data;
 
-    console.log(lockers);
-
     const getStatusColor = (status) => {
         switch (status) {
             case "occupied":

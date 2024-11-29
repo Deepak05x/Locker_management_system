@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { lazy, useContext, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { LockerContext } from "../context/LockerProvider";
+import Layout from "./Layout";
+import { ArrowRight, Loader, Hash, Key, CircleDollarSign, ShieldCheck } from "lucide-react";
 
-const DashNav = lazy(() => import("./DashNav"));
+const BackButton = lazy(() => import("../components/BackButton"));
 
 const RenewLocker = () => {
     const location = useLocation();
@@ -11,6 +13,7 @@ const RenewLocker = () => {
     const [months, setMonths] = useState("");
     const [startDate, setStartDate] = useState(null);
     const [endDate, setEndDate] = useState(null);
+    const [loading, setLoading] = useState(null);
 
     const { handleRenewLocker } = useContext(LockerContext);
 
@@ -28,123 +31,187 @@ const RenewLocker = () => {
         }
     }, [months]);
 
-    const handleMonths = (e) => {
-        setMonths(e.target.value);
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
             await handleRenewLocker(LockerNumber, cost, months, startDate, endDate, employeeEmail);
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
-        <>
-            <DashNav />
+        <Layout>
             <section className="flex flex-col items-center py-24 gap-12">
-                <div className="flex flex-col  rounded-3xl items-center md:px-16 sm:px-12 ssm:px-8 py-16 gap-12 bg-white drop-shadow-2xl shadow-black">
-                    <h1 className="text-3xl font-medium">
-                        Renew the Current <span className="text-blue">Locker</span>
-                    </h1>
-                    <form onSubmit={handleSubmit} className="w-full flex flex-col items-center gap-8">
-                        <div className="flex flex-col gap-8 items-center w-full">
-                            <input
-                                type="number"
-                                value={LockerNumber}
-                                id="number"
-                                readOnly
-                                placeholder="Locker number"
-                                className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none"
-                            />
+                <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-xl">
+                    <div className="text-center space-y-2 flex flex-col items-center gap-4">
+                        <div className="flex justify-center ">
+                            <ShieldCheck className="w-16 h-16 text-blue-600" />
+                        </div>
+                        <h1 className="text-3xl flex flex-col font-bold text-blue-900">
+                            Renew the Current <span>Locker</span>
+                        </h1>
+                    </div>
+                    <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+                        <div className="relative">
+                            <label htmlFor="number" className="sr-only">
+                                Number
+                            </label>
+                            <div className="flex items-center">
+                                <Hash className="absolute left-3 h-5 w-5 text-blue-500" />
+                                <input
+                                    id="number"
+                                    name="number"
+                                    type="number"
+                                    required
+                                    className="pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                    placeholder="Enter the locker number"
+                                    value={LockerNumber}
+                                    readOnly
+                                />
+                            </div>
+                        </div>
 
-                            <input
-                                type="text"
-                                id="name"
-                                readOnly
-                                value={employeeName}
-                                placeholder="Employee Name"
-                                className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none"
-                            />
+                        <div className="relative">
+                            <label htmlFor="subject" className="sr-only">
+                                Code
+                            </label>
+                            <div className="flex items-center">
+                                <Key className="absolute left-3 h-5 w-5 text-blue-500" />
+                                <input
+                                    id="subject"
+                                    name="subject"
+                                    type="text"
+                                    required
+                                    className="pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                    placeholder="Enter the subject"
+                                    value={employeeName}
+                                    readOnly
+                                />
+                            </div>
+                        </div>
 
-                            <input
-                                type="email"
-                                value={employeeEmail}
-                                id="email"
-                                readOnly
-                                placeholder="Employee Email"
-                                className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none"
-                            />
+                        <div className="relative">
+                            <label htmlFor="subject" className="sr-only">
+                                Serial Number
+                            </label>
+                            <div className="flex items-center">
+                                <Hash className="absolute left-3 h-5 w-5 text-blue-500" />
+                                <input
+                                    id="subject"
+                                    name="subject"
+                                    type="text"
+                                    required
+                                    className="pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                    placeholder="Enter the locker serial number"
+                                    value={employeeEmail}
+                                    readOnly
+                                />
+                            </div>
+                        </div>
 
-                            <select id="gender" value={months} onChange={handleMonths} className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none">
-                                <option value="" disabled selected hidden>
-                                    Duration
-                                </option>
-                                <option value="3">3 months</option>
-                                <option value="6">6 months</option>
-                                <option value="12">12 months</option>
-                                <option value="customize">Customize</option>
-                            </select>
-                            {months === "customize" ? (
-                                <>
-                                    <div className="relative w-full">
-                                        <label
-                                            htmlFor="startDate"
-                                            className="absolute left-4 top-4 text-gray-500 pointer-events-none transition-all duration-200 ease-in-out transform -translate-y-1/2"
-                                        >
-                                            Start date
-                                        </label>
-                                        <input
-                                            onChange={(e) => setStartDate(e.target.value)}
-                                            type="date"
-                                            id="startDate"
-                                            className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none pt-6"
-                                        />
-                                    </div>
+                        <select
+                            id="duration"
+                            value={months}
+                            onChange={(e) => setMonths(e.target.value)}
+                            className=" outline-none w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                        >
+                            <option value="" disabled selected>
+                                Duration
+                            </option>
+                            <option value="3">3 months</option>
+                            <option value="6">6 months</option>
+                            <option value="12">12 months</option>
+                            <option value="customize">Customize</option>
+                        </select>
 
-                                    <div className="relative w-full">
-                                        <label
-                                            htmlFor="startDate"
-                                            className="absolute left-4 top-4 text-gray-500 pointer-events-none transition-all duration-200 ease-in-out transform -translate-y-1/2"
-                                        >
-                                            End date
-                                        </label>
-                                        <input
-                                            onChange={(e) => setEndDate(e.target.value)}
-                                            type="date"
-                                            id="startDate"
-                                            className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none pt-6"
-                                        />
-                                    </div>
+                        {months === "customize" ? (
+                            <>
+                                <div className="relative w-full">
                                     <input
-                                        type="number"
+                                        id="description"
+                                        name="description"
+                                        type="date"
+                                        required
+                                        className=" outline-none w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                        placeholder="Enter the start date"
+                                        value={startDate}
+                                        onChange={(e) => setStartDate(e.target.value)}
+                                    />
+                                </div>
+
+                                <div className="relative w-full">
+                                    <input
+                                        id="description"
+                                        name="description"
+                                        type="date"
+                                        required
+                                        className=" outline-none w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                        placeholder="Enter the end date"
+                                        value={endDate}
+                                        onChange={(e) => setEndDate(e.target.value)}
+                                    />
+                                </div>
+                                <div className="relative">
+                                    <label htmlFor="subject" className="sr-only">
+                                        Cost
+                                    </label>
+                                    <div className="flex items-center">
+                                        <CircleDollarSign className="absolute left-3 h-5 w-5 text-blue-500" />
+                                        <input
+                                            id="subject"
+                                            name="subject"
+                                            type="text"
+                                            required
+                                            className="pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                            placeholder="Enter the cost"
+                                            value={cost}
+                                            onChange={(e) => setCost(e.target.value)}
+                                        />
+                                    </div>
+                                </div>
+                            </>
+                        ) : (
+                            <div className="relative">
+                                <label htmlFor="subject" className="sr-only">
+                                    Cost
+                                </label>
+                                <div className="flex items-center">
+                                    <CircleDollarSign className="absolute left-3 h-5 w-5 text-blue-500" />
+                                    <input
+                                        id="subject"
+                                        name="subject"
+                                        type="text"
+                                        required
+                                        className="pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                        placeholder="Enter the cost"
                                         value={cost}
                                         onChange={(e) => setCost(e.target.value)}
-                                        id="cost"
-                                        placeholder="Total Cost"
-                                        className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none"
                                     />
-                                </>
-                            ) : (
-                                <input
-                                    type="number"
-                                    value={cost}
-                                    id="cost"
-                                    placeholder="Total Cost"
-                                    className="border border-black px-4 rounded-sm py-2 w-full focus:outline-none enabled:outline-none"
-                                />
-                            )}
+                                </div>
+                            </div>
+                        )}
 
-                            <button type="submit" className="bg-blue px-6 py-2 rounded-sm text-white font-medium">
-                                Renew Locker
-                            </button>
-                        </div>
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className={`group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-white ${
+                                loading ? "bg-blue-500 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
+                            } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors`}
+                        >
+                            <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+                                {loading ? <Loader className="h-5 w-5 text-white animate-spin" /> : <ArrowRight className="h-5 w-5 text-white group-hover:text-blue-300" />}
+                            </span>
+                            {loading ? "Renewing..." : "Renew the locker"}
+                        </button>
+                        <BackButton />
                     </form>
                 </div>
             </section>
-        </>
+        </Layout>
     );
 };
 
