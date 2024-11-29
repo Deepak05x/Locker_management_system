@@ -60,7 +60,8 @@ cron.schedule('* * * * *', async () => {
   }
 });
 
-cron.schedule('* * * * *', async () => {
+// cron.schedule('* * * * *', async () => {
+  cron.schedule('0 */6 * * *', async () => {
   try {
     const todayIST = new Date();
     todayIST.setHours(0, 0, 0, 0); // Start of IST day
