@@ -1,24 +1,23 @@
 import React, { useState } from "react";
-import { lazy, useContext, useEffect } from "react";
+import { lazy, useContext } from "react";
 import { Link } from "react-router-dom";
 import { LockerContext } from "../context/LockerProvider";
-import { ArrowRight, Loader, ShieldCheck, User, Hash, Key, ClipboardType, FolderOpen, Mail, CircleDollarSign } from "lucide-react";
+import { ArrowRight, Loader, ShieldCheck, Hash, Key, ClipboardType, CircleDollarSign } from "lucide-react";
 import Layout from "./Layout";
-import { toast } from "react-toastify";
 
 const BackButton = lazy(() => import("../components/BackButton"));
 
 const AddSingleLocker = () => {
     const { addLocker } = useContext(LockerContext);
-    const { isEditable, lockerPrices, toggleEditable, handleInputChange, saveLockerPrice } = useContext(LockerContext);
+    const { isEditable, lockerPrices, handleInputChange } = useContext(LockerContext);
 
-    const [lockerType, setLockerType] = useState(null);
+    const [lockerType, setLockerType] = useState("");
     const [lockerNumber, setLockerNumber] = useState(null);
     const [lockerCode, setLockerCode] = useState(["", "", "", "", ""]);
     const [lockerPriceThree, setLockerPriceThree] = useState(null);
     const [lockerPriceSix, setLockerPriceSix] = useState(null);
     const [lockerPriceYear, setLockerPriceYear] = useState(null);
-    const [gender, setGender] = useState(null);
+    const [gender, setGender] = useState("");
     const [lockerSerialNumber, setLockerSerialNumber] = useState(null);
     const [loading, setLoading] = useState(false);
 
@@ -106,10 +105,10 @@ const AddSingleLocker = () => {
                         <select
                             id="lockerType"
                             value={lockerType}
-                            onChange={handleLockerType}
+                            onChange={(e) => setLockerType(e.target.value)}
                             className="pl-4 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-white"
                         >
-                            <option value="" disabled selected hidden>
+                            <option value="" disabled>
                                 Type of the locker
                             </option>
                             <option value="half">Half</option>
@@ -122,7 +121,7 @@ const AddSingleLocker = () => {
                             onChange={(e) => setGender(e.target.value)}
                             className="pl-4 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors bg-white"
                         >
-                            <option value="" disabled selected hidden>
+                            <option value="" disabled defaultValue={true}>
                                 Type of the gender
                             </option>
                             <option value="Male">Male</option>

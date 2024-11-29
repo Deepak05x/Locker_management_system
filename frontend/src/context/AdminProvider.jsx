@@ -1,12 +1,15 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { createContext } from "react";
+import { createContext, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "./AuthProvider";
 
 export const AdminContext = createContext();
 
 const AdminProvider = ({ children }) => {
+    const { loginDetails } = useContext(AuthContext);
+
     const [staffs, setStaffs] = useState([]);
     const [addedStaffs, setAddedStaffs] = useState([]);
     const [staffDetails, setStaffDetails] = useState([]);
@@ -214,7 +217,7 @@ const AdminProvider = ({ children }) => {
         getStaffs();
         getLockerIssue();
         getTechnicalIssue();
-    }, []);
+    }, [loginDetails]);
 
     return (
         <AdminContext.Provider

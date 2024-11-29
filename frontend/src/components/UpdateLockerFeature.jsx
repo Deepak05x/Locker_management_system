@@ -17,7 +17,6 @@ const UpdateLockerFeature = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        s;
         setLoading(true);
         try {
             await cancelLocker(LockerNumber, employeeEmail);

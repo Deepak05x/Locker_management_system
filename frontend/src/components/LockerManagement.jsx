@@ -54,7 +54,7 @@ const LockerManagement = () => {
                                     onChange={(e) => setLocker(e.target.value)}
                                     className="border-2 border-black w-full px-4 py-2 rounded-lg shadow-sm focus:outline-none  cursor-pointer"
                                 >
-                                    <option value="all">All Lockers</option>
+                                    <option value="all lockers">All Lockers</option>
                                     <option value="expired">Expired</option>
                                     <option value="available">Available</option>
                                     <option value="allocated">Allocated</option>

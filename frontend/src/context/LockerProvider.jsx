@@ -3,11 +3,14 @@ import { createContext, useState, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { AuthContext } from "./AuthProvider";
 
 export const LockerContext = createContext();
 
 const LockerProvider = ({ children }) => {
     const navigate = useNavigate();
+
+    const { loginDetails } = useContext(AuthContext);
 
     const [addedLocker, setAddedLocker] = useState(null);
     const [availableLockers, setAvailableLockers] = useState(null);
@@ -458,7 +461,7 @@ const LockerProvider = ({ children }) => {
         fetchAvailableLockers();
         getExpiredLockers7Days();
         getExpiredLockers1Day();
-    }, []);
+    }, [loginDetails]);
 
     return (
         <LockerContext.Provider
