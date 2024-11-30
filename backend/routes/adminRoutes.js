@@ -3,7 +3,8 @@ const verifyToken=require('../utils/verifyUser.js')
 const router = express.Router();
 const { addStaff,removeStaff,editStaff,viewStaffDetails,viewAllStaff, addLocker, addMultipleLocker } = require('../controllers/adminControllers.js');
 
-router.post('/addStaff', verifyToken,addStaff);
+router.post('/addStaff',addStaff);
+// router.post('/addStaff', verifyToken,addStaff);
 router.post('/removeStaff',verifyToken, removeStaff);
 router.put('/editStaff', editStaff);
 // router.put('/editStaff', verifyToken,editStaff);

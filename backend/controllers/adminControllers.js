@@ -7,9 +7,9 @@ const jwt = require('jsonwebtoken');
 const mailSender=require('../utils/mailSender')
 exports.addStaff = async (req, res, next) => {
     try {
-        if(req.user.role!=='Admin'){
-            return res.status(501).json("Unauthorized");
-        }
+        // if(req.user.role!=='Admin'){
+        //     return res.status(501).json("Unauthorized");
+        // }
         const { name, role, email, password, phoneNumber, gender } = req.body;
         
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -36,8 +36,9 @@ exports.addStaff = async (req, res, next) => {
         await mailSender(
             email,
             "Your credentials for login from Draconx are :  ",
-            `email : ${email}`,
-            `password : ${password}`,
+            `email : ${email}
+            password : ${password}
+            `
         );
 
         res.cookie("token", token, options).status(200).json(rest);
