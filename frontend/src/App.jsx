@@ -35,8 +35,8 @@ const EditStaffDetails = lazy(() => import("./components/EditStaffDetails"));
 
 const App = () => {
     return (
-        <LockerProvider>
-            <AuthProvider>
+        <AuthProvider>
+            <LockerProvider>
                 <AdminProvider>
                     <Suspense fallback={<></>}>
                         <Routes>
@@ -70,8 +70,8 @@ const App = () => {
                         </Routes>
                     </Suspense>
                 </AdminProvider>
-            </AuthProvider>
-        </LockerProvider>
+            </LockerProvider>
+        </AuthProvider>
     );
 };
 

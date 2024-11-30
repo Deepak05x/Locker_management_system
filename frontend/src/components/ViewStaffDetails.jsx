@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Layout from "./Layout";
 import { useContext, lazy } from "react";
 import { AdminContext } from "../context/AdminProvider";
-import { ArrowRight, Loader, BadgeAlert, BookOpen, FolderPen, User, Mail, UserPen } from "lucide-react";
+import { ArrowRight, Loader, BadgeAlert, FolderPen, User, Mail, UserPen } from "lucide-react";
 
 const BackButton = lazy(() => import("../components/BackButton"));
 
@@ -11,8 +11,6 @@ const ViewStaffDetails = () => {
     const [loading, setLoading] = useState(null);
 
     const details = staffDetails.user;
-
-    console.log(details);
 
     const handleSubmit = async (e, id) => {
         e.preventDefault();

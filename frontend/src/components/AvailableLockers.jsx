@@ -2,7 +2,6 @@ import React, { useState, lazy, useContext } from "react";
 import { LockerContext } from "../context/LockerProvider";
 import Layout from "./Layout";
 import { MoveRight, BadgeAlert, ArrowRight, Loader } from "lucide-react";
-import { Link } from "react-router-dom";
 
 const BackButton = lazy(() => import("../components/BackButton"));
 

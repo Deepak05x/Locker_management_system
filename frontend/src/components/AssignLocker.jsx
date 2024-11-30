@@ -81,6 +81,7 @@ const AssignLocker = () => {
                                     name="number"
                                     type="number"
                                     required
+                                    readOnly
                                     className="pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                                     placeholder="Enter the locker number"
                                     value={availableLockers.data.LockerNumber}
@@ -99,6 +100,7 @@ const AssignLocker = () => {
                                     name="subject"
                                     type="text"
                                     required
+                                    readOnly
                                     className="pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                                     placeholder="Enter the subject"
                                     value={availableLockers.data.LockerCode}
@@ -117,6 +119,7 @@ const AssignLocker = () => {
                                     name="subject"
                                     type="text"
                                     required
+                                    readOnly
                                     className="pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                                     placeholder="Enter the locker serial number"
                                     value={availableLockers.data.LockerSerialNumber}
@@ -134,6 +137,7 @@ const AssignLocker = () => {
                                     name="subject"
                                     type="text"
                                     required
+                                    readOnly
                                     className="pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                                     placeholder="Enter the subject"
                                     value={availableLockers.data.LockerType}
@@ -151,6 +155,7 @@ const AssignLocker = () => {
                                     name="subject"
                                     type="text"
                                     required
+                                    readOnly
                                     className="pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                                     placeholder="Enter the subject"
                                     value={availableLockers.data.availableForGender}

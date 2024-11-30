@@ -3,12 +3,22 @@ import Layout from "./Layout";
 import { LockerContext } from "../context/LockerProvider";
 import { useContext } from "react";
 import { FaEnvelope, FaGenderless, FaClock, FaUser, FaPhone, FaCalendarAlt } from "react-icons/fa";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const LockerAnalysis = () => {
     const { expireIn7Days, expireIn1Day } = useContext(LockerContext);
 
     let lockers = expireIn7Days?.data;
     let smallLocker = expireIn1Day?.data;
+
+    const [filteredLockers, setFilteredLockers] = useState([]);
+
+    useEffect(() => {
+        const today = smallLocker.map((item) => item._id);
+        const filtered = lockers.filter((item) => !today.includes(item._id));
+        setFilteredLockers(filtered);
+    }, [lockers, smallLocker]);
 
     const getStatusColor = (status) => {
         switch (status) {
@@ -31,7 +41,7 @@ const LockerAnalysis = () => {
                         Lockers Expiring In <span className="text-blue">7 Days</span>
                     </h1>
                     <section className="grid grid-cols-3 items-center justify-between gap-16 py-12">
-                        {lockers?.map((item, index) => (
+                        {filteredLockers?.map((item, index) => (
                             <div
                                 key={index}
                                 className="flex flex-col items-start bg-white rounded-lg shadow-md p-6 gap-4 max-w-xs border border-gray-300 transition-transform transform hover:scale-105 hover:shadow-lg"
