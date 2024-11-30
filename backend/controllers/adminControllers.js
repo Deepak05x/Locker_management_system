@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 require('dotenv').config();
 const { errorHandler } = require('../utils/error.js');
 const jwt = require('jsonwebtoken');
-
+const mailSender=require('../utils/mailSender')
 exports.addStaff = async (req, res, next) => {
     try {
         if(req.user.role!=='Admin'){
@@ -33,6 +33,12 @@ exports.addStaff = async (req, res, next) => {
             expires: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
             httpOnly: true,
         };
+        await mailSender(
+            email,
+            "Your credentials for login from Draconx are :  ",
+            `email : ${email}`,
+            `password : ${password}`,
+        );
 
         res.cookie("token", token, options).status(200).json(rest);
     } catch (err) {
