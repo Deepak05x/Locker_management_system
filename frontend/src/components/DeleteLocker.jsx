@@ -27,7 +27,7 @@ const DeleteLocker = () => {
 
     return (
         <Layout>
-            <div className="flex flex-col items-center justify-center py-24">
+            <div className="flex flex-col items-center justify-center py-24 px-2">
                 <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-xl">
                     {/* Header */}
                     <div className="text-center space-y-2 flex flex-col items-center gap-4">

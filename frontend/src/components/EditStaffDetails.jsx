@@ -8,21 +8,26 @@ const BackButton = lazy(() => import("../components/BackButton"));
 const EditStaffDetails = () => {
     const { staffDetails, editStaffDetails } = useContext(AdminContext);
 
+    console.log(staffDetails);
+
     const [username, setUsername] = useState(staffDetails.user.name || "");
     const [email, setEmail] = useState(staffDetails.user.email || "");
     const [phone, setPhone] = useState(staffDetails.user.phoneNumber || "");
     const [gender, setGender] = useState(staffDetails.user.gender || "");
+    const [password, setPassword] = useState("*****");
     const [loading, setLoading] = useState(false);
 
     const [isUsernameEditable, setIsUsernameEditable] = useState(false);
     const [isEmailEditable, setIsEmailEditable] = useState(false);
     const [isPhoneEditable, setIsPhoneEditable] = useState(false);
     const [isGenderEditable, setIsGenderEditable] = useState(false);
+    const [isPasswordEditable, setIsPasswordEditable] = useState(false);
 
     const usernameRef = useRef(null);
     const emailRef = useRef(null);
     const phoneRef = useRef(null);
     const genderRef = useRef(null);
+    const passwordRef = useRef(null);
 
     const handleEditClick = (field) => {
         switch (field) {
@@ -42,6 +47,10 @@ const EditStaffDetails = () => {
                 setIsGenderEditable(!isGenderEditable);
                 if (!isGenderEditable) genderRef.current?.focus();
                 break;
+            case "password":
+                setIsPasswordEditable(!isPasswordEditable);
+                if (!isPasswordEditable) passwordRef.current?.focus();
+                break;
             default:
                 break;
         }
@@ -51,7 +60,7 @@ const EditStaffDetails = () => {
         setLoading(true);
         e.preventDefault();
         try {
-            await editStaffDetails(staffDetails.user._id, username, staffDetails.user.role, email, staffDetails.user.password, phone, gender);
+            await editStaffDetails(staffDetails.user._id, username, staffDetails.user.role, email, password, phone, gender);
             // Reset all fields to readonly
             setIsUsernameEditable(false);
             setIsEmailEditable(false);
@@ -164,6 +173,28 @@ const EditStaffDetails = () => {
                                 <X className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={() => handleEditClick("gender")} />
                             ) : (
                                 <Edit2 className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={() => handleEditClick("gender")} />
+                            )}
+                        </div>
+
+                        <div className="relative group">
+                            <User className="absolute left-3 top-4 h-5 w-5 text-blue-500" />
+                            <input
+                                id="password"
+                                name="password"
+                                ref={passwordRef}
+                                type="text"
+                                readOnly={!isPasswordEditable}
+                                className={`pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition-colors ${
+                                    isPasswordEditable ? "bg-white" : "bg-gray-100"
+                                }`}
+                                placeholder="Password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
+                            {isPasswordEditable ? (
+                                <X className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={() => handleEditClick("password")} />
+                            ) : (
+                                <Edit2 className="absolute right-3 top-3 h-5 w-5 text-blue-500 cursor-pointer opacity-0 group-hover:opacity-100" onClick={() => handleEditClick("password")} />
                             )}
                         </div>
 

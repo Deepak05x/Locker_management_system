@@ -35,7 +35,7 @@ const StaffManagement = () => {
 
     return (
         <Layout>
-            <section className="flex flex-col items-center w-full px-24 py-24 gap-12">
+            <section className="flex flex-col items-center justify-center w-full px-24 py-24 gap-12">
                 <div className="flex flex-col items-center justify-center py-4">
                     <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-xl">
                         <div className="text-center space-y-2 flex flex-col items-center gap-4">
@@ -57,9 +57,9 @@ const StaffManagement = () => {
                     </div>
                 </div>
 
-                <section className="grid grid-cols-3 items-center w-full justify-center gap-16">
+                <section className="grid xl:grid-cols-3 md:grid-cols-2  items-center w-full justify-center gap-16">
                     {staffs.map((item, index) => (
-                        <div key={index} className="flex flex-col max-w-sm items-start bg-white rounded-lg shadow-md p-6 gap-4  border border-gray-300  hover:shadow-lg">
+                        <div key={index} className="flex flex-col max-w-sm items-center justify-center bg-white rounded-lg shadow-md p-6 gap-4  border border-gray-300  hover:shadow-lg">
                             {/* Locker Number and Status */}
                             <div className="flex items-center justify-between gap-16 w-full mb-4">
                                 <h2 className="text-lg font-semibold text-gray-800">{item.name}</h2>

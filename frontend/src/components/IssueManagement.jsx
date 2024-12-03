@@ -41,7 +41,7 @@ const IssueManagement = () => {
                             <div className="flex justify-center ">
                                 <ShieldCheck className="w-16 h-16 text-blue-600" />
                             </div>
-                            <h1 className="text-3xl flex flex-col font-bold text-blue-900">Locker Management</h1>
+                            <h1 className="text-3xl flex flex-col font-bold text-blue-900">Issue Management</h1>
                         </div>
 
                         <form className="mt-8 space-y-6 w-full">

@@ -65,7 +65,7 @@ const LockerManagement = () => {
                     </div>
                 </div>
 
-                <section className="grid grid-cols-3 items-center justify-between gap-16">
+                <section className="grid xl:grid-cols-3 md:grid-cols-2 items-center justify-between gap-16">
                     {filteredLockers.map((item, index) => (
                         <div
                             key={index}

@@ -1,97 +1,50 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
-const expiredLockerDetails = [
-    {
-        LockerNumber: "L101",
-        employeeEmail: "john.doe@example.com",
-        availableForGender: "Male",
-        employeeName: "John Doe",
-        employeePhone: "123-456-7890",
-        LockerPrice3Month: 100,
-        LockerPrice6Month: 180,
-        LockerPrice12Month: 300,
-    },
-    {
-        LockerNumber: "L102",
-        employeeEmail: "jane.doe@example.com",
-        availableForGender: "Female",
-        employeeName: "Jane Doe",
-        employeePhone: "987-654-3210",
-        LockerPrice3Month: 100,
-        LockerPrice6Month: 180,
-        LockerPrice12Month: 300,
-    },
-];
+const App = () => {
+    // Example data: Replace with your actual backend data
+    const lockersExpiringToday = [
+        { _id: "1", name: "Locker1" },
+        { _id: "2", name: "Locker2" },
+        { _id: "3", name: "Locker3" },
+    ];
 
-function ExpiredLockers() {
+    const lockersExpiringNext7Days = [
+        { _id: "1", name: "Locker1" },
+        { _id: "2", name: "Locker2" },
+        { _id: "4", name: "Locker4" },
+        { _id: "5", name: "Locker5" },
+    ];
+
+    // State to hold filtered lockers
+    const [filteredLockers, setFilteredLockers] = useState([]);
+
+    useEffect(() => {
+        // Extract IDs of lockers expiring today
+        const todayIds = lockersExpiringToday.map((locker) => locker._id);
+
+        // Filter lockers expiring in the next 7 days to exclude today's lockers
+        const filtered = lockersExpiringNext7Days.filter((locker) => !todayIds.includes(locker._id));
+
+        setFilteredLockers(filtered);
+    }, [lockersExpiringToday, lockersExpiringNext7Days]);
+
     return (
-        <section className="flex flex-col items-center w-full px-24 py-24 gap-12 bg-gray-50">
-            {/* Header Section */}
-            <section className="flex flex-col gap-4 items-center justify-between w-full font-medium">
-                <h1 className="text-3xl font-medium">
-                    Expired <span className="text-blue-500">Lockers</span>
-                </h1>
-            </section>
-
-            {/* Locker Cards Section */}
-            <section className="grid grid-cols-3 items-center justify-between gap-12">
-                {expiredLockerDetails.map((item, index) => (
-                    <div
-                        key={index}
-                        className="flex flex-col items-start bg-white shadow-lg rounded-lg text-[1rem] px-8 py-6 gap-4 border border-gray-200 transition-transform transform hover:scale-105"
-                    >
-                        {/* Locker Details */}
-                        <p className="flex gap-4 items-center">
-                            <span className="text-blue-500 font-medium flex items-center">
-                                <i className="fas fa-lock mr-2"></i> Number:
-                            </span>
-                            {item.LockerNumber}
-                        </p>
-                        <p className="flex gap-4 items-center">
-                            <span className="text-blue-500 font-medium flex items-center">
-                                <i className="fas fa-envelope mr-2"></i> Email:
-                            </span>
-                            {item.employeeEmail}
-                        </p>
-                        <p className="flex gap-4 items-center">
-                            <span className="text-blue-500 font-medium flex items-center">
-                                <i className="fas fa-venus-mars mr-2"></i> Gender:
-                            </span>
-                            {item.availableForGender}
-                        </p>
-                        <p className="flex gap-4 items-center">
-                            <span className="text-blue-500 font-medium flex items-center">
-                                <i className="fas fa-user mr-2"></i> Name:
-                            </span>
-                            {item.employeeName}
-                        </p>
-                        <p className="flex gap-4 items-center">
-                            <span className="text-blue-500 font-medium flex items-center">
-                                <i className="fas fa-phone mr-2"></i> Phone:
-                            </span>
-                            {item.employeePhone}
-                        </p>
-
-                        {/* Action Buttons */}
-                        <div className="flex flex-row gap-4 mt-4">
-                            <button
-                                onClick={() => alert(`Update Locker ${item.LockerNumber}`)}
-                                className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-400 text-white px-4 py-2 rounded shadow-md hover:bg-blue-700 hover:shadow-lg transition duration-200"
-                            >
-                                <i className="fas fa-edit"></i> Update
-                            </button>
-                            <button
-                                onClick={() => alert(`Renew Locker ${item.LockerNumber}`)}
-                                className="flex items-center gap-2 bg-gradient-to-r from-green-600 to-green-400 text-white px-4 py-2 rounded shadow-md hover:bg-green-700 hover:shadow-lg transition duration-200"
-                            >
-                                <i className="fas fa-redo-alt"></i> Renew
-                            </button>
-                        </div>
-                    </div>
+        <div>
+            <h2>Lockers Expiring Today</h2>
+            <ul>
+                {lockersExpiringToday.map((locker) => (
+                    <li key={locker._id}>{locker.name}</li>
                 ))}
-            </section>
-        </section>
-    );
-}
+            </ul>
 
-export default ExpiredLockers;
+            <h2>Lockers Expiring in Next 7 Days (Excluding Today)</h2>
+            <ul>
+                {filteredLockers.map((locker) => (
+                    <li key={locker._id}>{locker.name}</li>
+                ))}
+            </ul>
+        </div>
+    );
+};
+
+export default App;
