@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
 import { LayoutDashboard, LogOut } from "lucide-react";
@@ -6,6 +6,13 @@ import { LayoutDashboard, LogOut } from "lucide-react";
 const DashNav = () => {
     const { logout, loginDetails } = useContext(AuthContext);
     const navigate = useNavigate();
+
+    const [open, setOpen] = useState(false);
+
+    const handleOpen = () => {
+        setOpen((prev) => !prev);
+        console.log(open);
+    };
 
     const handleLogout = () => {
         logout();
@@ -33,13 +40,41 @@ const DashNav = () => {
                     </Link>
 
                     {/* User Profile Picture Link */}
-                    <Link to="/account_page" className="relative group">
+                    <div className="relative cursor-pointer">
                         {loginDetails.role === "Admin" ? (
-                            <div className="bg-white text-black px-4 py-2 rounded-full font-bold hover:text-white hover:bg-black">A</div>
+                            <>
+                                <div onClick={handleOpen} className="bg-white text-black px-4 py-2 rounded-full font-bold hover:text-white hover:bg-black">
+                                    A
+                                </div>
+                                {open && (
+                                    <div className="absolute right-0 top-[4rem] w-auto bg-black text-white rounded-lg shadow-lg z-50 flex flex-row items-center justify-center">
+                                        <Link to="/account_page" className="rounded-lg px-4 py-2 hover:bg-gray-500 transition-colors duration-200">
+                                            Profile
+                                        </Link>
+                                        <Link to="/account_reset_pass" className="rounded-lg px-4 py-2 hover:bg-gray-500 transition-colors duration-200">
+                                            Reset&nbsp;Password
+                                        </Link>
+                                    </div>
+                                )}
+                            </>
                         ) : (
-                            <div className="bg-white text-black px-4 py-2 rounded-full font-bold hover:text-white hover:bg-black">S</div>
+                            <>
+                                <div onClick={handleOpen} className="bg-white text-black px-4 py-2 rounded-full font-bold hover:text-white hover:bg-black">
+                                    S
+                                </div>
+                                {open && (
+                                    <div className="absolute right-0 top-[4rem] w-auto bg-black text-white rounded-lg shadow-lg z-50 flex flex-row items-center justify-center">
+                                        <Link to="/account_page" className="rounded-lg px-4 py-2 hover:bg-gray-500 transition-colors duration-200">
+                                            Profile
+                                        </Link>
+                                        <Link to="/account_reset_pass" className="rounded-lg px-4 py-2 hover:bg-gray-500 transition-colors duration-200">
+                                            Reset&nbsp;Password
+                                        </Link>
+                                    </div>
+                                )}
+                            </>
                         )}
-                    </Link>
+                    </div>
 
                     {/* Logout Button */}
                     <button

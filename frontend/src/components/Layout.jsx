@@ -7,9 +7,8 @@ const Layout = ({ children }) => {
     const navigate = useNavigate(); // Initialize useNavigate
 
     return (
-        <div className="min-h-screen relative bg-gradient-to-b from-blue-100 to-blue-50">
+        <div className="min-h-screen flex flex-col  bg-gradient-to-b from-blue-100 to-blue-50">
             <DashNav />
-
             <main>{children}</main>
         </div>
     );

@@ -32,6 +32,7 @@ const DeleteLocker = lazy(() => import("./components/DeleteLocker"));
 const UpdateLockerPrice = lazy(() => import("./components/UpdateLockerPrice"));
 const AccountPage = lazy(() => import("./components/AccountPage"));
 const EditStaffDetails = lazy(() => import("./components/EditStaffDetails"));
+const AccountResetPass = lazy(() => import("./components/AccountResetPass"));
 
 const App = () => {
     return (
@@ -67,6 +68,7 @@ const App = () => {
                             <Route path="/account_page" element={<AccountPage />} />
                             <Route path="/edit_staff_details" element={<EditStaffDetails />} />
                             <Route path="/issue_management" element={<IssueManagement />} />
+                            <Route path="/account_reset_pass" element={<AccountResetPass />} />
                         </Routes>
                     </Suspense>
                 </AdminProvider>
