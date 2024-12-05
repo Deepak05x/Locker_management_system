@@ -47,8 +47,8 @@ const DashNav = () => {
                                     A
                                 </div>
                                 {open && (
-                                    <div className="absolute right-0 top-[4rem] w-auto bg-black text-white rounded-lg shadow-lg z-50 flex flex-row items-center justify-center">
-                                        <Link to="/account_page" className="rounded-lg px-4 py-2 hover:bg-gray-500 transition-colors duration-200">
+                                    <div className="absolute right-0 top-[4rem] w-auto bg-black text-white rounded-lg shadow-lg z-50 flex flex-col items-center justify-center">
+                                        <Link to="/account_page" className="rounded-lg w-full text-center px-4 py-2 hover:bg-gray-500 transition-colors duration-200">
                                             Profile
                                         </Link>
                                         <Link to="/account_reset_pass" className="rounded-lg px-4 py-2 hover:bg-gray-500 transition-colors duration-200">

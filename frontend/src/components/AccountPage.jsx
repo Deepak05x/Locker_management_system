@@ -118,7 +118,7 @@ const AccountPage = () => {
                             <input
                                 id="phone"
                                 name="phone"
-                                type="number"
+                                type="text"
                                 ref={phoneRef}
                                 readOnly={!isPhoneEditable}
                                 className={`pl-10 outline-none w-full py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 transition-colors ${

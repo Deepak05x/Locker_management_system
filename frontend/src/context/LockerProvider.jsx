@@ -162,13 +162,6 @@ const LockerProvider = ({ children }) => {
         }
     };
 
-    useEffect(() => {
-        getLockerPriceHalfFemale();
-        getLockerPriceHalfMale();
-        getLockerPriceFullMale();
-        getLockerPriceFullFemale();
-    }, []);
-
     const toggleEditable = (lockerType) => {
         setIsEditable((prevState) => ({
             ...prevState,
@@ -461,6 +454,10 @@ const LockerProvider = ({ children }) => {
         fetchAvailableLockers();
         getExpiredLockers7Days();
         getExpiredLockers1Day();
+        getLockerPriceHalfFemale();
+        getLockerPriceHalfMale();
+        getLockerPriceFullMale();
+        getLockerPriceFullFemale();
     }, [loginDetails]);
 
     return (

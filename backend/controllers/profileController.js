@@ -1,6 +1,5 @@
-const User = require('../models/userModel.js')
-const bcrypt = require('bcrypt');
-
+const User = require("../models/userModel.js");
+const bcrypt = require("bcrypt");
 
 exports.viewProfile = async (req, res, next) => {
     try {
@@ -10,7 +9,7 @@ exports.viewProfile = async (req, res, next) => {
             return res.status(400).json({ message: "User ID is required" });
         }
 
-        const user = await User.findById(userId, 'name email password phoneNumber');
+        const user = await User.findById(userId, "name email password phoneNumber");
 
         if (!user) {
             return res.status(404).json({ message: "User not found" });
@@ -21,8 +20,8 @@ exports.viewProfile = async (req, res, next) => {
             data: {
                 name: user.name,
                 email: user.email,
-                phoneNumber: user.phoneNumber
-            }
+                phoneNumber: user.phoneNumber,
+            },
         });
     } catch (err) {
         console.error(`Error in resetPassword: ${err.message}`);
@@ -43,7 +42,6 @@ exports.updateProfile = async (req, res, next) => {
         if (email) updateData.email = email;
         if (phone) updateData.phone = phone;
 
-
         if (password) {
             const hashedPassword = await bcrypt.hash(password, 10);
             updateData.password = hashedPassword;
@@ -57,7 +55,7 @@ exports.updateProfile = async (req, res, next) => {
 
         return res.status(200).json({
             message: "Profile updated successfully",
-            data: updatedUser
+            data: updatedUser,
         });
     } catch (err) {
         console.error(`Error in updating Profile: ${err.message}`);
