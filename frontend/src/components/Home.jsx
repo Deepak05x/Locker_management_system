@@ -8,7 +8,7 @@ const Home = () => {
             <main className="max-w-4xl w-full text-center space-y-16">
                 {/* Hero Section */}
                 <div className="space-y-6 ">
-                    <h1 className="text-4xl md:text-6xl font-bold text-blue-900">Locker Management System</h1>
+                    <h1 className="text-4xl md:text-6xl font-bold text-blue-900">LockerWise</h1>
                     <p className="text-xl text-blue-600">Secure, Smart, Simple</p>
                 </div>
 
